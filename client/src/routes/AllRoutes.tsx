@@ -13,10 +13,10 @@ const AllRoutes = () => {
                 {/* <Route path='/' element={<ChiefMarketingDashboard />}/> */}
             </Routes>
             <Routes>
-                <Route path='/' element={<PhoneCallsPage />}/>
+                {/* <Route path='/' element={<PhoneCallsPage />}/> */}
             </Routes>
             <Routes>
-                {/* <Route path='/' element={<LoginWidget />}></Route> */}
+                <Route path='/' element={<LoginWidget />}></Route>
             </Routes>
         </Router>
     )
