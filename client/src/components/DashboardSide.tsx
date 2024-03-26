@@ -1,11 +1,4 @@
-import DashboardLink from "./DashboarLink";
-const profileImg = require("../assets/profileImg.png");
-const calling = require("../assets/Calling.png");
-const calendar = require("../assets/Calendar.png");
-const chart = require("../assets/Chart.png");
-const danger = require("../assets/DangerTriangle.png");
-const paper = require("../assets/Paper.png");
-const bookmark = require("../assets/Bookmark.png");
+import React from "react";
 
 const DashboardSide = () => {
     return (
