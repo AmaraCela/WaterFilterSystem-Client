@@ -5,6 +5,7 @@ import LoginPage from '../pages/Login';
 import AddReferenceForm from '../components/com-formToAddReference';
 import HistoryUpload from '../components/com-historyUpload';
 import PhoneCallsPage from '../pages/com-PhoneCalls';
+import DashboardSide from '../components/DashboardSide';
 
 const AllRoutes = () => {
     return (
@@ -13,7 +14,7 @@ const AllRoutes = () => {
                 {/* <Route path='/' element={<ChiefMarketingDashboard />}/> */}
             </Routes>
             <Routes>
-                <Route path='/' element={<PhoneCallsPage />}/>
+                <Route path='/' element={<DashboardSide />}/>
             </Routes>
             <Routes>
                 {/* <Route path='/' element={<LoginWidget />}></Route> */}

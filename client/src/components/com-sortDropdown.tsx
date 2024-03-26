@@ -16,7 +16,7 @@ const SortDropdown: React.FC<SortDropdownProps> = ({ onSelect }) => {
     <select
       value={selectedOption}
       onChange={handleOptionChange}
-      className="border border-gray-300 rounded px-2 py-1"
+      className="border border-gray-300 rounded px-2 py-1 text-black"
     >
       <option value="Newest">Newest</option>
       <option value="Earliest">Earliest</option>
