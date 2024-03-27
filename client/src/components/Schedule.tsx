@@ -2,43 +2,183 @@ import ScheduleSlot from "./ScheduleSlot";
 
 const Schedule = () => {
     return (
-            <table className="w-full h-full">
-                <thead>
-                    <th className="w-[20%]">Week</th>
-                    <th className="w-[20%]">14<br />Sun</th>
-                    <th className="w-[20%]">15<br /> Mon</th>
-                    <th className="w-[20%]">16<br />Tue</th>
-                    <th className="w-[20%]">17<br />Wed</th>
-                </thead>
-                <tbody>
-                    <tr className="border-t border-black h-12">
-                        <td className="w-[12%] ">09:00</td>
-                        <td className="w-[12%] h-full" rowSpan={2}>
-                            <ScheduleSlot height = {'h-3/4'}></ScheduleSlot>
-                        </td>
-                    </tr>
-                    <tr className="border-t border-black h-12">
-                        <td className="w-[12%]">10:00</td>
-                    </tr>
-                    <tr className="border-t border-black h-12">
-                        <td className="w-[12%]">11:00</td>
-                        <td className="w-[12%] h-full">
-                            <ScheduleSlot height="h-full"></ScheduleSlot>
-                        </td>
-                    </tr>
-                    <tr className="border-t border-black h-12">
-                        <td className="w-[12%]">12:00</td>
-                    </tr>
-                    <tr className="border-t border-black h-12">
-                        <td className="w-[12%]">13:00</td>
-                    </tr>
-                    <tr className="border-t border-black h-12"><td className="w-[12%]">14:00</td></tr>
-                    <tr className="border-t border-black h-12"><td className="w-[12%]">15:00</td></tr>
-                    <tr className="border-t border-black h-12"><td className="w-[12%]">16:00</td></tr>
-                    <tr className="border-t border-black h-12"><td className="w-[12%]">17:00</td></tr>
-                    <tr className="border-t border-black h-12"><td className="w-[12%]">18:00</td></tr>
-                </tbody>
-            </table>
+        <table className="w-full h-full">
+            <thead>
+                <tr>
+                    <th className="w-[10%] montserrat font-light text-[#B1B1B1]">Week</th>
+                    <th className="w-[22%] montserrat font-light text-[#B1B1B1]">14<br />Sun</th>
+                    <th className="w-[22%] montserrat font-light text-[#B1B1B1]">15<br /> Mon</th>
+                    <th className="w-[22%] montserrat font-bold text-[#5272E9]">16<br />Tue</th>
+                    <th className="w-[22%] montserrat font-light text-[#B1B1B1]">17<br />Wed</th>
+                </tr>
+                <tr>
+                    <th className="h-5"></th>
+                    <th className="h-5"></th>
+                    <th className="h-5"></th>
+                    <th className="h-5"></th>
+                    <th className="h-5"></th>
+                </tr>
+            </thead>
+            <tbody className="mt-4">
+                <tr className="h-12">
+                    <td className="w-[10%] montserrat font-light text-[#B1B1B1]">
+                        <p className="w-full text-center">09:00</p>
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}>
+                        <ScheduleSlot height={'h-3/4'}></ScheduleSlot>
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                </tr>
+                <tr className=" h-12">
+                    <td className="w-[10%] montserrat font-light text-[#B1B1B1] ">
+                        <p className="w-full text-center">10:00</p>
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                </tr>
+                <tr className="h-12">
+                    <td className="w-[10%] montserrat font-light text-[#B1B1B1]">
+                        <p className="w-full text-center">11:00</p>
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+                        <ScheduleSlot height="h-full"></ScheduleSlot>
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                </tr>
+                <tr className="h-12">
+                    <td className="w-[10%] montserrat font-light text-[#B1B1B1]">
+                        <p className="w-full text-center">12:00</p>
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                </tr>
+                <tr className="h-12">
+                    <td className="w-[10%] montserrat font-light text-[#B1B1B1]">
+                        <p className="w-full text-center">13:00</p>
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                </tr>
+                <tr className="montserrat font-light text-[#B1B1B1] h-12">
+                    <td className="w-[10%]"><p className="w-full text-center">14:00</p></td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                </tr>
+                <tr className="montserrat font-light text-[#B1B1B1] h-12">
+                    <td className="w-[10%]"><p className="w-full text-center">15:00</p></td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                </tr>
+                <tr className="montserrat font-light text-[#B1B1B1] h-12">
+                    <td className="w-[10%]"><p className="w-full text-center">16:00</p></td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                </tr>
+                <tr className="montserrat font-light text-[#B1B1B1] h-12">
+                    <td className="w-[10%]"><p className="w-full text-center">17:00</p></td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                </tr>
+                <tr className="montserrat font-light text-[#B1B1B1] h-12">
+                    <td className="w-[10%]"><p className="w-full text-center">18:00</p></td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                    <td className="w-[22%] h-full border-t border-[#a5a5a5]">
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     );
 }
 

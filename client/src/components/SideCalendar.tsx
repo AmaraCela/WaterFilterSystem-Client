@@ -2,10 +2,10 @@ import "../styles/sideCalendar.css";
 
 const SideCalendar = () => {
     return (
-        <div className="flex flex-col bg-white side-calendar px-2">
+        <div className="flex flex-col side-calendar px-2">
             <div className="flex justify-between p-2 mt-1">
                 <p className="text-[#5272E9]">&#10094;</p>
-                <p className="montserrat font-semibold">February</p>
+                <p className="montserrat font-semibold text-sm">February</p>
                 <p className="text-[#5272E9]">&#10095;</p>
             </div>
             <div className="flex justify-between">
