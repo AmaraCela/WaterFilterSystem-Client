@@ -6,10 +6,9 @@
 }
 
 .side {
-    background-image: url("../assets/Rectangle2.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-right-color: rgba(61, 90, 161, 0.5);
+    border-right-width: 1px;
 }
 
 .search-bar{

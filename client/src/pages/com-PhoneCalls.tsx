@@ -12,7 +12,7 @@ function PhoneCallsPage() {
         <div className="py-px pr-8 border-solid backdrop-blur-[50px] border-[3px] border-zinc-400 border-opacity-60 rounded-[30px] max-md:pr-5 max-md:max-w-full">
           <div className="flex gap-5 max-md:flex-col max-md:gap-0">
             <div className="flex flex-col w-[30%] max-md:ml-0 max-md:w-full">
-                  <DashboardSide/>
+                  <DashboardSide highlighted="none"/>
                   </div>
                   <div className="flex flex-col ml-5 w-[43%] max-md:ml-0 max-md:w-full">
                     <div className="flex flex-col self-stretch my-auto text-sm font-extrabold tracking-wide leading-7 text-center text-white max-md:mt-10 max-md:max-w-full">

@@ -1,8 +1,15 @@
-import React from "react";
+import DashboardLink from "./DashboarLink";
+const profileImg = require("../assets/profileImg.png");
+const calling = require("../assets/Calling.png");
+const calendar = require("../assets/Calendar.png");
+const chart = require("../assets/Chart.png");
+const danger = require("../assets/DangerTriangle.png");
+const paper = require("../assets/Paper.png");
+const bookmark = require("../assets/Bookmark.png");
 
-const DashboardSide = () => {
+const DashboardSide = ({highlighted}: {highlighted: string}) => {
     return (
-        <div className="side w-1/3 h-full flex flex-col justify-between items-center py-8 rounded-3xl">
+        <div className="side w-1/4 h-full flex flex-col justify-between items-center py-8 rounded-l-3xl">
             <div className="w-full flex flex-col justify-center items-center">
                 <img src={profileImg} alt="Profile" className="w-28" />
                 <p className="main-font font-bold mt-2">Ediola Kola</p>

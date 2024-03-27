@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.calendar-entry {
+    flex: 0 0 14%;
+}
+
+.side-calendar {
+    border-width: 1px;
+    border-radius: 8px;
+    border-color: #A6A6A6;
+}
+
+.montserrat {
+    font-family: "Montserrat", sans-serif;
+}
+
+.today{
+    border-radius: 5px;
+}
