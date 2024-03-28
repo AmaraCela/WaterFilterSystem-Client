@@ -10,6 +10,7 @@ import PageNumber from '../components/pageNo';
 import { MyComponent } from '../components/Calendar';
 import Schedules from '../pages/Schedules';
 import Statistics from '../pages/Statistics';
+import RedList from '../pages/RedList';
 
 const AllRoutes = () => {
     return (
@@ -20,6 +21,7 @@ const AllRoutes = () => {
                 <Route path='/calls' element={<PhoneCallsPage/>}/>
                 <Route path='/schedules' element={<Schedules/>}/>
                 <Route path='/statistics' element={<Statistics/>}/>
+                <Route path='/redlist' element={<RedList/>}/>
                 <Route path='/1' element={<AddReferenceForm/>}/>
                 <Route path='/2' element={<HistoryUpload/>}/>
                 <Route path='/4' element={<PageNumber number={0}/>}/>
