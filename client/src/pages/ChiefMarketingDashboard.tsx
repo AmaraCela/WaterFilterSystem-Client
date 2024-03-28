@@ -1,9 +1,6 @@
 import "../styles/chiefMarketingDashboard.css";
 import DashboardSide from "../components/DashboardSide";
 import TopIcons from "../components/TopIcons";
-const bell = require("../assets/bell.png");
-const message = require("../assets/message.png");
-const exit = require("../assets/exit.png");
 
 const ChiefMarketingDashboard = () => {
     return (
