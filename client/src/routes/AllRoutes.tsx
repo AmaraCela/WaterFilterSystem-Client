@@ -11,11 +11,13 @@ import BuyTemplate from '../components/buyTemplate';
 import PhoneCall from '../components/pa-phoneCall';
 import DashboardSide2 from '../components/DashboardSide_PhoneAgent';
 import PhoneAgentTemplate from '../pages/PhoneAgentDashboard';
+import DashboardSideSalesAgent from '../components/DashboardSide_SalesAgent';
+import SalesAgentTemplate from '../pages/SalesAgentMeetingSchedule';
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< PhoneAgentTemplate/>}/>
+                <Route path='/' element={< SalesAgentTemplate/>}/>
             </Routes>
             <Routes>
                 {/* { <Route path='/' element={</>}></Route> } */}
