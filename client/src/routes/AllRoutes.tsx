@@ -5,8 +5,9 @@ import LoginPage from '../pages/Login';
 import AddReferenceForm from '../components/com-formToAddReference';
 import HistoryUpload from '../components/com-historyUpload';
 import PhoneCallsPage from '../pages/com-PhoneCalls';
-import DashboardSide from '../components/DashboardSide';
-
+import DashboardSide from '../components/DashboardSide'; 
+import RefTemplate from '../components/referenceTemplate'; 
+import BuyTemplate from '../components/buyTemplate';
 const AllRoutes = () => {
     return (
         <Router>
@@ -14,10 +15,7 @@ const AllRoutes = () => {
                 {/* <Route path='/' element={<ChiefMarketingDashboard />}/> */}
             </Routes>
             <Routes>
-                <Route path='/' element={<DashboardSide />}/>
-            </Routes>
-            <Routes>
-                {/* <Route path='/' element={<LoginWidget />}></Route> */}
+                { <Route path='/' element={<BuyTemplate/>}></Route> }
             </Routes>
         </Router>
     )
