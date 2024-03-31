@@ -11,6 +11,9 @@ import { MyComponent } from '../components/Calendar';
 import Schedules from '../pages/Schedules';
 import Statistics from '../pages/Statistics';
 import RedList from '../pages/RedList';
+import BuyTemplate from '../components/buyTemplate';
+import PhoneCall from '../components/pa-phoneCall';
+import RefTemplate from '../components/referenceTemplate';
 
 const AllRoutes = () => {
     return (
@@ -22,10 +25,13 @@ const AllRoutes = () => {
                 <Route path='/schedules' element={<Schedules/>}/>
                 <Route path='/statistics' element={<Statistics/>}/>
                 <Route path='/redlist' element={<RedList />}/>
+                <Route path='/phoneCalls' element={<PhoneCallsPage />}/>
                 <Route path='/1' element={<AddReferenceForm/>}/>
                 <Route path='/2' element={<HistoryUpload/>}/>
                 <Route path='/4' element={<PageNumber number={0}/>}/>
                 <Route path='/5' element={<MyComponent/>}/>
+                <Route path='/6' element={<BuyTemplate/>}/>
+                <Route path='/7' element={<RefTemplate/>}/>
                 <Route path='/3' element={<SortDropdown onSelect={function (value: string): void {
                     throw new Error('Function not implemented.');
                 } }/>}/>

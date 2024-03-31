@@ -11,65 +11,54 @@ import { getCalls } from "../store/statistics/statisticsThunks";
 Chart.register(CategoryScale);
 
 const Statistics = () => {
+  interface DataItem {
+    id: number;
+    month: string,
+    calls: number;
+    completed: number;
+    cancelled: number;
+    nonsuccessful: number;
+  }
+
   const dispatch = useAppDispatch();
+  const [currentYear, setCurrrentYear] = useState(new Date().getFullYear());
   const calls = useSelector((state: RootState) => state.call.calls);
+  const [Data, setData] = useState<DataItem[]>([]);
+  const months = ["Jan", "Feb", "Mar","Apr", "May", "Jun"];
+  const [calculated, setCalculated] = useState(false);
 
   useEffect(() => {
-      dispatch(getCalls());
+    dispatch(getCalls());
+    let data: DataItem[] = [];
+    for (let i = 1; i <= 6; i++) {
+      data.push({
+        id: 1,
+        month: months[i - 1],
+        calls: 0,
+        completed: 0,
+        cancelled: 0,
+        nonsuccessful: 0,
+      });
+    }
+    setData(data);
   }, []);
 
-  console.log(calls);
-  const Data = [
-    {
-      id: 1,
-      month: "Jan",
-      calls: 380,
-      completed: 300,
-      cancelled: 50,
-      nonsuccessful: 30
-    },
-    {
-      id: 2,
-      month: "Feb",
-      calls: 220,
-      completed: 150,
-      cancelled: 50,
-      nonsuccessful: 20
-    },
-    {
-      id: 3,
-      month: "Mar",
-      calls: 230,
-      completed: 120,
-      cancelled: 50,
-      nonsuccessful: 60
-    },
-    {
-      id: 4,
-      month: "Apr",
-      calls: 370,
-      completed: 120,
-      cancelled: 50,
-      nonsuccessful: 60
-    },
-    {
-      id: 5,
-      month: "May",
-      calls: 210,
-      completed: 120,
-      cancelled: 50,
-      nonsuccessful: 60
-    },
-    {
-      id: 6,
-      month: "Jun",
-      calls: 410,
-      completed: 120,
-      cancelled: 50,
-      nonsuccessful: 60
-    }
 
-  ];
+  useEffect(() => {
+    if (calls && !calculated) {
+      setCalculated(true);
+      setData(prevData => {
+        const newData = [...prevData];
+        for (let call of calls) {
+          const month = new Date(call.scheduledTime).getMonth();
+          newData[month].calls += 1;
+        }
+        return newData;
+      });
+    }
+  }, [calls]);
+  
+
 
   const [barChartData, setBarChartData] = useState({
     labels: Data.map((data) => data.month),
@@ -88,8 +77,26 @@ const Statistics = () => {
     ]
   });
 
-  const [totalCalls, setTotalCalls] = useState(1000);
+  useEffect(() => {
+    const chartData: any = {
+      labels: Data.map((data) => data.month),
+      datasets: [
+        {
+          label: "Number of calls",
+          data: Data.map((data) => data.calls),
+          backgroundColor: "#0066FF",
+          borderColor: "black",
+          borderWidth: 1,
+          barThickness: 10,
+          borderRadius: 5
+        }
+      ]
+    };
+    setBarChartData(chartData);
+  }, [Data]);
   
+
+
   const [donughtData, setDonughtData] = useState({
     labels: ['Completed', 'Uncompleted'],
     datasets: [
@@ -116,7 +123,7 @@ const Statistics = () => {
           <p className="main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-8">Statistics</p>
           <div className="w-full flex justify-between px-6 mt-4">
             <div className="bg-[#fefefe4a] h-full p-6 rounded-[51px]">
-              <p className="text-[#0066FF] main-font font-bold">call volumes during 2023</p>
+              <p className="text-[#0066FF] main-font font-bold">call volumes during {currentYear}</p>
               <Bar className="mt-2"
                 data={barChartData}
                 options={{
