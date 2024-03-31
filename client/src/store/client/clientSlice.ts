@@ -1,16 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { redListClients } from "./clientThunks";
-
-interface Client {
-    id: number;
-    name?: string;
-    surname?: string;
-    phoneNo: string;
-    profession?: string;
-    address?: string;
-    status: "IN_WAITLIST" | "IN_REDLIST";
-    nextContactDate?: string;
-}
+import { Client } from "../../types/types";
 
 interface ClientState {
     clients: Client []

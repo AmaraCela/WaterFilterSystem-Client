@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import  clientReducer from "./client/clientSlice";
+import statisticsReducer from "./statistics/statisticsSlice";
 
 const persistConfig = {
     key: 'root',
@@ -11,6 +12,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     client: clientReducer,
+    call: statisticsReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

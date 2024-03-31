@@ -2,14 +2,23 @@ import DashboardSide from "../components/DashboardSide";
 import TopIcons from "../components/TopIcons";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
-import { Bar } from "react-chartjs-2";
-import { useState } from "react";
-import { Doughnut } from "react-chartjs-2";
+import { Bar, Doughnut } from "react-chartjs-2";
+import { useEffect, useState } from "react";
+import { RootState, useAppDispatch } from "../store/store";
+import { useSelector } from "react-redux";
+import { getCalls } from "../store/statistics/statisticsThunks";
 
 Chart.register(CategoryScale);
 
-
 const Statistics = () => {
+  const dispatch = useAppDispatch();
+  const calls = useSelector((state: RootState) => state.call.calls);
+
+  useEffect(() => {
+      dispatch(getCalls());
+  }, []);
+
+  console.log(calls);
   const Data = [
     {
       id: 1,
