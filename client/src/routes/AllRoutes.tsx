@@ -21,7 +21,7 @@ const AllRoutes = () => {
                 <Route path='/calls' element={<PhoneCallsPage/>}/>
                 <Route path='/schedules' element={<Schedules/>}/>
                 <Route path='/statistics' element={<Statistics/>}/>
-                <Route path='/redlist' element={<RedList/>}/>
+                <Route path='/redlist' element={<RedList />}/>
                 <Route path='/1' element={<AddReferenceForm/>}/>
                 <Route path='/2' element={<HistoryUpload/>}/>
                 <Route path='/4' element={<PageNumber number={0}/>}/>
