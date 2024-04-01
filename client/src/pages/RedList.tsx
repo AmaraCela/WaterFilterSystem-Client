@@ -34,7 +34,7 @@ const RedList = () => {
                             {redlistClients.map((client) => (
                                 <tr className="h-7" key={client.id}>
                                     <td className="montserrat text-sm w-1/3 text-[#2F65DD]">{client.name} {client.surname}</td>
-                                    <td className="montserrat text-sm w-1/3">{client.nextContactDate && `${new Date(client.nextContactDate).getMonth()}/${new Date(client.nextContactDate).getMonth()}/${new Date(client.nextContactDate).getFullYear()}`}</td>
+                                    <td className="montserrat text-sm w-1/3">{client.nextContactDate && `${new Date(client.nextContactDate).getDate()}/${new Date(client.nextContactDate).getMonth()+1}/${new Date(client.nextContactDate).getFullYear()}`}</td>
                                     <td className="montserrat text-sm w-1/3"></td>
                                 </tr>
                             ))}

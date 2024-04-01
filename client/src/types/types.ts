@@ -15,4 +15,5 @@ export interface Call {
     phoneOperator: number;
     scheduledTime: Date;
     outcomeComment: string;
+    completed: boolean;
 }

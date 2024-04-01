@@ -18,7 +18,8 @@ export const createAPI =
                 headers['Authorization'] = `Bearer ${options.token}`;
             }
 
-            return fetch(`http://localhost:5000/api/${endpoint}`, {
+            const apiUrl = process.env.REACT_APP_API_ENDPOINT;
+            return fetch(`${apiUrl}/${endpoint}`, {
                 method: options.method ?? 'GET',
                 headers,
                 body: body ? JSON.stringify(body) : undefined,
