@@ -17,9 +17,15 @@ export const redListClients = createAsyncThunk(
 
 export const allClients = createAsyncThunk(
     'allClients',
-    async (_, { rejectWithValue }) => {
+    async (searchValue : string | null, { rejectWithValue }) => {
         try {
-            const response = await createAPI("clients", {})(null);
+            let response;
+            if(searchValue) {
+                response = await createAPI(`clients?search=${searchValue}`, {})(null);
+            }
+            else {
+                response = await createAPI("clients", {})(null);
+            }
             const data = await response.json();
             return response.ok ? data : rejectWithValue("Error occured")
         }
