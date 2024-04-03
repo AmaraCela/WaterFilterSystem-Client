@@ -17,10 +17,10 @@ const DashboardSide = ({highlighted}: {highlighted: string}) => {
             </div>
 
             <DashboardLink to={""} src={calling} text={"Phone Calls"} />
-            <DashboardLink to={""} src={calendar} text={"Schedules"} />
-            <DashboardLink to={""} src={chart} text={"Statistics"} />
-            <DashboardLink to={""} src={danger} text={"Red List"} />
-            <DashboardLink to={""} src={paper} text={"Buyers and References"} />
+            <DashboardLink to={"/schedules"} src={calendar} text={"Schedules"} />
+            <DashboardLink to={"/statistics"} src={chart} text={"Statistics"} />
+            <DashboardLink to={"/redlist"} src={danger} text={"Red List"} />
+            <DashboardLink to={"/buyersReferences"} src={paper} text={"Buyers and References"} />
             <DashboardLink to={""} src={bookmark} text={"Collections"} />
         </div>
     );
