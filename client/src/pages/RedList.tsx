@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 const RedList = () => {
     const dispatch = useAppDispatch();
-    const redlistClients = useSelector((state: RootState) => state.client.clients);
+    const redlistClients = useSelector((state: RootState) => state.client.redlistClients);
 
     useEffect(() => {
         dispatch(redListClients());

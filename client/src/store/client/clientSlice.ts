@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { redListClients } from "./clientThunks";
+import { allClients, redListClients } from "./clientThunks";
 import { Client } from "../../types/types";
 
 interface ClientState {
-    clients: Client []
+    clients: Client [],
+    redlistClients: Client [],
 }
 
 const initialState: ClientState = {
     clients: [],
+    redlistClients: [],
 }
 
 
@@ -19,6 +21,8 @@ const clientSlice = createSlice({
     },
     extraReducers: builder => {
         builder.addCase(redListClients.fulfilled, (state: ClientState, action: any) => {
+            state.redlistClients = action.payload;
+        }).addCase(allClients.fulfilled, (state: ClientState, action: any) => {
             state.clients = action.payload;
         })
     }

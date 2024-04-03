@@ -10,7 +10,21 @@ export const redListClients = createAsyncThunk(
             return response.ok ? data : rejectWithValue("Error occured");
         }
         catch (error) {
-            rejectWithValue(error);
+            return rejectWithValue(error);
+        }
+    }
+)
+
+export const allClients = createAsyncThunk(
+    'allClients',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await createAPI("clients", {})(null);
+            const data = await response.json();
+            return response.ok ? data : rejectWithValue("Error occured")
+        }
+        catch (error) {
+            return rejectWithValue(error);
         }
     }
 )

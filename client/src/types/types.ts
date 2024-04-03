@@ -6,6 +6,7 @@ export interface Client {
     profession?: string;
     address?: string;
     status: "IN_WAITLIST" | "IN_REDLIST";
+    hasMadePurchase: boolean
     nextContactDate?: string;
 }
 
