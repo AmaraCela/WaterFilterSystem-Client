@@ -8,8 +8,8 @@ const Client = ({ type, name, surname, id }: { type: "Buyer" | "Reference" , nam
     }
 
     return ( 
-        <div className="flex flex-col items-center">
-            <img src={type === "Buyer" ? buyer : reference} alt="client" />
+        <div className="flex flex-col items-center mx-2">
+            <img src={type === "Buyer" ? buyer : reference} alt="client" className="size-16" />
             <p className={`${colors[type]} rubik`}>{name} {surname}</p>
             <p className={`${colors[type]} rubik`}>ID: {id}</p>
         </div>
