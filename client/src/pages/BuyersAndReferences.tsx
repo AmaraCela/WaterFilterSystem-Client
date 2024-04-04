@@ -1,11 +1,12 @@
 import { useSelector } from "react-redux";
-import Client from "../components/Client";
+import ClientDisplay from "../components/Client";
 import DashboardSide from "../components/DashboardSide";
 import TopIcons from "../components/TopIcons";
 import { RootState, useAppDispatch } from "../store/store";
 import { Fragment, useEffect, useState } from "react";
 import { allClients } from "../store/client/clientThunks";
 import BuyerInfo from "../components/BuyerInfo";
+import { Client } from "../types/types";
 
 const BuyersAndReferences = () => {
 
@@ -13,7 +14,7 @@ const BuyersAndReferences = () => {
     const clients = useSelector((state: RootState) => state.client.clients);
     const [keyword, setKeyword] = useState("");
     const [divVisibility, setDivVisibility] = useState(false);
-    const [client, setClient] = useState();
+    const [client, setClient] = useState<Client | null>(null);
 
     useEffect(() => {
         dispatch(allClients(null));
@@ -36,16 +37,18 @@ const BuyersAndReferences = () => {
                         </div>
                         <div className="overflow-x-hidden overflow-y-scroll flex w-4/5 h-3/5 mt-4 ml-12 bg-[#ffffff80] border border-black rounded-[10px] flex-wrap p-4">
                             {clients && clients.length > 0 && clients.map((client) => (
-                                client.hasMadePurchase ? <Client key={client.id} type="Buyer" name={client.name ?? ""} surname={client.surname ?? ""} id={client.id} /> : <Client key={client.id} type="Reference" name={client.name ?? ""} surname={client.surname ?? ""} id={client.id} />
+                                client.hasMadePurchase ? <ClientDisplay setClient={setClient} setDivVisibility={setDivVisibility} key={client.id} type="Buyer" client={client} /> : <ClientDisplay setClient={setClient} setDivVisibility={setDivVisibility} key={client.id} type="Reference" client={client} />
                             ))}
                         </div>
                     </div>
                 </div>
             </div>
             {divVisibility && <div className="absolute w-full h-screen top-0 flex items-center justify-center bg-[#fdfcfc7c]" >
-               <div className="h-1/2 w-1/3">
-                <BuyerInfo client={clients[0]} setDivVisibility={setDivVisibility}/>
-                </div>
+                {client &&
+                    <div className="h-1/2 w-2/5">
+                        <BuyerInfo client={client} setDivVisibility={setDivVisibility} />
+                    </div>
+                }
             </div>}
         </>
     );

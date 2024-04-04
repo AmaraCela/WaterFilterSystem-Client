@@ -1,7 +1,7 @@
 import { Client } from "../types/types";
 import "../styles/buyerInfo.css";
 const calendar = require("../assets/Calendarr.png");
-const history  = require("../assets/Ticket_alt.png");
+const history = require("../assets/Ticket_alt.png");
 const references = require("../assets/3 User.png");
 const contract = require("../assets/Download.png");
 const close = require("../assets/Close Icon.png");
@@ -50,12 +50,12 @@ const BuyerInfo = ({ client, setDivVisibility }: { client: Client, setDivVisibil
                 </div>
 
             </div>
-            <div className="w-max flex mt-8">
+            <button className="w-max flex mt-8" onClick={() => setDivVisibility(false)}>
                 <img src={close} alt="" />
-                <button className="rubik text-[#172B85] font-bold ml-2" onClick={() => setDivVisibility(false)}>
+                <p className="rubik text-[#172B85] font-bold ml-2">
                     Close
-                </button>
-            </div>
+                </p>
+            </button>
         </div>
     );
 }
