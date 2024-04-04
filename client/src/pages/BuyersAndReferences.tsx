@@ -7,6 +7,7 @@ import { Fragment, useEffect, useState } from "react";
 import { allClients } from "../store/client/clientThunks";
 import BuyerInfo from "../components/BuyerInfo";
 import { Client } from "../types/types";
+import ReferenceInfo from "../components/ReferenceInfo";
 
 const BuyersAndReferences = () => {
 
@@ -39,6 +40,9 @@ const BuyersAndReferences = () => {
                             {clients && clients.length > 0 && clients.map((client) => (
                                 client.hasMadePurchase ? <ClientDisplay setClient={setClient} setDivVisibility={setDivVisibility} key={client.id} type="Buyer" client={client} /> : <ClientDisplay setClient={setClient} setDivVisibility={setDivVisibility} key={client.id} type="Reference" client={client} />
                             ))}
+                            {clients.length === 0 && 
+                            <p>There are no clients or references to display.</p>
+                            }
                         </div>
                     </div>
                 </div>
@@ -46,7 +50,7 @@ const BuyersAndReferences = () => {
             {divVisibility && <div className="absolute w-full h-screen top-0 flex items-center justify-center bg-[#fdfcfcd5]" >
                 {client &&
                     <div className="h-1/2 w-[36%]">
-                        <BuyerInfo client={client} setDivVisibility={setDivVisibility} />
+                        {client.hasMadePurchase ? <BuyerInfo client={client} setDivVisibility={setDivVisibility} /> : <ReferenceInfo client={client} setDivVisibility={setDivVisibility} />}
                     </div>
                 }
             </div>}
