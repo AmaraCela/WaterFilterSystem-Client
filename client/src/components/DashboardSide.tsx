@@ -9,7 +9,7 @@ const bookmark = require("../assets/Bookmark.png");
 
 const DashboardSide = ({highlighted}: {highlighted: string}) => {
     return (
-        <div className="side w-1/4 h-full flex flex-col justify-between items-center py-8 rounded-l-3xl">
+        <div className="side w-1/4 flex flex-col justify-between items-center py-8 rounded-l-3xl">
             <div className="w-full flex flex-col justify-center items-center">
                 <img src={profileImg} alt="Profile" className="w-28" />
                 <p className="main-font font-bold mt-2">Ediola Kola</p>

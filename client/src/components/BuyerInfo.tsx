@@ -34,7 +34,7 @@ const BuyerInfo = ({ client, setDivVisibility }: { client: Client, setDivVisibil
                     </div>
                 </div>
 
-                <div className="flex justify-between w-full my-2">
+                <div className="flex justify-between w-full my-4">
                     <div className="flex">
                         <img src={history} alt="" />
                         <p className="rubik font-bold text-[#60687B]">History</p>
@@ -50,7 +50,7 @@ const BuyerInfo = ({ client, setDivVisibility }: { client: Client, setDivVisibil
                 </div>
 
             </div>
-            <button className="w-max flex mt-8" onClick={() => setDivVisibility(false)}>
+            <button className="w-max flex my-8 " onClick={() => setDivVisibility(false)}>
                 <img src={close} alt="" />
                 <p className="rubik text-[#172B85] font-bold ml-2">
                     Close

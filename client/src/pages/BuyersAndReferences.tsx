@@ -43,9 +43,9 @@ const BuyersAndReferences = () => {
                     </div>
                 </div>
             </div>
-            {divVisibility && <div className="absolute w-full h-screen top-0 flex items-center justify-center bg-[#fdfcfc7c]" >
+            {divVisibility && <div className="absolute w-full h-screen top-0 flex items-center justify-center bg-[#fdfcfcd5]" >
                 {client &&
-                    <div className="h-1/2 w-2/5">
+                    <div className="h-1/2 w-[36%]">
                         <BuyerInfo client={client} setDivVisibility={setDivVisibility} />
                     </div>
                 }
