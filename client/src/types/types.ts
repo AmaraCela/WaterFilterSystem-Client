@@ -8,6 +8,7 @@ export interface Client {
     status: "IN_WAITLIST" | "IN_REDLIST";
     hasMadePurchase: boolean
     nextContactDate?: string;
+    createdAt: string;
 }
 
 export interface Call {
