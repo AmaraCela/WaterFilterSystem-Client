@@ -3,7 +3,7 @@ import ClientDisplay from "../components/Client";
 import DashboardSide from "../components/DashboardSide";
 import TopIcons from "../components/TopIcons";
 import { RootState, useAppDispatch } from "../store/store";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { allClients } from "../store/client/clientThunks";
 import BuyerInfo from "../components/BuyerInfo";
 import { Client } from "../types/types";
@@ -25,7 +25,7 @@ const BuyersAndReferences = () => {
         <>
             <div className="flex justify-center items-center h-fit">
                 <div className="dashboard w-3/4 h-max rounded-3xl flex flex-row">
-                    <DashboardSide highlighted={"none"} />
+                    <DashboardSide highlighted={"Buyers"} />
                     <div className="w-3/4">
                         <TopIcons />
                         <p className="main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-8">Buyers and References</p>

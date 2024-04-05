@@ -16,7 +16,7 @@ const RedList = () => {
     return (
         <div className="flex justify-center items-center h-screen">
             <div className="dashboard w-3/4 h-max rounded-3xl flex flex-row">
-                <DashboardSide highlighted={"none"} />
+                <DashboardSide highlighted={"Red List"} />
                 <div className="w-3/4">
                     <TopIcons />
                     <p className="main-font text-[#A13D3D] font-bold text-2xl ml-12 mt-8">Red List</p>

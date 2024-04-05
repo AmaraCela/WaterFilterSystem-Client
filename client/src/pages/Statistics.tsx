@@ -117,7 +117,7 @@ const Statistics = () => {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="dashboard w-3/4 h-max rounded-3xl flex flex-row">
-        <DashboardSide highlighted={"none"} />
+        <DashboardSide highlighted={"Statistics"} />
         <div className="w-3/4">
           <TopIcons />
           <p className="main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-8">Statistics</p>
