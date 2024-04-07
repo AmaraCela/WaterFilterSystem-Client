@@ -33,8 +33,10 @@ const LoginWidget = () => {
       else {
         return response.json().then(data => {
           const token = data.token;
-          const name = data.name;
-          console.log("Welcome " + name);
+          const id = data.user_id;
+          
+          console.log("Logged in ", id);
+          localStorage.setItem("session_user_id", id);
         });
       }
     });

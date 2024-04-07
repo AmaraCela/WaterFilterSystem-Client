@@ -78,8 +78,94 @@ const StyledComponent = styled.div`
   }
 `;
 
-function saveScheduleToServer(schedule: any) {
-    console.log('Saving schedule to server...', schedule);
+function retrieveScheduleFromServer() {
+    const apiUrl = process.env.REACT_APP_API_ENDPOINT;
+    const user_id = localStorage.getItem("session_user_id");
+
+    fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to retrieve schedule", data.message);
+            });
+        }
+        else {
+            return response.json().then(data => {
+                console.log("Retrieved schedule", data);
+            });
+        }
+    });
+}
+
+function saveScheduleToServer(timeslots: any, selectedDay: string) {
+    let dayIdx;
+    switch (selectedDay) {
+        case 'Sunday':
+            dayIdx = 0;
+            break;
+        case 'Monday':
+            dayIdx = 1;
+            break;
+        case 'Tuesday':
+            dayIdx = 2;
+            break;
+        case 'Wednesday':
+            dayIdx = 3;
+            break;
+        case 'Thursday':
+            dayIdx = 4;
+            break;
+        case 'Friday':
+            dayIdx = 5;
+            break;
+        default:
+            dayIdx = 0;
+            break;
+    }
+
+
+    const day = new Date();
+    day.setDate(day.getDate() + (dayIdx + 7 - day.getDay()) % 7); 
+    
+    const apiUrl = process.env.REACT_APP_API_ENDPOINT;
+    const user_id = localStorage.getItem("session_user_id");
+    if (user_id === null) {
+        console.log("Not logged in!");
+        return;
+    }
+
+    console.log("User ID: ", user_id);
+    for (let i = 0; i < timeslots.length; i++) {
+        const timeslot = {
+            day: day,
+            startTime: timeslots[i].start,
+            endTime: timeslots[i].end,
+        };
+
+        fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(timeslot),
+        }).then((response) => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    console.log("Failed to save schedule", data.message);
+                });
+            }
+            else {
+                return response.json().then(data => {
+                    console.log("Saved schedule", data);
+                });
+            }
+        });
+    }
+
 }
 
 const AgentScheduleComponent = () => {
@@ -305,7 +391,7 @@ const AgentScheduleComponent = () => {
             <div className="day-container">
                 {renderTimeslots()}
             </div>
-            <button onClick={() => saveScheduleToServer(schedule)}>Save</button>
+            <button onClick={() => saveScheduleToServer(schedule[selectedDay], selectedDay)}>Save</button>
         </StyledComponent>
     );
 };
