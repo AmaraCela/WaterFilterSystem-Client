@@ -20,7 +20,7 @@ const AllRoutes = () => {
                 <Route path='/' element={< SalesAgentTemplate/>}/>
             </Routes>
             <Routes>
-                {/* { <Route path='/' element={</>}></Route> } */}
+                <Route path='/login' element={<LoginWidget />}></Route>
             </Routes>
         </Router>
     )
