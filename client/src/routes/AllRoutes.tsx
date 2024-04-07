@@ -23,7 +23,7 @@ const AllRoutes = () => {
                 <Route path='/' element={< ChiefOperationsDashboard/>}/>
             </Routes>
             <Routes>
-                {/* { <Route path='/' element={</>}></Route> } */}
+                <Route path='/login' element={<LoginWidget />}></Route>
             </Routes>
         </Router>
     )
