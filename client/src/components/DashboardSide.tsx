@@ -1,3 +1,4 @@
+import React from "react";
 import DashboardLink from "./DashboarLink";
 const profileImg = require("../assets/profileImg.png");
 const calling = require("../assets/Calling.png");
@@ -16,12 +17,12 @@ const DashboardSide = () => {
                 <p className="main-font">Chief of Marketing</p>
             </div>
 
-            <DashboardLink to={""} src={calling} text={"Phone Calls"} />
-            <DashboardLink to={""} src={calendar} text={"Schedules"} />
-            <DashboardLink to={""} src={chart} text={"Statistics"} />
-            <DashboardLink to={""} src={danger} text={"Red List"} />
-            <DashboardLink to={""} src={paper} text={"Buyers and references"} />
-            <DashboardLink to={""} src={bookmark} text={"Collections"} />
+            <DashboardLink to={""} src={calling} text={"Phone Calls"} bold={false} />
+            <DashboardLink to={""} src={calendar} text={"Schedules"} bold={false} />
+            <DashboardLink to={""} src={chart} text={"Statistics"} bold={false} />
+            <DashboardLink to={""} src={danger} text={"Red List"} bold={false} />
+            <DashboardLink to={""} src={paper} text={"Buyers and references"} bold={false} />
+            <DashboardLink to={""} src={bookmark} text={"Collections"} bold={false} />
         </div>
     );
 }

@@ -13,11 +13,14 @@ import DashboardSide2 from '../components/DashboardSide_PhoneAgent';
 import PhoneAgentTemplate from '../pages/PhoneAgentDashboard';
 import DashboardSideSalesAgent from '../components/DashboardSide_SalesAgent';
 import SalesAgentTemplate from '../pages/SalesAgentMeetingSchedule';
+import DashboardSide_ChiefOfOperations from '../components/DashboardSide_ChiefOfOperations';
+import DashboardSidePhoneAgent from '../components/DashboardSide_PhoneAgent';
+import ChiefOperationsDashboard from '../pages/ChiefOfOperationsDashboard';
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< SalesAgentTemplate/>}/>
+                <Route path='/' element={< ChiefOperationsDashboard/>}/>
             </Routes>
             <Routes>
                 {/* { <Route path='/' element={</>}></Route> } */}

@@ -16,13 +16,14 @@ const DashboardSidePhoneAgent = () => {
                 <p className="main-font">Phone Agent</p>
             </div>
 
-            <DashboardLink to={""} src={calling} text={"Phone Calls"} />
-            <DashboardLink to={""} src={calendar} text={"Outcomes Overview"} />
-            <DashboardLink to={""} src={calendar} text={"schedule new calls"} />
-            <DashboardLink to={""} src={calendar} text={"Reserved Phone call"} />
-            <DashboardLink to={""} src={danger} text={"Red List"} />
-            <DashboardLink to={""} src={paper} text={"View Sales Agent Agenda "} />
-            <DashboardLink to={""} src={bookmark} text={"Set Up meetings"} />
+        <DashboardLink to={""} src={calling} text={"Phone Calls"} bold={false} />
+        <DashboardLink to={""} src={calendar} text={"Outcomes Overview"} bold={false} />
+        <DashboardLink to={""} src={calendar} text={"schedule new calls"} bold={false} />
+        <DashboardLink to={""} src={calendar} text={"Reserved Phone call"} bold={false} />
+        <DashboardLink to={""} src={danger} text={"Red List"} bold={false} />
+        <DashboardLink to={""} src={paper} text={"View Sales Agent Agenda "} bold={false} />
+        <DashboardLink to={""} src={bookmark} text={"Set Up meetings"} bold={false} />
+
         </div>
     );
 }
