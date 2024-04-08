@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { getLoggedUserId, getLoggedInUser } from '../loginUtils/loginUtils';
 
 interface Timeslot {
     start: string;
@@ -80,9 +81,9 @@ const StyledComponent = styled.div`
 
 function retrieveScheduleFromServer() {
     const apiUrl = process.env.REACT_APP_API_ENDPOINT;
-    const user_id = localStorage.getItem("session_user_id");
+    const user_id = getLoggedUserId();
 
-    fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
+    return fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -91,46 +92,26 @@ function retrieveScheduleFromServer() {
         if (!response.ok) {
             return response.json().then(data => {
                 console.log("Failed to retrieve schedule", data.message);
+                return null;
             });
         }
         else {
             return response.json().then(data => {
-                console.log("Retrieved schedule", data);
+                // console.log("Retrieved schedule", data);
+                return data;
             });
         }
+    }).catch((error) => {
+        console.log("Failed to retrieve schedule", error);
+        return null;
     });
 }
 
-function saveScheduleToServer(timeslots: any, selectedDay: string) {
-    let dayIdx;
-    switch (selectedDay) {
-        case 'Sunday':
-            dayIdx = 0;
-            break;
-        case 'Monday':
-            dayIdx = 1;
-            break;
-        case 'Tuesday':
-            dayIdx = 2;
-            break;
-        case 'Wednesday':
-            dayIdx = 3;
-            break;
-        case 'Thursday':
-            dayIdx = 4;
-            break;
-        case 'Friday':
-            dayIdx = 5;
-            break;
-        default:
-            dayIdx = 0;
-            break;
-    }
-
-
+function saveScheduleToServer(timeslots: any, selectedDay: number) {
     const day = new Date();
-    day.setDate(day.getDate() + (dayIdx + 7 - day.getDay()) % 7); 
-    
+    day.setDate(day.getDate() + (selectedDay + 7 - day.getDay()) % 7); 
+    day.setHours(0, 0, 0, 0);
+
     const apiUrl = process.env.REACT_APP_API_ENDPOINT;
     const user_id = localStorage.getItem("session_user_id");
     if (user_id === null) {
@@ -138,7 +119,6 @@ function saveScheduleToServer(timeslots: any, selectedDay: string) {
         return;
     }
 
-    console.log("User ID: ", user_id);
     for (let i = 0; i < timeslots.length; i++) {
         const timeslot = {
             day: day,
@@ -165,18 +145,55 @@ function saveScheduleToServer(timeslots: any, selectedDay: string) {
             }
         });
     }
-
 }
 
 const AgentScheduleComponent = () => {
     const [schedule, setSchedule] = useState<Schedule>({
-        Monday: [],
-        Tuesday: [],
-        Wednesday: [],
-        Thursday: [],
-        Friday: [],
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
     });
-    const [selectedDay, setSelectedDay] = useState<string>('Monday');
+    const [selectedDay, setSelectedDay] = useState<number>(1);
+
+    useEffect(() => {
+        retrieveScheduleFromServer().then((schedules) => {
+            if (schedules === null) {
+                return;
+            }
+
+            schedules.sort((a: any, b: any) => {
+                if (a.startTime < b.startTime) {
+                    return -1;
+                }
+                if (a.startTime > b.startTime) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            let newSchedule = schedule;
+            for (let i = 0; i < schedules.length; i++) {
+                const day = new Date(schedules[i].day);
+                let dayIdx = day.getDay();
+
+                const timeslot = {
+                    start: schedules[i].startTime,
+                    end: schedules[i].endTime,
+                };
+
+                newSchedule = {
+                    ...newSchedule,
+                    [dayIdx]: [...newSchedule[dayIdx], timeslot],
+                };
+
+                // console.log("Day: ", dayIdx, "Timeslot: ", timeslot);
+            }
+
+            setSchedule(newSchedule);
+        });
+    }, []);
 
     const getValidStartTimes = (index: number, start: string): string[] => {
         if (schedule[selectedDay][index] === undefined || start === undefined) {
@@ -355,32 +372,32 @@ const AgentScheduleComponent = () => {
             <h2>My Work Schedule</h2>
             <div className="day-picker">
                 <button
-                    className={selectedDay === 'Monday' ? 'active' : ''}
-                    onClick={() => setSelectedDay('Monday')}
+                    className={selectedDay === 1 ? 'active' : ''}
+                    onClick={() => setSelectedDay(1)}
                 >
                     Mon
                 </button>
                 <button
-                    className={selectedDay === 'Tuesday' ? 'active' : ''}
-                    onClick={() => setSelectedDay('Tuesday')}
+                    className={selectedDay === 2 ? 'active' : ''}
+                    onClick={() => setSelectedDay(2)}
                 >
                     Tue
                 </button>
                 <button
-                    className={selectedDay === 'Wednesday' ? 'active' : ''}
-                    onClick={() => setSelectedDay('Wednesday')}
+                    className={selectedDay === 3 ? 'active' : ''}
+                    onClick={() => setSelectedDay(3)}
                 >
                     Wed
                 </button>
                 <button
-                    className={selectedDay === 'Thursday' ? 'active' : ''}
-                    onClick={() => setSelectedDay('Thursday')}
+                    className={selectedDay === 4 ? 'active' : ''}
+                    onClick={() => setSelectedDay(4)}
                 >
                     Thu
                 </button>
                 <button
-                    className={selectedDay === 'Friday' ? 'active' : ''}
-                    onClick={() => setSelectedDay('Friday')}
+                    className={selectedDay === 5 ? 'active' : ''}
+                    onClick={() => setSelectedDay(5)}
                 >
                     Fri
                 </button>
