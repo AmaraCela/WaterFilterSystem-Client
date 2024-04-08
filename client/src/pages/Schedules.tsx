@@ -22,7 +22,7 @@ const Schedules = () => {
                             <div className="mt-2">
                                 <CalendarDetails />
                             </div>
-                            
+
                         </div>
                     </div>
 

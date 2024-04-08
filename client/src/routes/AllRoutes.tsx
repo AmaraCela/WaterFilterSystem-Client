@@ -15,13 +15,14 @@ import RefTemplate from '../components/referenceTemplate';
 import BuyersAndReferences from '../pages/BuyersAndReferences';
 import SalesAgentSchedules from '../pages/SalesAgentSchedules';
 import ChiefOperationsDashboard from '../pages/ChiefOfOperationsDashboard';
+import SalesAgentMeetings from '../pages/SalesAgentMeetings';
 
 
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={<LoginWidget />} />
+                <Route path='/login' element={<LoginWidget />} />
                 <Route path='/dashboard' element={<ChiefMarketingDashboard />} />
                 <Route path='/calls' element={<PhoneCallsPage />} />
                 <Route path='/schedules' element={<Schedules />} />
@@ -29,6 +30,8 @@ const AllRoutes = () => {
                 <Route path='/redlist' element={<RedList />} />
                 <Route path='/phoneCalls' element={<PhoneCallsPage />} />
                 <Route path='/buyersReferences' element={<BuyersAndReferences />} />
+                <Route path='/agentSchedule' element={<SalesAgentSchedules />} />
+                <Route path='/agentMeetings' element={<SalesAgentMeetings />} />
                 <Route path='/' element={< ChiefOperationsDashboard/>}/>
                 <Route path='/workschedule' element={<SalesAgentSchedules/>}></Route>
                 <Route path='/login' element={<LoginWidget />}></Route>
