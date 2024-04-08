@@ -1,3 +1,4 @@
+import React from "react";
 import DashboardLink from "./DashboarLink";
 const profileImg = require("../assets/profileImg.png");
 const calling = require("../assets/Calling.png");
