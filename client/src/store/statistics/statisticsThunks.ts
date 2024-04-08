@@ -5,7 +5,7 @@ export const getCalls = createAsyncThunk(
     'getCalls',
     async(_, { rejectWithValue }) => {
         try {
-            const response = await createAPI("calls/calls", {})(null);
+            const response = await createAPI("calls", {})(null);
             const data = await response.json();
             return response.ok ? data : rejectWithValue("Error occured");
         }
