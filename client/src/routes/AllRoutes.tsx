@@ -14,8 +14,6 @@ import BuyTemplate from '../components/buyTemplate';
 import RefTemplate from '../components/referenceTemplate';
 import BuyersAndReferences from '../pages/BuyersAndReferences';
 import SalesAgentSchedules from '../pages/SalesAgentSchedules';
-import DashboardSide_ChiefOfOperations from '../components/DashboardSide_ChiefOfOperations';
-import DashboardSidePhoneAgent from '../components/DashboardSide_PhoneAgent';
 import ChiefOperationsDashboard from '../pages/ChiefOfOperationsDashboard';
 
 
@@ -31,6 +29,9 @@ const AllRoutes = () => {
                 <Route path='/redlist' element={<RedList />} />
                 <Route path='/phoneCalls' element={<PhoneCallsPage />} />
                 <Route path='/buyersReferences' element={<BuyersAndReferences />} />
+                <Route path='/' element={< ChiefOperationsDashboard/>}/>
+                <Route path='/workschedule' element={<SalesAgentSchedules/>}></Route>
+                <Route path='/login' element={<LoginWidget />}></Route>
                 <Route path='/1' element={<AddReferenceForm />} />
                 <Route path='/2' element={<HistoryUpload />} />
                 <Route path='/4' element={<PageNumber number={0} />} />
