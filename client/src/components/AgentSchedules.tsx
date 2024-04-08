@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getLoggedUserId, getLoggedInUser } from '../loginUtils/loginUtils';
+import { UserRole } from '../loginUtils/UserRole';
 
 interface Timeslot {
     start: string;
     end: string;
+    readonly: boolean;
 }
 
 interface Schedule {
@@ -79,73 +81,6 @@ const StyledComponent = styled.div`
   }
 `;
 
-function retrieveScheduleFromServer() {
-    const apiUrl = process.env.REACT_APP_API_ENDPOINT;
-    const user_id = getLoggedUserId();
-
-    return fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    }).then((response) => {
-        if (!response.ok) {
-            return response.json().then(data => {
-                console.log("Failed to retrieve schedule", data.message);
-                return null;
-            });
-        }
-        else {
-            return response.json().then(data => {
-                // console.log("Retrieved schedule", data);
-                return data;
-            });
-        }
-    }).catch((error) => {
-        console.log("Failed to retrieve schedule", error);
-        return null;
-    });
-}
-
-function saveScheduleToServer(timeslots: any, selectedDay: number) {
-    const day = new Date();
-    day.setDate(day.getDate() + (selectedDay + 7 - day.getDay()) % 7); 
-    day.setHours(0, 0, 0, 0);
-
-    const apiUrl = process.env.REACT_APP_API_ENDPOINT;
-    const user_id = localStorage.getItem("session_user_id");
-    if (user_id === null) {
-        console.log("Not logged in!");
-        return;
-    }
-
-    for (let i = 0; i < timeslots.length; i++) {
-        const timeslot = {
-            day: day,
-            startTime: timeslots[i].start,
-            endTime: timeslots[i].end,
-        };
-
-        fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(timeslot),
-        }).then((response) => {
-            if (!response.ok) {
-                return response.json().then(data => {
-                    console.log("Failed to save schedule", data.message);
-                });
-            }
-            else {
-                return response.json().then(data => {
-                    console.log("Saved schedule", data);
-                });
-            }
-        });
-    }
-}
 
 const AgentScheduleComponent = () => {
     const [schedule, setSchedule] = useState<Schedule>({
@@ -156,6 +91,85 @@ const AgentScheduleComponent = () => {
         5: [],
     });
     const [selectedDay, setSelectedDay] = useState<number>(1);
+    let loggedUser: any | null;
+
+    const retrieveScheduleFromServer = () => {
+        const apiUrl = process.env.REACT_APP_API_ENDPOINT;
+        const user_id = getLoggedUserId();
+    
+        return fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then((response) => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    console.log("Failed to retrieve schedule", data.message);
+                    return null;
+                });
+            }
+            else {
+                return response.json().then(data => {
+                    // console.log("Retrieved schedule", data);
+                    return data;
+                });
+            }
+        }).catch((error) => {
+            console.log("Failed to retrieve schedule", error);
+            return null;
+        });
+    }
+    
+    const saveScheduleToServer = (selectedDay: number) => {
+        const day = new Date();
+        day.setDate(day.getDate() + (selectedDay + 7 - day.getDay()) % 7); 
+        day.setHours(0, 0, 0, 0);
+    
+        const apiUrl = process.env.REACT_APP_API_ENDPOINT;
+        const user_id = localStorage.getItem("session_user_id");
+        if (user_id === null) {
+            console.log("Not logged in!");
+            return;
+        }
+    
+        const timeslots = schedule[selectedDay];
+        for (let i = 0; i < timeslots.length; i++) {
+            const timeslot = {
+                day: day,
+                startTime: timeslots[i].start,
+                endTime: timeslots[i].end,
+            };
+    
+            fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(timeslot),
+            }).then((response) => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        console.log("Failed to save schedule", data.message);
+                    });
+                }
+                else {
+                    return response.json().then(data => {
+                        console.log("Saved schedule", data);
+                        
+                        const newSchedule = timeslots.map((slot) => {
+                            return { ...slot, readonly: true };
+                        });
+
+                        setSchedule({
+                            ...schedule,
+                            [selectedDay]: newSchedule,
+                        });
+                    });
+                }
+            });
+        }
+    }
 
     useEffect(() => {
         retrieveScheduleFromServer().then((schedules) => {
@@ -181,6 +195,7 @@ const AgentScheduleComponent = () => {
                 const timeslot = {
                     start: schedules[i].startTime,
                     end: schedules[i].endTime,
+                    readonly: true
                 };
 
                 newSchedule = {
@@ -193,7 +208,37 @@ const AgentScheduleComponent = () => {
 
             setSchedule(newSchedule);
         });
+
+        getLoggedInUser().then((user) => {
+            loggedUser = user;
+        });
     }, []);
+
+    const selectedDayReadonly = (selectedDay: number) => {
+        if (loggedUser && loggedUser.role == UserRole.MARKETING_MANAGER) {
+            return false;
+        }
+
+        for (let i = 0; i < schedule[selectedDay].length; i++) {
+            if (schedule[selectedDay][i].readonly === true) {
+                return true;
+            }
+        }
+
+        const nextOccurrence = new Date();
+        nextOccurrence.setDate(nextOccurrence.getDate() + (selectedDay + 7 - nextOccurrence.getDay()) % 7); 
+        nextOccurrence.setHours(0, 0, 0, 0);
+
+        const nextMonday = new Date();
+        nextMonday.setDate(nextMonday.getDate() + (1 + 7 - nextMonday.getDay()) % 7); 
+        nextMonday.setHours(0, 0, 0, 0);
+
+        if (nextOccurrence >= nextMonday) {
+            return true;
+        }
+
+        return false;
+    }
 
     const getValidStartTimes = (index: number, start: string): string[] => {
         if (schedule[selectedDay][index] === undefined || start === undefined) {
@@ -271,7 +316,7 @@ const AgentScheduleComponent = () => {
         const previousSchedule = schedule[selectedDay][schedule[selectedDay].length - 1];
 
         if (!previousSchedule) {
-            newSchedule = { start: '08:00', end: '09:30' };
+            newSchedule = { start: '08:00', end: '09:30', readonly: false };
         }
         else if (previousSchedule.end !== '21:30' &&
                  previousSchedule.end !== '21:00' &&
@@ -288,7 +333,7 @@ const AgentScheduleComponent = () => {
             }
 
             const newEnd = `${newHour.toString().padStart(2, '0')}:${newMinute.toString().padStart(2, '0')}`;
-            newSchedule = { start: previousSchedule.end, end: newEnd };
+            newSchedule = { start: previousSchedule.end, end: newEnd, readonly: false};
         }
         else {
             return;
@@ -299,6 +344,14 @@ const AgentScheduleComponent = () => {
             [selectedDay]: [...schedule[selectedDay], newSchedule],
         });
     };
+
+    const removeTimeslot = (selectedDay: number, slotIndex: number) => {
+        schedule[selectedDay].splice(slotIndex, 1);
+        setSchedule({
+            ...schedule,
+            [selectedDay]: schedule[selectedDay],
+        });
+    }
 
     const updateTimeslot = (
         rowIndex: number,
@@ -341,6 +394,7 @@ const AgentScheduleComponent = () => {
                 schedule[selectedDay][columnIndex*5+rowIndex] ?
                 (<div key={`${columnIndex}-${rowIndex}`} className="timeslot">
                     <select
+                        disabled={timeslot.readonly}
                         value={timeslot.start}
                         onChange={(e) => updateTimeslot(columnIndex*5+rowIndex, 'start', e.target.value)}
                     >
@@ -352,6 +406,7 @@ const AgentScheduleComponent = () => {
                     </select>
                     &nbsp;to&nbsp;
                     <select
+                        disabled={timeslot.readonly}
                         value={timeslot.end}
                         onChange={(e) => updateTimeslot(columnIndex*5+rowIndex, 'end', e.target.value)}
                     >
@@ -361,6 +416,8 @@ const AgentScheduleComponent = () => {
                         </option>
                     ))}
                     </select>
+                    {/* { (() => { console.log("AAA ", selectedDay, columnIndex*5+rowIndex, schedule[selectedDay][columnIndex*5+rowIndex]); return null; })() } */}
+                    { schedule[selectedDay][columnIndex*5+rowIndex] && !schedule[selectedDay][columnIndex*5+rowIndex].readonly ? (<>&nbsp;<button className="remove-slot-button" onClick={() => removeTimeslot(selectedDay, columnIndex*5+rowIndex)}>x</button></>) : null }
                 </div>) : null
             ))}
             </div>
@@ -402,13 +459,13 @@ const AgentScheduleComponent = () => {
                     Fri
                 </button>
 
-                <button className="add-slot-button" onClick={addTimeslot}>+</button>
+                <button className="add-slot-button" disabled={selectedDayReadonly(selectedDay)} onClick={addTimeslot}>+</button>
             </div>
         
             <div className="day-container">
                 {renderTimeslots()}
             </div>
-            <button onClick={() => saveScheduleToServer(schedule[selectedDay], selectedDay)}>Save</button>
+            { !selectedDayReadonly(selectedDay) ? (<button onClick={() => saveScheduleToServer(selectedDay)}>Save</button>) : null }
         </StyledComponent>
     );
 };

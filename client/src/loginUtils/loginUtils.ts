@@ -1,5 +1,3 @@
-import { UserDTO } from "./UserDTO";
-
 export function getLoggedUserId() {
     return localStorage.getItem("session_user_id");
 }
@@ -7,7 +5,9 @@ export function getLoggedUserId() {
 export function getLoggedInUser() {
     const user_id = getLoggedUserId();
     if (!user_id) {
-        return null;
+        return new Promise ((resolve, reject) => {
+            resolve(null);
+        });
     }
 
     const apiUrl = process.env.REACT_APP_API_ENDPOINT;
