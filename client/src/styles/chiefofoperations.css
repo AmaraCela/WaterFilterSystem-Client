@@ -1,0 +1,13 @@
+/* chiefMarketingDashboard.css */
+.flex-container {
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+    height: 100%; 
+  }
+.dashboard{
+      height: 100vh; /* Take up the full height of the viewport */
+        width: 100vw; /* Adjust the width as needed */
+}
+
+  

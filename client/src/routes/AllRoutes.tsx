@@ -15,12 +15,18 @@ import DashboardSideSalesAgent from '../components/DashboardSide_SalesAgent';
 import SalesAgentTemplate from '../pages/SalesAgentMeetingSchedule';
 import DashboardSide_ChiefOfOperations from '../components/DashboardSide_ChiefOfOperations';
 import DashboardSidePhoneAgent from '../components/DashboardSide_PhoneAgent';
-import ChiefOperationsDashboard from '../pages/ChiefOfOperationsDashboard';
+import ChiefOperationsDashboard_AgentCommissions from '../pages/ChiefOfOperationsDashboard_AgentCommissions';
+import SalesTable from '../components/tableOfSales';
+import CommissionTable from '../components/commissionTable'; 
+import ChiefOperationsDashboard_ListOfSalesAndDebts from '../pages/ChiefOfOperations_ListOfSalesAndDebts';
+import TableRow from '../components/SalesAndDebts-row';
+import MyComponent from '../components/SalesAndDebtsTable';
+import Insights from '../components/insightsOfAgents';
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< ChiefOperationsDashboard/>}/>
+                <Route path='/' element={< ChiefMarketingDashboard/>}/>
             </Routes>
             <Routes>
                 <Route path='/login' element={<LoginWidget />}></Route>
