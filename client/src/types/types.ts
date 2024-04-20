@@ -19,3 +19,15 @@ export interface Call {
     outcomeComment: string;
     completed: boolean;
 }
+
+export interface Meeting {
+    meeting_id: number;
+    time: string;
+    place: string;
+    succesful: boolean;
+    outcomeComment: string;
+    client: number;
+    phoneOperator: number;
+    salesAgent: number;
+    worker: number;
+}

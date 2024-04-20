@@ -24,6 +24,8 @@ const clientSlice = createSlice({
             state.redlistClients = action.payload;
         }).addCase(allClients.fulfilled, (state: ClientState, action: any) => {
             state.clients = action.payload;
+        }).addCase(allClients.rejected, (state: ClientState, action: any) => {
+            console.log('rejectedddddddddd');
         })
     }
 })
