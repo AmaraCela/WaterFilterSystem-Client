@@ -5,6 +5,8 @@ import { persistReducer, persistStore } from "redux-persist";
 import clientReducer from "./client/clientSlice";
 import statisticsReducer from "./statistics/statisticsSlice";
 import meetingReducer from "./meetings/meetingsSlice";
+import saleReducer from "./sales/saleSlice";
+import saleSlice from "./sales/saleSlice";
 
 const persistConfig = {
     key: 'root',
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
     client: clientReducer,
     call: statisticsReducer,
     meeting: meetingReducer, 
+    sale: saleSlice,
+
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

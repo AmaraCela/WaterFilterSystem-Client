@@ -31,3 +31,17 @@ export interface Meeting {
     salesAgent: number;
     worker: number;
 }
+
+export interface Sale {
+    id: number;
+    client: number;
+    salesAgent: number;
+    phoneOperator: number;
+    time: Date | null;
+    approved: boolean;
+    price: number;
+    warrantyExpiration: Date;
+    renewalDate: Date;
+    monthlyPayment: boolean;
+    referredClients: number[];
+}
