@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Meeting } from "../../types/types";
-import { getMeetings } from "./meetingsThunk";
+import { deleteMeeting, getMeetings } from "./meetingsThunk";
 
 interface MeetingState {
     meetings: Meeting []
+    deleteSuccesful: boolean
 }
 
 const initialState: MeetingState = {
     meetings: [],
+    deleteSuccesful: false
 }
 
 const meetingsSlice = createSlice({
@@ -17,6 +19,8 @@ const meetingsSlice = createSlice({
     extraReducers: builder => {
         builder.addCase(getMeetings.fulfilled, (state: MeetingState, action: any) => {
             state.meetings = action.payload;
+        }).addCase(deleteMeeting.fulfilled, (state: MeetingState) => {
+            state.deleteSuccesful = true;
         })
     }
 })
