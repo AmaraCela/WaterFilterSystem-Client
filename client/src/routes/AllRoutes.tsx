@@ -5,7 +5,7 @@ const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/dashboard' element={<ChiefMarketingDashboard />}/>
+                <Route path='' element={<ChiefMarketingDashboard />}/>
             </Routes>
         </Router>
     )
