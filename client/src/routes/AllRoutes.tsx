@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ChiefMarketingDashboard from '../pages/ChiefMarketingDashboard';
+import SalesAgentMeetings from '../pages/SalesAgentMeetings';
 
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='' element={<ChiefMarketingDashboard />}/>
+                <Route path='' element={<SalesAgentMeetings />}/>
             </Routes>
         </Router>
     )

@@ -16,12 +16,12 @@ const DashboardSide = () => {
                 <p className="main-font">Chief of Marketing</p>
             </div>
 
-            <DashboardLink to={""} src={calling} text={"Phone Calls"} />
-            <DashboardLink to={""} src={calendar} text={"Schedules"} />
-            <DashboardLink to={""} src={chart} text={"Statistics"} />
-            <DashboardLink to={""} src={danger} text={"Red List"} />
-            <DashboardLink to={""} src={paper} text={"Buyers and references"} />
-            <DashboardLink to={""} src={bookmark} text={"Collections"} />
+            <DashboardLink to={""} src={calling} text={"Phone Calls"} highlighted ={false}/>
+            <DashboardLink to={""} src={calendar} text={"Schedules"} highlighted ={false}/>
+            <DashboardLink to={""} src={chart} text={"Statistics"} highlighted ={false}/>
+            <DashboardLink to={""} src={danger} text={"Red List"} highlighted ={false}/>
+            <DashboardLink to={""} src={paper} text={"Buyers and references"} highlighted ={false}/>
+            <DashboardLink to={""} src={bookmark} text={"Collections"} highlighted ={false}/>
         </div>
     );
 }
