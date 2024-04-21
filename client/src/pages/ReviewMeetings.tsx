@@ -5,12 +5,14 @@ import { RootState, useAppDispatch } from "../store/store";
 import { deleteMeeting, getMeetings } from "../store/meetings/meetingsThunk";
 import { useSelector } from "react-redux";
 import "../styles/reviewMeetingStyle.css";
+import { getClient } from "../store/client/clientThunks";
 const deleteIcon = require("../assets/delete_24px.png");
 const editIcon = require("../assets/edit_24px.png");
 
 const ReviewMeetings = () => {
     const dispatch = useAppDispatch();
     const meetings = useSelector((state: RootState) => state.meeting.meetings);
+    const clientToEdit = useSelector((state: RootState) => state.client.clientToEdit);
     const [alertVisibility, setAlertVisibility] = useState('hidden');
     const [editVisibility, setEditVisibility] = useState('hidden');
     const [meeting_id, setMeeting_id] = useState('');
@@ -19,6 +21,7 @@ const ReviewMeetings = () => {
         dispatch(getMeetings("6"));
     }, []);
 
+    console.log(clientToEdit);
     return (
         <>
             <div className="flex relative dashboard h-screen">
@@ -46,7 +49,7 @@ const ReviewMeetings = () => {
                                     <div className="td-item flex items-center p-1">
                                         <div className="flex justify-evenly w-full">
                                             <button onClick={() => { setMeeting_id(meeting.meeting_id.toString()); setAlertVisibility("flex") }}><img src={deleteIcon} alt="" /></button>
-                                            <button onClick={() => {setEditVisibility("flex");}}><img src={editIcon} alt="" /></button>
+                                            <button onClick={() => { dispatch(getClient(meeting.client.toString()));setEditVisibility("flex"); }}><img src={editIcon} alt="" /></button>
                                         </div>
                                     </div>
                                 </div>
@@ -59,8 +62,8 @@ const ReviewMeetings = () => {
                 <div className="border-2 border-[#844B2A] bg-white p-12 rounded-[30px]">
                     <p className="main-font w-full text-center mt-8 font-semibold text-lg text-[#bb0000]">Proceed with deleting the meeting?</p>
                     <div className="flex w-full">
-                        <button className="rounded-[4px] font-bold border-2 border-[#E97652] main-font w-1/2 h-[35px] m-3" onClick={() => { dispatch(deleteMeeting(meeting_id)); setAlertVisibility("hidden"); }}>Yes</button>
-                        <button className="rounded-[4px] font-bold border-2 border-[#E97652] main-font w-1/2 h-[35px] m-3 " onClick={() => setAlertVisibility("hidden")}>Cancel</button>
+                        <button className="rounded-[4px] font-bold border-2 border-[#E97652] main-font w-1/2 h-[35px] m-3 " onClick={() => setAlertVisibility("hidden")}>CANCEL</button>
+                        <button className="rounded-[4px] font-bold border-2 border-[#E97652] main-font w-1/2 h-[35px] m-3" onClick={() => { dispatch(deleteMeeting(meeting_id)); setAlertVisibility("hidden"); }}>YES</button>
                     </div>
                 </div>
             </div>
@@ -71,7 +74,7 @@ const ReviewMeetings = () => {
                         <p className="montserrat text-[#844B2A] font-bold">edit meeting</p>
                     </div>
                     <label htmlFor="name" className="montserrat text-[#844B2A] font-semibold">Name of Client</label><br />
-                    <input type="text" id="name" className="border-2 rounded-md border-[#844B2A] bg-[#fd9e305c] w-full" />
+                    <input type="text" id="name" className="border-2 rounded-md border-[#844B2A] bg-[#fd9e305c] w-full" value={clientToEdit?.name} />
                     <br />
                     <label htmlFor="address" className="montserrat text-[#844B2A] font-semibold">Address of Client</label><br />
                     <input type="text" id="address" className="border-2 rounded-md border-[#844B2A] bg-[#fd9e305c] w-full" />
@@ -87,7 +90,7 @@ const ReviewMeetings = () => {
                     <input type="text" id="notes" className="border-2 rounded-md border-[#844B2A] bg-[#fd9e305c] w-full" />
                     <br />
                     <div className="flex justify-evenly mt-6">
-                        <button className="rounded-[4px] font-bold border-2 border-[#E97652] w-1/3" onClick={()=>{setEditVisibility("hidden")}}>CANCEL</button>
+                        <button className="rounded-[4px] font-bold border-2 border-[#E97652] w-1/3" onClick={() => { setEditVisibility("hidden") }}>CANCEL</button>
                         <button className="rounded-[4px] font-bold border-2 border-[#E97652] w-1/3">SAVE</button>
                     </div>
                 </div>

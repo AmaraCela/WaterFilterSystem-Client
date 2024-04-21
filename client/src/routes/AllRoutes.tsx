@@ -17,6 +17,7 @@ import SalesAgentSchedules from '../pages/SalesAgentSchedules';
 import ChiefOperationsDashboard from '../pages/ChiefOfOperationsDashboard';
 import SalesAgentMeetings from '../pages/SalesAgentMeetings';
 import ReviewMeetings from '../pages/ReviewMeetings';
+import MySales from '../pages/MySales';
 
 
 const AllRoutes = () => {
@@ -33,7 +34,8 @@ const AllRoutes = () => {
                 <Route path='/buyersReferences' element={<BuyersAndReferences />} />
                 <Route path='/agentSchedule' element={<SalesAgentSchedules />} />
                 <Route path='/agentMeetings' element={<SalesAgentMeetings />} />
-                <Route path='/reviewMeetings' element={<ReviewMeetings />} />
+                <Route path='/reviewMeetings' element={<ReviewMeetings />} /> 
+                <Route path='/mysales' element={<MySales />} /> 
                 <Route path='/' element={< ChiefOperationsDashboard/>}/>
                 <Route path='/workschedule' element={<SalesAgentSchedules/>}></Route>
                 <Route path='/login' element={<LoginWidget />}></Route>
