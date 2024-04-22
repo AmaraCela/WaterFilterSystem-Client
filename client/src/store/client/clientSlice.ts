@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allClients, getClient, redListClients } from "./clientThunks";
+import { allClients, editClient, getClient, redListClients } from "./clientThunks";
 import { Client } from "../../types/types";
 
 interface ClientState {
@@ -30,7 +30,9 @@ const clientSlice = createSlice({
             console.log('rejectedddddddddd');
         }).addCase(getClient.fulfilled, (state: ClientState, action: any) => {
             state.clientToEdit = action.payload;
-        }) 
+        }).addCase(editClient.fulfilled, (state: ClientState, action: any) => {
+            state.clientToEdit = action.payload;
+        })
     }
 })
 

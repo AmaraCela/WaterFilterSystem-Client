@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createAPI } from "../../utils/api";
+import { Client } from "../../types/types";
 
 export const redListClients = createAsyncThunk(
     'redListClients',
@@ -50,3 +51,29 @@ export const getClient = createAsyncThunk(
         }
     }
 )
+
+export const editClient = createAsyncThunk(
+    'editClient', 
+    async(client:{
+        id?: number;
+        name?: string;
+        surname?: string;
+        phoneNo?: string;
+        profession?: string;
+        address?: string;
+        status?: "IN_WAITLIST" |"IN_REDLIST";
+        hasMadePurchase?: boolean;
+        nextContactDate?: string;
+        createdAt?: string;
+    }, { rejectWithValue }) => {
+        try {
+            let response = await createAPI(`clients/${client.id}`, {method: 'PUT'})(client);
+            let data = await response.json();
+
+            return response.ok ? data : rejectWithValue("Error occured");
+        }
+        catch(error) {
+            return rejectWithValue(error);
+        }
+    }
+);

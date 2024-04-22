@@ -1,4 +1,4 @@
-type HttpMethods = 'GET' | 'POST' | 'DELETE';
+type HttpMethods = 'GET' | 'POST' | 'DELETE' | 'PUT';
 
 interface APIOptions {
     method?: HttpMethods;
