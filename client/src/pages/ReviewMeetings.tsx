@@ -124,14 +124,15 @@ const ReviewMeetings = () => {
                     <div className="flex justify-evenly mt-6">
                         <button className="rounded-[4px] font-bold border-2 border-[#E97652] w-1/3" onClick={() => { setEditVisibility("hidden") }}>CANCEL</button>
                         <button className="rounded-[4px] font-bold border-2 border-[#E97652] w-1/3" onClick={() => {
-                            let newClient = {...clientToEdit};
-                            if (newClient) {
-                                newClient.id = clientToEdit?.id ?? -1;
-                                newClient.name = editedInformation?.name ?? '';
-                                newClient.address = editedInformation?.address;
-                                newClient.phoneNo = editedInformation?.phoneNumber ?? '';
-                            }
+                            let newClient = {id: clientToEdit?.id, name: editedInformation?.name, surname:clientToEdit?.surname, address: editedInformation?.address, phoneNo: editedInformation?.phoneNumber, profession: clientToEdit?.profession};
+                            // if (newClient) {
+                            //     newClient.id = clientToEdit?.id ?? -1;
+                            //     newClient.name = editedInformation?.name ?? '';
+                            //     newClient.address = editedInformation?.address;
+                            //     newClient.phoneNo = editedInformation?.phoneNumber ?? '';
+                            // }
                             dispatch(editClient(newClient));
+                            setEditVisibility("hidden");
                         }}>SAVE</button>
                     </div>
                 </div>
