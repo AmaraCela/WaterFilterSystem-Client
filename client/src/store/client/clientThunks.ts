@@ -39,7 +39,6 @@ export const allClients = createAsyncThunk(
 export const getClient = createAsyncThunk(
     'getClient', 
     async(id: string, { rejectWithValue }) => {
-        console.log(id);
         try {
             let response = await createAPI(`clients/${id}`, {})(null);
             let data = await response.json();
