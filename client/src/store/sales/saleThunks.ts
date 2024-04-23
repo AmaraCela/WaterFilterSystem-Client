@@ -7,7 +7,7 @@ export const getSales = createAsyncThunk(
         let response;
 
         if(agentid) {
-            response = await createAPI(`sales?agentId=${agentid}`, {})(null);
+            response = await createAPI(`sales?agentid=${agentid}`, {})(null);
         }
         else {
             response = await createAPI("sales", {})(null);

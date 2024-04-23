@@ -37,11 +37,12 @@ export interface Sale {
     client: number;
     salesAgent: number;
     phoneOperator: number;
-    time: Date | null;
+    time: string | null;
     approved: boolean;
     price: number;
     warrantyExpiration: Date;
     renewalDate: Date;
     monthlyPayment: boolean;
     referredClients: number[];
+    Client: Client;
 }

@@ -25,7 +25,6 @@ const AllRoutes = () => {
         <Router>
             <Routes>
                 <Route path='/login' element={<LoginWidget />} />
-                <Route path='' element={<SalesAgentMeetings />} />
                 <Route path='/calls' element={<PhoneCallsPage />} />
                 <Route path='/schedules' element={<Schedules />} />
                 <Route path='/statistics' element={<Statistics />} />
@@ -48,6 +47,7 @@ const AllRoutes = () => {
                 <Route path='/3' element={<SortDropdown onSelect={function (value: string): void {
                     throw new Error('Function not implemented.');
                 }} />} />
+                <Route path='' element={<SalesAgentMeetings />} />
             </Routes>
         </Router>
     )

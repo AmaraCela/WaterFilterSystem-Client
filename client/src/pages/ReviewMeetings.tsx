@@ -63,7 +63,7 @@ const ReviewMeetings = () => {
                     <p className="main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-2">
                         Review My Meetings
                     </p>
-                    <div className="w-4/5">
+                    <div className="w-[90%]">
                         <div className="w-full mt-5">
                             <div className="flex justify-evenly w-full py-2 bg-[#fcfcfcc5] mb-2 ml-4">
                                 <div className="td-item"><div className="bg-[#5882c17d] rounded-[10px] p-2"><p className="w-full text-center">Date & Time</p></div></div>
