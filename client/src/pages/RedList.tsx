@@ -1,13 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DashboardSide from "../components/DashboardSide";
 import TopIcons from "../components/TopIcons";
 import { RootState, useAppDispatch } from "../store/store";
 import { redListClients } from "../store/client/clientThunks";
 import { useSelector } from "react-redux";
+import { Client } from "../types/types";
 
 const RedList = () => {
     const dispatch = useAppDispatch();
     const redlistClients = useSelector((state: RootState) => state.client.redlistClients);
+    const [clientsToDisplay, setClientsToDisplay] = useState<Client[] |null>(null);
+    const [searchWord, setSearchWord] = useState('');
+    
+    useEffect(() => {
+        setClientsToDisplay(redlistClients);
+    }, [redlistClients]);
 
     useEffect(() => {
         dispatch(redListClients());
@@ -20,7 +27,10 @@ const RedList = () => {
                 <div className="w-3/4">
                     <TopIcons />
                     <p className="main-font text-[#A13D3D] font-bold text-2xl ml-12 mt-8">Red List</p>
-                    <input type="search" className="rounded-3xl w-1/2 ml-12 mt-8 search-bar pl-4 h-7 flex items-center" placeholder="Search a person" />
+                    <input type="search" className="rounded-3xl w-1/2 ml-12 mt-8 search-bar pl-4 h-7 flex items-center" placeholder="Search a person" onChange={(e) => setSearchWord(e.target.value)} onKeyUp={(e) => {if(e.key === 'Enter') {
+                        let newClients = redlistClients?.filter((redlistClients) => {return redlistClients.name?.includes(searchWord) || redlistClients.surname?.includes(searchWord)});
+                        setClientsToDisplay(newClients ?? []);
+                    }}}/>
                     <table className="w-3/4 ml-12 mt-6">
                         <thead className="bg-[#ffffff66] h-10">
                             <tr>
@@ -30,7 +40,7 @@ const RedList = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {redlistClients && redlistClients.map((client) => (
+                            {clientsToDisplay && clientsToDisplay.map((client) => (
                                 <tr className="h-7" key={client.id}>
                                     <td className="montserrat text-sm w-1/3 text-[#2F65DD]">{client.name} {client.surname}</td>
                                     <td className="montserrat text-sm w-1/3">{client.nextContactDate && `${new Date(client.nextContactDate).getDate()}/${new Date(client.nextContactDate).getMonth()+1}/${new Date(client.nextContactDate).getFullYear()}`}</td>

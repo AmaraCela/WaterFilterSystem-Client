@@ -14,7 +14,7 @@ const Schedules = () => {
                         Sales Agent Meetings
                     </p>
                     <div className="flex w-full justify-between mt-8">
-                        <div className="w-3/4 overflow-hidden h-full mr-16">
+                        <div className="w-3/4 overflow-y-scroll h-[80vh] mr-16">
                             <Schedule />
                         </div>
                         <div className="w-1/4 mr-4">

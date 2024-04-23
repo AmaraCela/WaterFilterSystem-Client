@@ -115,8 +115,8 @@ const Statistics = () => {
   })
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="dashboard w-3/4 h-max rounded-3xl flex flex-row">
+   
+      <div className="dashboard w-full h-screen rounded-3xl flex flex-row">
         <DashboardSide highlighted={"Statistics"} />
         <div className="w-3/4">
           <TopIcons />
@@ -174,7 +174,7 @@ const Statistics = () => {
           </div>
         </div>
       </div>
-    </div>
+   
   );
 }
 

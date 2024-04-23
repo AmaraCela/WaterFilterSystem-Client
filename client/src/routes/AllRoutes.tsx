@@ -18,6 +18,7 @@ import ChiefOperationsDashboard from '../pages/ChiefOfOperationsDashboard';
 import SalesAgentMeetings from '../pages/SalesAgentMeetings';
 import ReviewMeetings from '../pages/ReviewMeetings';
 import MySales from '../pages/MySales';
+import DashboardSide from '../components/DashboardSide';
 
 
 const AllRoutes = () => {
@@ -25,6 +26,7 @@ const AllRoutes = () => {
         <Router>
             <Routes>
                 <Route path='/login' element={<LoginWidget />} />
+                <Route path='/dashboard' element={<DashboardSide highlighted={'none'} />} />
                 <Route path='/calls' element={<PhoneCallsPage />} />
                 <Route path='/schedules' element={<Schedules />} />
                 <Route path='/statistics' element={<Statistics />} />
