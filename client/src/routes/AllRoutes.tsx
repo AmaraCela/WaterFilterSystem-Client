@@ -22,11 +22,14 @@ import ChiefOperationsDashboard_ListOfSalesAndDebts from '../pages/ChiefOfOperat
 import TableRow from '../components/SalesAndDebts-row';
 import MyComponent from '../components/SalesAndDebtsTable';
 import Insights from '../components/insightsOfAgents';
+import ChiefOperations_Inventory from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
+import Note from '../components/Inventory_Note'; 
+import NewTask from '../components/Inventory-assignNewTask'
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< ChiefMarketingDashboard/>}/>
+                <Route path='/' element={< NewTask/>}/>
             </Routes>
             <Routes>
                 <Route path='/login' element={<LoginWidget />}></Route>
