@@ -1,13 +1,12 @@
 import CalendarDetails from "../components/CalendarDetails";
 import DashboardSideSalesAgent from "../components/DashboardSide_SalesAgent";
-import Schedule from "../components/Schedule";
+import MeetingSchedule from "../components/MeetingSchedule";
 import SideCalendar from "../components/SideCalendar";
 import TopIcons from "../components/TopIcons";
 
 const SalesAgentMeetings = () => {
     return (
         <div className="dashboard rounded-3xl flex flex-row h-lvh">
-
             <DashboardSideSalesAgent />
             <div className="w-3/4">
                 <TopIcons />
@@ -15,15 +14,14 @@ const SalesAgentMeetings = () => {
                     Meeting Agenda
                 </p>
                 <div className="flex w-full justify-between mt-8">
-                    <div className="w-3/4 overflow-hidden h-full mr-16">
-                        <Schedule />
+                    <div className="w-3/4 overflow-y-scroll h-[80vh] mr-16">
+                        <MeetingSchedule />
                     </div>
                     <div className="w-1/4 mr-4">
                         <SideCalendar />
                         <div className="mt-2">
                             <CalendarDetails />
                         </div>
-
                     </div>
                 </div>
 

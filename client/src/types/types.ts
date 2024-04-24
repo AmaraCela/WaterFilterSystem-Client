@@ -26,7 +26,7 @@ export interface Meeting {
     place: string;
     succesful: boolean;
     outcomeComment: string;
-    client: number;
+    Client: Client;
     phoneOperator: number;
     salesAgent: number;
     worker: number;

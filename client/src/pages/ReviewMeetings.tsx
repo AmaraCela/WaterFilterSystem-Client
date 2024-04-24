@@ -81,7 +81,7 @@ const ReviewMeetings = () => {
                                     <div className="td-item flex items-center p-1">
                                         <div className="flex justify-evenly w-full">
                                             <button onClick={() => { setMeeting_id(meeting.meeting_id.toString()); setAlertVisibility("flex") }}><img src={deleteIcon} alt="" /></button>
-                                            <button onClick={() => { setMeeting_id(meeting.meeting_id.toString()); dispatch(getClient(meeting.client.toString())); setEditVisibility("flex"); }}><img src={editIcon} alt="" /></button>
+                                            <button onClick={() => { setMeeting_id(meeting.meeting_id.toString()); dispatch(getClient(meeting.Client.id.toString())); setEditVisibility("flex"); }}><img src={editIcon} alt="" /></button>
                                         </div>
                                     </div>
                                 </div>
