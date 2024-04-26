@@ -3,6 +3,7 @@ const calendar = require("../assets/Calendarr.png");
 const history = require("../assets/Ticket_alt.png");
 const close = require("../assets/Close Icon.png");
 
+
 const ReferenceInfo = ({ client, setDivVisibility }: { client: Client, setDivVisibility: any }) => {
     return ( 
         <div className="bg-[#38ff34ad] rounded-[49px] h-full flex flex-col items-center">
