@@ -19,7 +19,7 @@ const Schedule = () => {
                     <th className="h-5"></th>
                 </tr>
             </thead>
-            <tbody className="mt-4">
+            <tbody>
                 <tr className="h-12">
                     <td className="w-[10%] montserrat font-light text-[#B1B1B1]">
                         <p className="w-full text-center">09:00</p>
