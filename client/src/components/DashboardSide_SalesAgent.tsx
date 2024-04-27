@@ -17,9 +17,9 @@ const DashboardSideSalesAgent = () => {
             </div>
 
             <DashboardLink to={"workschedule"} src={calling} text={"Set Work schedule"} highlighted={false} />
-            <DashboardLink to={""} src={calendar} text={"My Meetings"} highlighted={false} />
+            <DashboardLink to={"/agentmeetings"} src={calendar} text={"My Meetings"} highlighted={false} />
             <DashboardLink to={""} src={calendar} text={"Log Meetings"} highlighted = {false}/>
-            <DashboardLink to={""} src={calendar} text={"References"} highlighted = {false}/>
+            <DashboardLink to={"/agentreferences"} src={calendar} text={"References"} highlighted = {false}/>
             <DashboardLink to={""} src={danger} text={"Chat"} highlighted = {false}/> 
         </div>
     );
