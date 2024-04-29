@@ -25,14 +25,13 @@ import Insights from '../components/insightsOfAgents';
 import ChiefOperations_Inventory from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
 import Note from '../components/Inventory_Note'; 
 import NewTask from '../components/Inventory-assignNewTask'
+import ChiefOfOperations_Inventory_assignNewTask from '../pages/ChiefOfOperations_Inventory_assignNewTask';
+import ChiefOperationsDashboard_SalesToApprove from '../pages/ChiefOfOperations_SalesToApprove';
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< NewTask/>}/>
-            </Routes>
-            <Routes>
-                <Route path='/login' element={<LoginWidget />}></Route>
+                <Route path='/' element={< SalesAgentTemplate/>}/>
             </Routes>
         </Router>
     )
