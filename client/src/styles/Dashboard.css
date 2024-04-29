@@ -1,0 +1,14 @@
+
+  @media (max-width: 768px) {
+    .dashboard-link p {
+      font-size: 14px !important;
+    }
+  }
+  
+  .main-font {
+    font-size: clamp(12px, 1.3vw, 20px); /* Set a minimum= 12px, a maximum = 20px, and scale between them = 2.5vw */
+  } 
+
+.main-font {
+    font-size: 1.5vw; /* font size =  2.5% of the viewport width */
+  } 

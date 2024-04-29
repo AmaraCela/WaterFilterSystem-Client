@@ -1,5 +1,6 @@
 import "../styles/sideCalendar.css";
 
+
 const SideCalendar = () => {
     return (
         <div className="flex flex-col side-calendar px-2">
