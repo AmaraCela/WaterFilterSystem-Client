@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "../styles/Dashboard.css";
 
 const DashboardLink = ({to, src, text, highlighted}: {to: string, src: string, text: string, highlighted: boolean}) => {
     return (
