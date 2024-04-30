@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AlertRed from "../components/alertRed";
 import AlertGreen from "../components/alertGreen";
+import '../styles/tableOfSales.css'
 const approve = require("../assets/approve.png");
 const decline = require("../assets/decline.png");
 const mastercard = require("../assets/mastercard.png");
@@ -79,7 +80,7 @@ function SalesTable() {
   }
 
   return (
-    <div className="table-container" style={{ width: "776px", height: "607px", overflow: "auto", position: "relative", display: "flex", justifyContent: "center" }}>
+    <div className="table-container" style={{ width: "776px", height: "800px", overflow: "auto", position: "relative", display: "flex", justifyContent: "center" }}>
       <table>
         <tbody>{rows}</tbody>
       </table>
