@@ -15,6 +15,7 @@ import RefTemplate from '../components/referenceTemplate';
 import BuyersAndReferences from '../pages/BuyersAndReferences';
 import SalesAgentSchedules from '../pages/SalesAgentSchedules';
 import ChiefOperationsDashboard from '../pages/ChiefOfOperationsDashboard';
+import SalesAgentReferences from '../pages/SalesAgentReferences';
 import SalesAgentMeetings from '../pages/SalesAgentMeetings';
 import ReviewMeetings from '../pages/ReviewMeetings';
 import MySales from '../pages/MySales';
