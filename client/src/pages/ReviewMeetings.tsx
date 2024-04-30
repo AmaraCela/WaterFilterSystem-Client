@@ -27,7 +27,7 @@ const ReviewMeetings = () => {
     const [meeting_id, setMeeting_id] = useState('');
     const [chosenMeeting, setChosenMeeting] = useState<Meeting | null>(null);
     const [editedInformation, setEditedInformation] = useState<EditMeetingInformation | null>(null);
-
+    
     useEffect(() => {
         dispatch(getMeetings("6"));
     }, []);
@@ -82,8 +82,7 @@ const ReviewMeetings = () => {
                                         <div className="flex justify-evenly w-full">
                                             <button onClick={() => { setMeeting_id(meeting.meeting_id?.toString()); setAlertVisibility("flex") }}><img src={deleteIcon} alt="" /></button>
                                             <button onClick={() => {
-                                                setMeeting_id(meeting.meeting_id?.toString()); dispatch(getClient(meeting.Client.
-                                                    id.toString())); setEditVisibility("flex");
+                                                setMeeting_id(meeting.meeting_id?.toString()); dispatch(getClient(meeting.Client.id.toString())); setEditVisibility("flex");
                                             }}><img src={editIcon} alt="" /></button>
                                         </div>
                                     </div>

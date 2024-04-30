@@ -10,7 +10,6 @@ const SalesAgentReferences = () => {
             <div className="w-3/4">
                 <TopIcons />
                 <ReferenceTable />
-
             </div>
         </div>
     );
