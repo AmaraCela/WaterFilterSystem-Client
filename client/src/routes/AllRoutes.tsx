@@ -6,7 +6,7 @@ import HistoryUpload from '../components/com-historyUpload';
 import PhoneCallsPage from '../pages/com-PhoneCalls';
 import SortDropdown from '../components/com-sortDropdown';
 import PageNumber from '../components/pageNo';
-import { MyComponent } from '../components/Calendar';
+// import { MyComponent } from '../components/Calendar';
 import Schedules from '../pages/Schedules';
 import Statistics from '../pages/Statistics';
 import RedList from '../pages/RedList';
@@ -31,6 +31,8 @@ import SalesAgentMeetings from '../pages/SalesAgentMeetings';
 import ReviewMeetings from '../pages/ReviewMeetings';
 import MySales from '../pages/MySales';
 import DashboardSide from '../components/DashboardSide';
+import SalesAndDebts from '../pages/ChiefOfOperations_ListOfSalesAndDebts';
+import SalesToApprove from '../pages/ChiefOfOperations_SalesToApprove';
 
 
 const AllRoutes = () => {
@@ -49,7 +51,7 @@ const AllRoutes = () => {
                 <Route path='/agentMeetings' element={<SalesAgentMeetings />} />
                 <Route path='/reviewMeetings' element={<ReviewMeetings />} /> 
                 <Route path='/mysales' element={<MySales />} /> 
-                <Route path='/' element={< ChiefOperationsDashboard/>}/>
+                {/* <Route path='/' element={< ChiefOperationsDashboard/>}/> */}
                 <Route path='/workschedule' element={<SalesAgentSchedules/>}></Route>
                 <Route path='/login' element={<LoginWidget />}></Route>
                 <Route path='/1' element={<AddReferenceForm />} />
@@ -58,6 +60,8 @@ const AllRoutes = () => {
                 <Route path='/5' element={<MyComponent />} />
                 <Route path='/6' element={<BuyTemplate />} />
                 <Route path='/7' element={<RefTemplate />} />
+                <Route path='/8' element={<SalesAndDebts />} />
+                <Route path='/9' element={<SalesToApprove />} />
                 <Route path='/agentmeetings' element={<SalesAgentMeetings />} />
                 <Route path='/agentreferences' element={<SalesAgentReferences />}/>
                 <Route path='/3' element={<SortDropdown onSelect={function (value: string): void {
