@@ -56,7 +56,7 @@ function SalesTable() {
                     <div className="flex flex-col my-auto">
                       <div className="font-semibold text-black">{sale.SalesAgent?.User.name} {sale.SalesAgent?.User.surname}</div>
                       <div className="mt-2.5 text-black text-opacity-40">
-                        {sale.monthlyPayment ? 'Monthly payment' : 'Full payment'} • {sale.time}
+                        {sale.monthlyPayment ? 'Monthly payment' : 'Full payment'} • {sale.time && new Date(sale.time).getDate()}/{sale.time && new Date(sale.time).getMonth()}/{sale.time && new Date(sale.time).getFullYear()}
                       </div>
                     </div>
                   </div>

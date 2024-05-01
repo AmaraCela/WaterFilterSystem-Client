@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AlertRed from "../components/alertRed";
 import AlertGreen from "../components/alertGreen";
 import '../styles/tableOfSales.css'
@@ -11,6 +11,8 @@ const decline = require("../assets/decline.png");
 function SalesTable() {
   const dispatch = useAppDispatch();
   const commissions = useSelector((state: RootState) => state.commission.commissions);
+  const approved = useSelector((state: RootState) => state.commission.approved);
+  const declined = useSelector((state: RootState) => state.commission.declined);
   const [showRedAlert, setShowRedAlert] = useState(false);
   const [showGreenAlert, setShowGreenAlert] = useState(false);
   const [selectedId, setSelectedId] = useState<number>();
@@ -18,6 +20,12 @@ function SalesTable() {
   useEffect(() => {
     dispatch(getUnapprovedCommissions());
   }, []);
+
+
+  useEffect(() => {
+    (approved || declined) && dispatch(getUnapprovedCommissions());
+  },[approved, declined]);
+
 
   const handleApproveClick = (id: number) => {
     setShowGreenAlert(true);
@@ -31,7 +39,6 @@ function SalesTable() {
 
   const handleApprove = (commission_id: number) => {
     dispatch(approveCommission(commission_id));
-    dispatch(getUnapprovedCommissions());
     setShowGreenAlert(false);
   }
 
@@ -58,7 +65,7 @@ function SalesTable() {
                       <div className="flex flex-col my-auto">
                         <div className="font-semibold text-black">{commission.User.name} {commission.User.surname}</div>
                         <div className="mt-2.5 text-black text-opacity-40">
-                          Commission • {commission.createdAt}
+                          Commission • {new Date(commission.createdAt).getDate()}/{new Date(commission.createdAt).getMonth()}/{new Date(commission.createdAt).getFullYear()}
                         </div>
                       </div>
                     </div>

@@ -1,6 +1,5 @@
 import "../styles/chiefMarketingDashboard.css";
 import DashboardSide from "../components/DashboardSide_ChiefOfOperations";
-import CommisionTable from '../components/commissionTable';
 import '../styles/chiefofoperations.css'
 import ComissionsTable from "../components/commissionTable";
 const bell = require("../assets/bell.png");
@@ -20,13 +19,9 @@ const ChiefOperationsDashboard_AgentCommissions = () => {
                     <p className="main-font text-[#3D5AA1] font-bold text-4xl ml-12 mt-8">
                         List of Agent Commissions
                     </p>
-                    <p className=" ml-12 mt-8">
                     <ComissionsTable/>                    
-                    </p>
-
                 </div>
-               
-
+        
             </div>
 
 
