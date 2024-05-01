@@ -1,7 +1,6 @@
-import * as React from "react";
-const cross = require("../assets/cross.png");
+function AlertRed({setShowRedAlert, handleDecline, id} : {setShowRedAlert: any, handleDecline: any, id: any}) {
 
-function AlertRed() {
+
   return (
     <div className="flex flex-col rounded-md border border-solid shadow-2xl max-w-[537px]"  style={{ backgroundColor: '#FFEFEF' }}>
       <div className="flex flex-col justify-center p-4 w-full text-black max-md:max-w-full">
@@ -20,12 +19,12 @@ function AlertRed() {
         </div>
       </div>
       <div className="flex gap-2 px-4 pt-2 pb-4 text-base font-medium bg-white max-md:flex-wrap max-md:pl-5"  style={{ backgroundColor: '#FFEFEF' }}>
-        <button>
+        <button onClick={() => handleDecline(id)}>
           <div className="justify-center px-6 py-2 text-white bg-red-600 rounded max-md:px-5">
             Yes, I want to remove it.
           </div>
         </button>
-        <button>
+        <button onClick={() => setShowRedAlert(false)}>
           <div className="justify-center px-6 py-2 whitespace-nowrap rounded border border-solid bg-gray-700 bg-opacity-10 border-gray-700 border-opacity-10 text-gray-800 max-md:px-5">
             Cancel
           </div>

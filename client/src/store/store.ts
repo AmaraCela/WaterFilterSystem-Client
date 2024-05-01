@@ -6,6 +6,7 @@ import clientReducer from "./client/clientSlice";
 import statisticsReducer from "./statistics/statisticsSlice";
 import meetingReducer from "./meetings/meetingsSlice";
 import saleReducer from "./sales/saleSlice";
+import commissionReducer from "./comissions/comissionsSlice";
 
 
 const persistConfig = {
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     call: statisticsReducer,
     meeting: meetingReducer, 
     sale: saleReducer,
+    commission: commissionReducer,
 
 })
 

@@ -2,7 +2,7 @@ import "../styles/chiefMarketingDashboard.css";
 import DashboardSide from "../components/DashboardSide_ChiefOfOperations";
 import CommisionTable from '../components/commissionTable';
 import '../styles/chiefofoperations.css'
-import SalesTable from "../components/tableOfSales";
+import ComissionsTable from "../components/commissionTable";
 const bell = require("../assets/bell.png");
 const message = require("../assets/message.png");
 const exit = require("../assets/exit.png");
@@ -21,7 +21,7 @@ const ChiefOperationsDashboard_AgentCommissions = () => {
                         List of Agent Commissions
                     </p>
                     <p className=" ml-12 mt-8">
-                    <SalesTable/>                    
+                    <ComissionsTable/>                    
                     </p>
 
                 </div>

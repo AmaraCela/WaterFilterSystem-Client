@@ -33,6 +33,7 @@ import MySales from '../pages/MySales';
 import DashboardSide from '../components/DashboardSide';
 import SalesAndDebts from '../pages/ChiefOfOperations_ListOfSalesAndDebts';
 import SalesToApprove from '../pages/ChiefOfOperations_SalesToApprove';
+import Comissions from '../pages/ChiefOfOperationsDashboard_AgentCommissions';
 
 
 const AllRoutes = () => {
@@ -63,6 +64,7 @@ const AllRoutes = () => {
                 <Route path='/8' element={<SalesAndDebts />} />
                 <Route path='/9' element={<SalesToApprove />} />
                 <Route path='/agentmeetings' element={<SalesAgentMeetings />} />
+                <Route path='/comissions' element={<Comissions />} />
                 <Route path='/agentreferences' element={<SalesAgentReferences />}/>
                 <Route path='/3' element={<SortDropdown onSelect={function (value: string): void {
                     throw new Error('Function not implemented.');

@@ -1,7 +1,7 @@
 import * as React from "react";
 const cross = require("../assets/cross.png")
 
-function AlertGreen() {
+function AlertGreen({setShowGreenAlert, handleApprove, id} : {setShowGreenAlert: any, handleApprove: any, id: any}) {
     return (
         <div className="flex flex-col rounded-md border border-solid shadow-2xl max-w-[537px]">
           <div className="flex flex-col justify-center p-4 w-full text-emerald-600 bg-blue-50 max-md:max-w-full">
@@ -25,12 +25,12 @@ function AlertGreen() {
             </div>
           </div>
           <div className="flex gap-2 px-4 pt-2 pb-4 text-base font-medium bg-blue-50 max-md:flex-wrap max-md:pl-5">
-            <button>
+            <button onClick={() => handleApprove(id)}>
               <div className="justify-center px-6 py-2 text-blue-50 bg-emerald-600 rounded max-md:px-5">
               Yes, I approve it.
             </div>  
             </button>
-            <button>
+            <button onClick={() => setShowGreenAlert(false)}>
                 <div className="justify-center px-6 py-2 whitespace-nowrap rounded border border-solid bg-sky-700 bg-opacity-10 border-sky-700 border-opacity-10 text-zinc-800 max-md:px-5">
               cancel
             </div> 

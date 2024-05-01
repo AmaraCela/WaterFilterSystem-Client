@@ -45,4 +45,27 @@ export interface Sale {
     monthlyPayment: boolean;
     referredClients: number[];
     Client: Client;
+    SalesAgent?: SalesAgent;
+}
+
+export interface SalesAgent {
+    agent_id: number;
+    User: User;
+}
+
+export interface User {
+    user_id: number;
+    name: string;
+    surname: string;
+    email: string;
+    role: string;
+}
+
+export interface Commission {
+    commission_id: number;
+    amount: number;
+    approved: boolean;
+    type: "REFERRAL" | "SPIF" | "TIERED";
+    User: User;
+    createdAt: string;
 }
