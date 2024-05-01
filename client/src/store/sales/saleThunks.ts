@@ -18,6 +18,7 @@ export const getSales = createAsyncThunk(
     }
 )
 
+
 export const getUnapprovedSales = createAsyncThunk(
     'getUnapprovedSales',
     async (_, { rejectWithValue }) => {

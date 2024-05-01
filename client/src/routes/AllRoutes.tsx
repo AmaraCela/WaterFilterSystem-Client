@@ -21,10 +21,10 @@ import ChiefOperationsDashboard_ListOfSalesAndDebts from '../pages/ChiefOfOperat
 import TableRow from '../components/SalesAndDebts-row';
 import MyComponent from '../components/SalesAndDebtsTable';
 import Insights from '../components/insightsOfAgents';
-import ChiefOperations_Inventory from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
+import ChiefOperationsInventory from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
 import Note from '../components/Inventory_Note'; 
 import NewTask from '../components/Inventory-assignNewTask'
-import ChiefOfOperations_Inventory_assignNewTask from '../pages/ChiefOfOperations_Inventory_assignNewTask';
+import ChiefOfOperationsInventoryAssignNewTask from '../pages/ChiefOfOperations_Inventory_assignNewTask';
 import ChiefOperationsDashboard_SalesToApprove from '../pages/ChiefOfOperations_SalesToApprove';
 import SalesAgentReferences from '../pages/SalesAgentReferences';
 import SalesAgentMeetings from '../pages/SalesAgentMeetings';
@@ -61,11 +61,13 @@ const AllRoutes = () => {
                 <Route path='/5' element={<MyComponent />} />
                 <Route path='/6' element={<BuyTemplate />} />
                 <Route path='/7' element={<RefTemplate />} />
-                <Route path='/8' element={<SalesAndDebts />} />
-                <Route path='/9' element={<SalesToApprove />} />
+                <Route path='/salesdebts' element={<SalesAndDebts />} />
+                <Route path='/approvesales' element={<SalesToApprove />} />
                 <Route path='/agentmeetings' element={<SalesAgentMeetings />} />
-                <Route path='/comissions' element={<Comissions />} />
+                <Route path='/commissions' element={<Comissions />} />
                 <Route path='/agentreferences' element={<SalesAgentReferences />}/>
+                <Route path='/tasks' element={<ChiefOperationsInventory />}/>
+                <Route path='/assignTask' element={<ChiefOfOperationsInventoryAssignNewTask />}/>
                 <Route path='/3' element={<SortDropdown onSelect={function (value: string): void {
                     throw new Error('Function not implemented.');
                 }} />} />

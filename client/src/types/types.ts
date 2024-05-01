@@ -69,3 +69,10 @@ export interface Commission {
     User: User;
     createdAt: string;
 }
+
+export interface Debt {
+    nextPayment: string;
+    amountPaidOff: number;
+    amountToCollect: number;
+    sale: number;
+}

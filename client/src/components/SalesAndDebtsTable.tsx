@@ -1,16 +1,24 @@
-import * as React from "react";
-import TableRow from "./SalesAndDebts-row"; // Assuming you have this component
+import TableRow from "./SalesAndDebts-row";
+import { RootState, useAppDispatch } from "../store/store";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getSales } from "../store/sales/saleThunks";
+import { getDebts } from "../store/debts/debtsThunk";
 
 function SalesAndDebtsTable() {
-  const data = [
-    { date: "12/11/2024", id: "3961456_s", amount: "144", frequency: "monthly" },
-    // Add more data as needed
-  ];
+  const dispatch = useAppDispatch();
+  const debts = useSelector((state: RootState) => state.debt.debts);
+  const sales = useSelector((state: RootState) => state.sale.sales);
+
+  useEffect(() => {
+    dispatch(getDebts());
+    dispatch(getSales(null));
+  }, []);
 
   return (
-    <table  style={{ padding: '30px' }}>
+    <table style={{ padding: '30px' }}>
       <thead>
-      <tr className="bg-gray-800" style={{ backgroundColor: "#DCDFE3",  fontFamily: "Poppins, sans-serif", fontSize: 20, color: "#666E7D"}}>
+        <tr className="bg-gray-800" style={{ backgroundColor: "#DCDFE3", fontFamily: "Poppins, sans-serif", fontSize: 20, color: "#666E7D" }}>
           <th>Date</th>
           <th>ID</th>
           <th>Amount</th>
@@ -18,49 +26,22 @@ function SalesAndDebtsTable() {
         </tr>
       </thead>
       <tbody>
-        {data.map((item, index) => (
+        {debts.map((debt) => (
           <TableRow
-            key={index}
-            date={item.date}
-            id={item.id}
-            amount={item.amount}
-            frequency={item.frequency}
+            key={debt.sale}
+            date={debt.nextPayment}
+            id={debt.sale.toString()}
+            amount={debt.amountToCollect.toString()}
+            frequency={'Monthly'}
           />
         ))}
-           {data.map((item, index) => (
+        {sales.map((sale) => (
           <TableRow
-            key={index}
-            date={item.date}
-            id={item.id}
-            amount={item.amount}
-            frequency={item.frequency}
-          />
-        ))}
-           {data.map((item, index) => (
-          <TableRow
-            key={index}
-            date={item.date}
-            id={item.id}
-            amount={item.amount}
-            frequency={item.frequency}
-          />
-        ))}
-           {data.map((item, index) => (
-          <TableRow
-            key={index}
-            date={item.date}
-            id={item.id}
-            amount={item.amount}
-            frequency={item.frequency}
-          />
-        ))}
-           {data.map((item, index) => (
-          <TableRow
-            key={index}
-            date={item.date}
-            id={item.id}
-            amount={item.amount}
-            frequency={item.frequency}
+            key={sale.id}
+            date={sale.time ?? ''}
+            id={sale.id.toString()}
+            amount={sale.price.toString()}
+            frequency={'One-time'}
           />
         ))}
       </tbody>

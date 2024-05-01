@@ -7,6 +7,7 @@ import statisticsReducer from "./statistics/statisticsSlice";
 import meetingReducer from "./meetings/meetingsSlice";
 import saleReducer from "./sales/saleSlice";
 import commissionReducer from "./comissions/comissionsSlice";
+import debtReducer from "./debts/debtsSlice";
 
 
 const persistConfig = {
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     meeting: meetingReducer, 
     sale: saleReducer,
     commission: commissionReducer,
+    debt: debtReducer,
 
 })
 

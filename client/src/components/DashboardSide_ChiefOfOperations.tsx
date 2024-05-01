@@ -42,19 +42,18 @@ const DashboardSide_ChiefOfOperations = () => {
                 <DashboardLink to={""} src={basket} text={"Sales and commissions"} highlighted={salesBold} />
                 {salesOpen && (
                     <div className="dashboard-section">
-                        <DashboardLink to={""} src={check} text={"     Sales to approve"} highlighted={false} />
-                        <DashboardLink to={""} src={card} text={"     Agent Commissions"} highlighted={false} />
-                        <DashboardLink to={""} src={notebook} text={"     List of Sales and Debts"} highlighted={false} />
+                        <DashboardLink to={"/approvesales"} src={check} text={"     Sales to approve"} highlighted={false} />
+                        <DashboardLink to={"/commissions"} src={card} text={"     Agent Commissions"} highlighted={false} />
+                        <DashboardLink to={"/salesdebts"} src={notebook} text={"     List of Sales and Debts"} highlighted={false} />
                     </div>
                 )}
             </div>
-            
             <div onClick={toggleInventory}>
                 <DashboardLink to={""} src={home} text={"Inventory"} highlighted={inventoryBold} />
                 {inventoryOpen && (
                     <div className="dashboard-section">
-                        <DashboardLink to={""} src={paper} text={"     List of Tasks"} highlighted={false} />
-                        <DashboardLink to={""} src={calendar_add} text={"     Assign a new task"} highlighted={false} />
+                        <DashboardLink to={"/tasks"} src={paper} text={"     List of Tasks"} highlighted={false} />
+                        <DashboardLink to={"/assignTask"} src={calendar_add} text={"     Assign a new task"} highlighted={false} />
                         <DashboardLink to={""} src={settings} text={"     Office inventory and approval"} highlighted={false} />
                     </div>
                 )}
