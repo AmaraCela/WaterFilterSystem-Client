@@ -1,11 +1,11 @@
 import DashboardLink from "./DashboarLink";
 const profileImg = require("../assets/profileImg.png");
-const calling = require("../assets/Calling.png");
 const calendar = require("../assets/Calendar.png");
-const chart = require("../assets/Chart.png");
-const danger = require("../assets/DangerTriangle.png");
-const paper = require("../assets/Paper.png");
-const bookmark = require("../assets/Bookmark.png");
+const chart = require("../assets/Chart_fill.png");
+const clock = require("../assets/Vector.png");
+const calendarAdd = require("../assets/Calendar_add_duotone.png")
+const reference = require("../assets/insta_duotone_line.png")
+const empty = require("../assets/Empty.png")
 
 const DashboardSideSalesAgent = () => {
     return (
@@ -16,11 +16,15 @@ const DashboardSideSalesAgent = () => {
                 <p className="main-font">Sales Agent</p>
             </div>
 
-            <DashboardLink to={"workschedule"} src={calling} text={"Set Work schedule"} highlighted={false} />
+            <DashboardLink to={"workschedule"} src={clock} text={"Set Work schedule"} highlighted={false} />
             <DashboardLink to={"/agentmeetings"} src={calendar} text={"My Meetings"} highlighted={false} />
-            <DashboardLink to={""} src={calendar} text={"Log Meetings"} highlighted = {false}/>
-            <DashboardLink to={"/agentreferences"} src={calendar} text={"References"} highlighted = {false}/>
-            <DashboardLink to={""} src={danger} text={"Chat"} highlighted = {false}/> 
+            <DashboardLink to={""} src={calendarAdd} text={"Log Meetings"} highlighted = {false}/>
+            <DashboardLink to={"/agentreferences"} src={reference} text={"References"} highlighted = {false}/>
+            <DashboardLink to={""} src={chart} text={"Sales"} highlighted={false} />
+            <div className="header-container">
+              <DashboardLink to={""} src ={empty} text={"Add new sale"} highlighted={false} />
+              <DashboardLink to={""} src ={empty} text={"My Sales"} highlighted={false} />
+            </div>
         </div>
     );
 }
