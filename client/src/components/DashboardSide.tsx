@@ -1,4 +1,5 @@
 import DashboardLink from "./DashboarLink";
+import '../styles/Dashboard.css';
 const profileImg = require("../assets/profileImg.png");
 const calling = require("../assets/Calling.png");
 const calendar = require("../assets/Calendar.png");

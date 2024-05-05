@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import '../styles/Calendar.css';
 export function MyComponent() {
   return (
     <div className="flex flex-col max-w-[901px]">
