@@ -1,4 +1,3 @@
-import * as React from "react"; 
 const profile = require("../assets/profileImg.png");
 
 function RefTemplate() {

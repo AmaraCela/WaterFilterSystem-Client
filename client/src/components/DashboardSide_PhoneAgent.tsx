@@ -2,7 +2,6 @@ import DashboardLink from "./DashboarLink";
 const profileImg = require("../assets/profileImg.png");
 const calling = require("../assets/Calling.png");
 const calendar = require("../assets/Calendar.png");
-const chart = require("../assets/Chart.png");
 const danger = require("../assets/DangerTriangle.png");
 const paper = require("../assets/Paper.png");
 const bookmark = require("../assets/Bookmark.png");
@@ -16,14 +15,13 @@ const DashboardSidePhoneAgent = () => {
                 <p className="main-font">Phone Agent</p>
             </div>
 
-        <DashboardLink to={""} src={calling} text={"Phone Calls"} bold={false} />
-        <DashboardLink to={""} src={calendar} text={"Outcomes Overview"} bold={false} />
-        <DashboardLink to={""} src={calendar} text={"schedule new calls"} bold={false} />
-        <DashboardLink to={""} src={calendar} text={"Reserved Phone call"} bold={false} />
-        <DashboardLink to={""} src={danger} text={"Red List"} bold={false} />
-        <DashboardLink to={""} src={paper} text={"View Sales Agent Agenda "} bold={false} />
-        <DashboardLink to={""} src={bookmark} text={"Set Up meetings"} bold={false} />
-
+            <DashboardLink to={""} src={calling} text={"Phone Calls"} highlighted={false}/>
+            <DashboardLink to={""} src={calendar} text={"Outcomes Overview"} highlighted={false}/>
+            <DashboardLink to={""} src={calendar} text={"schedule new calls"} highlighted={false}/>
+            <DashboardLink to={""} src={calendar} text={"Reserved Phone call"} highlighted={false} />
+            <DashboardLink to={""} src={danger} text={"Red List"} highlighted={false} />
+            <DashboardLink to={""} src={paper} text={"View Sales Agent Agenda "} highlighted={false} />
+            <DashboardLink to={""} src={bookmark} text={"Set Up meetings"} highlighted={false} />
         </div>
     );
 }
