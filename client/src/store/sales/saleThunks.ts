@@ -33,3 +33,30 @@ export const getUnapprovedSales = createAsyncThunk(
         }  
     }
 )
+
+export const approveSale = createAsyncThunk(
+    'approveSale',
+    async (saleId, { rejectWithValue }) => {
+        try {
+            const response = await createAPI(`sales/${saleId}/approval`, {method: 'POST'})(null);
+            return response.ok ? 'Approved' : rejectWithValue("Error occurred approving the sale");
+        }
+        catch (error) {
+            return rejectWithValue(error);
+        }
+    }
+)
+
+
+export const declineSale = createAsyncThunk(
+    'declineSale',
+    async (saleId, { rejectWithValue }) => {
+        try {
+            const response = await createAPI(`sales/${saleId}/rejection`, {method: 'POST'})(null);
+            return response.ok ? 'Declined' : rejectWithValue("Error occurred approving the sale");
+        }
+        catch (error) {
+            return rejectWithValue(error);
+        }
+    }
+)
