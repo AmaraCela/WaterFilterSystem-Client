@@ -24,7 +24,7 @@ const RedList = () => {
         <div className="flex justify-center items-center h-screen">
             <div className="dashboard w-3/4 h-max rounded-3xl flex flex-row">
                 <DashboardSide highlighted={"Red List"} />
-                <div className="w-3/4">
+                <div className="w-3/4 main-content">
                     <TopIcons />
                     <p className="main-font text-[#A13D3D] font-bold text-2xl ml-12 mt-8">Red List</p>
                     <input type="search" className="rounded-3xl w-1/2 ml-12 mt-8 search-bar pl-4 h-7 flex items-center" placeholder="Search a person" onChange={(e) => setSearchWord(e.target.value)} onKeyUp={(e) => {if(e.key === 'Enter') {

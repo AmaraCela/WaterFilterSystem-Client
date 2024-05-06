@@ -2,20 +2,33 @@
     background-image: url("../assets/recatngleBg.png");
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
+    width: 100%;
+    height: 100%; 
     box-shadow: rgb(171, 168, 168) 10px 10px 50px 10px;
 }
 
 .side {
-    background-color: rgba(255, 255, 255, 0.6);
-    border-right-color: rgba(61, 90, 161, 0.5);
-    border-right-width: 1px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 25%; /* Adjust as needed */
+    height: 100vh;
+    background-image: url("../assets/Rectangle2.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
 }
 
-.search-bar{
+.main-content {
+    margin-left: 25%;
+}
+
+.search-bar {
     box-shadow: inset gray 0.5px 1px 4px;
     background: linear-gradient(45deg, #ebe8e8, transparent);
 }
 
-.search-bar::placeholder{
+.search-bar::placeholder {
     color: #6FADC8;
 }

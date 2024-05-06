@@ -14,6 +14,7 @@ import BuyTemplate from '../components/buyTemplate';
 import RefTemplate from '../components/referenceTemplate';
 import BuyersAndReferences from '../pages/BuyersAndReferences';
 import SalesAgentSchedules from '../pages/SalesAgentSchedules';
+import SalesAgentAddReferences from '../pages/SalesAgentReferences';
 import ChiefOperationsDashboard_AgentCommissions from '../pages/ChiefOfOperationsDashboard_AgentCommissions';
 import SalesTable from '../components/tableOfSales';
 import CommissionTable from '../components/commissionTable'; 
@@ -67,11 +68,13 @@ const AllRoutes = () => {
                 <Route path='/commissions' element={<Comissions />} />
                 <Route path='/agentreferences' element={<SalesAgentReferences />}/>
                 <Route path='/tasks' element={<ChiefOperationsInventory />}/>
+                <Route path='/agentreferences' element={<SalesAgentAddReferences />}/>
+                <Route path='/addReferences' element={<SalesAgentAddReferences />}/>
                 <Route path='/assignTask' element={<ChiefOfOperationsInventoryAssignNewTask />}/>
                 <Route path='/3' element={<SortDropdown onSelect={function (value: string): void {
                     throw new Error('Function not implemented.');
                 }} />} />
-                <Route path='' element={<SalesAgentMeetings />} />
+                <Route path='/' element={<SalesAgentMeetings />} />
             </Routes>
         </Router>
     )

@@ -118,7 +118,7 @@ const Statistics = () => {
    
       <div className="dashboard w-full h-screen rounded-3xl flex flex-row">
         <DashboardSide highlighted={"Statistics"} />
-        <div className="w-3/4">
+        <div className="w-3/4 main-content">
           <TopIcons />
           <p className="main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-8">Statistics</p>
           <div className="w-full flex justify-between px-6 mt-4">
