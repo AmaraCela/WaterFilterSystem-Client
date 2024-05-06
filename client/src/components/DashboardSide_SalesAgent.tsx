@@ -16,7 +16,7 @@ const DashboardSideSalesAgent = () => {
                 <p className="main-font">Sales Agent</p>
             </div>
 
-            <DashboardLink to={"workschedule"} src={clock} text={"Set Work schedule"} highlighted={false} />
+            <DashboardLink to={"/agentschedule"} src={clock} text={"Set Work schedule"} highlighted={false} />
             <DashboardLink to={"/agentmeetings"} src={calendar} text={"My Meetings"} highlighted={false} />
             <DashboardLink to={""} src={calendarAdd} text={"Log Meetings"} highlighted = {false}/>
             <DashboardLink to={"/agentreferences"} src={reference} text={"References"} highlighted = {false}/>
