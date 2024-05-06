@@ -23,7 +23,8 @@ function SalesTable() {
 
 
   useEffect(() => {
-    (approved || declined) && dispatch(getUnapprovedCommissions());
+    approved && dispatch(getUnapprovedCommissions());
+    declined && dispatch(getUnapprovedCommissions());
   },[approved, declined]);
 
 

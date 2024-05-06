@@ -3,8 +3,8 @@ import { Sale } from "../../types/types";
 import { approveSale, declineSale, getSales, getUnapprovedSales } from "./saleThunks";
 
 interface SaleState {
-    sales: Sale [],
-    unapprovedSales: Sale [],
+    sales: Sale[],
+    unapprovedSales: Sale[],
     approved: boolean,
     declined: boolean,
 }
@@ -19,7 +19,12 @@ const initialState: SaleState = {
 const saleSlice = createSlice({
     name: 'sale',
     initialState,
-    reducers: {},
+    reducers: {
+        resetState(state: SaleState) {
+            state.approved = false;
+            state.declined = false;
+        }
+    },
     extraReducers: builder => {
         builder.addCase(getSales.fulfilled, (state: SaleState, action: any) => {
             state.sales = action.payload;
@@ -41,4 +46,5 @@ const saleSlice = createSlice({
     }
 });
 
+export const { resetState } = saleSlice.actions;
 export default saleSlice.reducer;

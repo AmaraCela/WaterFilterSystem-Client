@@ -4,6 +4,7 @@ import AlertGreen from "../components/alertGreen";
 import { approveSale, declineSale, getUnapprovedSales } from "../store/sales/saleThunks";
 import { RootState, useAppDispatch } from "../store/store";
 import { useSelector } from "react-redux";
+import { resetState } from "../store/sales/saleSlice";
 const approve = require("../assets/approve.png");
 const decline = require("../assets/decline.png");
 const mastercard = require("../assets/mastercard.png");
@@ -18,14 +19,14 @@ function SalesTable() {
   const [showGreenAlert, setShowGreenAlert] = useState(false);
   const [selectedId, setSelectedId] = useState<number>();
 
-  console.log(unapprovedSales);
-
   useEffect(() => {
     dispatch(getUnapprovedSales());
   }, []);
 
   useEffect(() => {
-    (approved || declined) && dispatch(getUnapprovedSales());
+    approved && dispatch(getUnapprovedSales());
+    declined && dispatch(getUnapprovedSales());
+    dispatch(resetState());
   },[approved, declined]);
 
   const handleApprove = (saleId: number) => {
@@ -79,7 +80,7 @@ function SalesTable() {
                       </div>
                       <div className="mt-2.5 font-medium text-blue-700">Pending</div>
                     </div>
-                    <button onClick={() => handleApproveClick(sale.sale_id)}>
+                    <button onClick={() => handleApproveClick(sale.sale_id ?? 1)}>
                       <img
                         loading="lazy"
                         src={approve}
@@ -87,7 +88,7 @@ function SalesTable() {
                         alt="Approve Button"
                       />
                     </button>
-                    <button onClick={() => handleDeclineClick(sale.sale_id)}>
+                    <button onClick={() => handleDeclineClick(sale.sale_id ?? 1)}>
                       <img
                         loading="lazy"
                         src={decline}

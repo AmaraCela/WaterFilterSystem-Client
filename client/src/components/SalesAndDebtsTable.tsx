@@ -9,6 +9,8 @@ function SalesAndDebtsTable() {
   const dispatch = useAppDispatch();
   const debts = useSelector((state: RootState) => state.debt.debts);
   const sales = useSelector((state: RootState) => state.sale.sales);
+  console.log(debts);
+  console.log(sales);
 
   useEffect(() => {
     dispatch(getDebts());
@@ -39,7 +41,7 @@ function SalesAndDebtsTable() {
           <TableRow
             key={sale.sale_id}
             date={sale.time ?? ''}
-            id={sale.sale_id.toString()}
+            id={sale.sale_id?.toString() ?? '1'}
             amount={sale.price.toString()}
             frequency={'One-time'}
           />
