@@ -25,3 +25,8 @@ export function getLoggedInUser() {
         }
     });
 }
+
+export function logout() {
+    localStorage.removeItem("session_user_id");
+    window.location.href = "/login";
+}

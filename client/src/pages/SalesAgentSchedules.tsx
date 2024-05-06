@@ -4,6 +4,8 @@ import DashboardSidePhoneAgent from "../components/DashboardSide_PhoneAgent";
 import PhoneCall from "../components/pa-phoneCall";
 import DashboardSideSalesAgent from  "../components/DashboardSide_SalesAgent";
 import AgentScheduleComponent from "../components/AgentSchedules";
+import { logout } from "../loginUtils/loginUtils";
+
 const bell = require("../assets/bell.png");
 const message = require("../assets/message.png");
 const exit = require("../assets/exit.png");
@@ -17,7 +19,7 @@ const SalesAgentSchedules = () => {
                     <div className="flex flex-row pt-4 pr-8 items-end justify-end">
                         <img src={bell} alt="" className="h-6" />
                         <img src={message} alt="" className="h-6 ml-7"/>
-                        <img src={exit} alt="" className="h-6 ml-7"/>
+                        <img src={exit} alt="" className="h-6 ml-7" style={{ cursor: 'pointer' }} onClick={logout} />
                     </div>
                     <AgentScheduleComponent/>
             </div>
