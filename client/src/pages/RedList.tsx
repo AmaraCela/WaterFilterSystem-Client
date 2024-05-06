@@ -20,6 +20,15 @@ const RedList = () => {
         dispatch(redListClients());
     }, []);
 
+    const removeFromRedlist = (id: number) => {
+        const apiUrl = process.env.REACT_APP_API_ENDPOINT;
+        fetch(`${apiUrl}/clients/${id}/redlistremoval`, {
+            method: 'POST'
+        }).then(() => {
+            dispatch(redListClients());
+        });
+    }
+
     return (
         <div className="flex justify-center items-center h-screen">
             <div className="dashboard w-3/4 h-max rounded-3xl flex flex-row">
@@ -44,7 +53,7 @@ const RedList = () => {
                                 <tr className="h-7" key={client.id}>
                                     <td className="montserrat text-sm w-1/3 text-[#2F65DD]">{client.name} {client.surname}</td>
                                     <td className="montserrat text-sm w-1/3">{client.nextContactDate && `${new Date(client.nextContactDate).getDate()}/${new Date(client.nextContactDate).getMonth()+1}/${new Date(client.nextContactDate).getFullYear()}`}</td>
-                                    <td className="montserrat text-sm w-1/3"></td>
+                                    <td className="montserrat text-sm w-1/3"><button onClick={() => removeFromRedlist(client.id)}>Remove</button></td>
                                 </tr>
                             ))}
                         </tbody>

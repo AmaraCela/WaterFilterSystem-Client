@@ -74,7 +74,7 @@ const AllRoutes = () => {
                 <Route path='/3' element={<SortDropdown onSelect={function (value: string): void {
                     throw new Error('Function not implemented.');
                 }} />} />
-                <Route path='/' element={<SalesAgentMeetings />} />
+                <Route path='/' element={<ChiefMarketingDashboard />} />
             </Routes>
         </Router>
     )

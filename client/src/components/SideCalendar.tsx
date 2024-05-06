@@ -20,6 +20,7 @@ const SideCalendar = () => {
         day++;
     }
     days.push(<p key={day} className="p-2 text-center text-sm calendar-entry bg-[#5272E9] today">{day}</p>);
+    day++;
     while (day <= daysInMonth) {
         days.push(<p key={day} className="p-2 text-center calendar-entry text-sm">{day}</p>);
         day++;
