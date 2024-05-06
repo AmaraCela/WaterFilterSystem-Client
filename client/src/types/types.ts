@@ -33,7 +33,7 @@ export interface Meeting {
 }
 
 export interface Sale {
-    id: number;
+    sale_id: number;
     client: number;
     salesAgent: number;
     phoneOperator: number;

@@ -37,9 +37,9 @@ function SalesAndDebtsTable() {
         ))}
         {sales.map((sale) => (
           <TableRow
-            key={sale.id}
+            key={sale.sale_id}
             date={sale.time ?? ''}
-            id={sale.id.toString()}
+            id={sale.sale_id.toString()}
             amount={sale.price.toString()}
             frequency={'One-time'}
           />

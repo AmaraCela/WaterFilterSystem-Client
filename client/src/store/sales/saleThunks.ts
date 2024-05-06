@@ -36,7 +36,8 @@ export const getUnapprovedSales = createAsyncThunk(
 
 export const approveSale = createAsyncThunk(
     'approveSale',
-    async (saleId, { rejectWithValue }) => {
+    async (saleId: number, { rejectWithValue }) => {
+        console.log(saleId);
         try {
             const response = await createAPI(`sales/${saleId}/approval`, {method: 'POST'})(null);
             return response.ok ? 'Approved' : rejectWithValue("Error occurred approving the sale");
@@ -50,7 +51,7 @@ export const approveSale = createAsyncThunk(
 
 export const declineSale = createAsyncThunk(
     'declineSale',
-    async (saleId, { rejectWithValue }) => {
+    async (saleId: number, { rejectWithValue }) => {
         try {
             const response = await createAPI(`sales/${saleId}/rejection`, {method: 'POST'})(null);
             return response.ok ? 'Declined' : rejectWithValue("Error occurred approving the sale");
