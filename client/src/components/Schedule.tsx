@@ -1,5 +1,6 @@
 import ScheduleSlot from "./ScheduleSlot";
 
+
 const Schedule = () => {
     return (
         <table className="w-full h-full">

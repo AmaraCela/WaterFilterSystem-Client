@@ -1,4 +1,4 @@
-import "../styles/sideCalendar.css";
+import "../styles/SideCalendar.css";
 
 const SideCalendar = () => {
     return (
