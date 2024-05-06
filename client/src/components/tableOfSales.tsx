@@ -51,7 +51,7 @@ function SalesTable() {
 
 
   return (
-    <div className="table-container" style={{ width: "776px", height: "607px", overflow: "auto", position: "relative", display: "flex", justifyContent: "center" }}>
+    <div className="table-container" style={{ width: "100%", height: "75%", overflow: "scroll", position: "relative", display: "flex", justifyContent: "center", alignItems: "start", marginTop:"32px"}}>
       <table>
         <tbody>
           {unapprovedSales.map((sale) => (

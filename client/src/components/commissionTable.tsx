@@ -49,7 +49,7 @@ function SalesTable() {
   } 
 
   return (
-    <div className="table-container" style={{ width: "776px", height: "800px", overflow: "auto", position: "relative", display: "flex", justifyContent: "center" }}>
+    <div className="table-container" style={{ width: "100%", height: "70%", overflow: "auto", position: "relative", display: "flex", justifyContent: "center", alignItems:"start", marginTop:"32px", overflowY:"scroll", marginBottom:"50px"}}>
       {commissions.length === 0 && <p>
         There are no unapproved commissions.  
       </p>}
