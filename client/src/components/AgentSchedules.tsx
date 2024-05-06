@@ -232,7 +232,11 @@ const AgentScheduleComponent = () => {
         const nextMonday = new Date();
         nextMonday.setDate(nextMonday.getDate() + (1 + 7 - nextMonday.getDay()) % 7); 
         nextMonday.setHours(0, 0, 0, 0);
-
+        
+        if (nextMonday < new Date()) {
+            nextMonday.setDate(nextMonday.getDate() + 7);
+        }
+        
         if (nextOccurrence >= nextMonday) {
             return true;
         }
