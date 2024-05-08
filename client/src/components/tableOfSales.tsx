@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import AlertRed from "../components/alertRed";
 import AlertGreen from "../components/alertGreen";
-import { getUnapprovedSales } from "../store/sales/saleThunks";
+import { approveSale, declineSale, getUnapprovedSales } from "../store/sales/saleThunks";
 import { RootState, useAppDispatch } from "../store/store";
 import { useSelector } from "react-redux";
+import { resetState } from "../store/sales/saleSlice";
 const approve = require("../assets/approve.png");
 const decline = require("../assets/decline.png");
 const mastercard = require("../assets/mastercard.png");
@@ -12,38 +13,50 @@ const mastercard = require("../assets/mastercard.png");
 function SalesTable() {
   const dispatch = useAppDispatch();
   const unapprovedSales = useSelector((state: RootState) => state.sale.unapprovedSales);
+  const approved = useSelector((state: RootState) => state.sale.approved);
+  const declined = useSelector((state: RootState) => state.sale.declined);
   const [showRedAlert, setShowRedAlert] = useState(false);
   const [showGreenAlert, setShowGreenAlert] = useState(false);
+  const [selectedId, setSelectedId] = useState<number>();
 
-  const handleApprove = () => {
+  useEffect(() => {
+    dispatch(getUnapprovedSales());
+  }, []);
 
+  useEffect(() => {
+    approved && dispatch(getUnapprovedSales());
+    declined && dispatch(getUnapprovedSales());
+    dispatch(resetState());
+  },[approved, declined]);
+
+  const handleApprove = (saleId: number) => {
+    dispatch(approveSale(saleId));
+    setShowGreenAlert(false);
   }
 
-  const handleDecline = () => {
-
+  const handleDecline = (saleId: number) => {
+    dispatch(declineSale(saleId));
+    setShowRedAlert(false);
   }
   // Function to handle approve button click
-  const handleApproveClick = () => {
+  const handleApproveClick = (id: number) => {
+    setSelectedId(id);
     setShowGreenAlert(true);
   };
 
   // Function to handle decline button click
-  const handleDeclineClick = () => {
+  const handleDeclineClick = (id: number) => {
+    setSelectedId(id);
     setShowRedAlert(true);
   };
 
-  useEffect(() => {
-    dispatch(getUnapprovedSales());
-
-  }, []);
-
 
   return (
-    <div className="table-container" style={{ width: "776px", height: "607px", overflow: "auto", position: "relative", display: "flex", justifyContent: "center" }}>
+    <div className="table-container" style={{ width: "100%", height: "75%", overflow: "scroll", position: "relative", display: "flex", justifyContent: "center", alignItems: "start", marginTop:"32px"}}>
       <table>
         <tbody>
           {unapprovedSales.map((sale) => (
-            <tr key={sale.id}>
+            <tr key={sale.sale_id}>
               <td>
                 <div className="flex gap-5 justify-between py-4 pr-4 pl-11 rounded-xl bg-zinc-100 max-md:flex-wrap max-md:pl-5 max-md:max-w-full">
                   <div className="flex gap-5 justify-between">
@@ -67,7 +80,7 @@ function SalesTable() {
                       </div>
                       <div className="mt-2.5 font-medium text-blue-700">Pending</div>
                     </div>
-                    <button onClick={handleApproveClick}>
+                    <button onClick={() => handleApproveClick(sale.sale_id ?? 1)}>
                       <img
                         loading="lazy"
                         src={approve}
@@ -75,7 +88,7 @@ function SalesTable() {
                         alt="Approve Button"
                       />
                     </button>
-                    <button onClick={handleDeclineClick}>
+                    <button onClick={() => handleDeclineClick(sale.sale_id ?? 1)}>
                       <img
                         loading="lazy"
                         src={decline}
@@ -91,8 +104,8 @@ function SalesTable() {
         </tbody>
       </table>
       <div style={{ position: "absolute", top: 0 }}>
-        {showRedAlert && <AlertRed setShowRedAlert={setShowRedAlert} handleDecline={handleDecline} id={1}/>}
-        {showGreenAlert && <AlertGreen setShowGreenAlert={setShowGreenAlert} handleApprove={handleApprove} id={1}/>}
+        {showRedAlert && <AlertRed setShowRedAlert={setShowRedAlert} handleDecline={handleDecline} id={selectedId}/>}
+        {showGreenAlert && <AlertGreen setShowGreenAlert={setShowGreenAlert} handleApprove={handleApprove} id={selectedId}/>}
       </div>
     </div>
   );

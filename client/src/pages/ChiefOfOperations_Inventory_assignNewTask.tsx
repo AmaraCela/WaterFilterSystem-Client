@@ -3,9 +3,6 @@ import DashboardSide from "../components/DashboardSide_ChiefOfOperations";
 import CommisionTable from '../components/commissionTable';
 import SalesTable from "../components/tableOfSales";
 import '../styles/chiefofoperations.css'
-import SalesAndDebtsTable from "../components/SalesAndDebtsTable";
-import InventoryTasks_Table from "../components/InventoryTasks_Table";
-import Inventory_Note from "../components/Inventory_Note";
 import InventoryTaskAssignForm from "../components/Inventory-assignNewTask";
 const bell = require("../assets/bell.png");
 const message = require("../assets/message.png");

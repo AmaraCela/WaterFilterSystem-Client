@@ -26,7 +26,7 @@ const BuyersAndReferences = () => {
             <div className="flex justify-center items-center h-fit">
                 <div className="dashboard w-3/4 h-max rounded-3xl flex flex-row">
                     <DashboardSide highlighted={"Buyers"} />
-                    <div className="w-3/4">
+                    <div className="w-3/4 main-content">
                         <TopIcons />
                         <p className="main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-8">Buyers and References</p>
                         <input type="search" className="w-1/2 rounded-3xl ml-12 mt-2 search-bar pl-4 h-7 flex items-center" placeholder="Search a buyer/reference" value={keyword} onChange={(e) => setKeyword(e.target.value)} onKeyUp={(e) => { e.key === 'Enter' && dispatch(allClients(keyword)); }} />

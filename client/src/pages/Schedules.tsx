@@ -8,7 +8,7 @@ const Schedules = () => {
     return (
             <div className="dashboard rounded-3xl flex flex-row h-lvh">
                 <DashboardSide highlighted={"Schedules"} />
-                <div className="w-3/4">
+                <div className="w-3/4 main-content">
                     <TopIcons />
                     <p className="main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-2">
                         Sales Agent Meetings

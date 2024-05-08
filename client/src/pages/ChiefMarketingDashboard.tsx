@@ -7,7 +7,7 @@ const ChiefMarketingDashboard = () => {
         <div className="flex justify-center items-center h-screen">
             <div className="dashboard w-3/4 h-max rounded-3xl flex flex-row">
                 <DashboardSide highlighted={"none"}/>
-                <div className="w-3/4">
+                <div className="w-3/4 main-content">
                     <TopIcons />
                     <p className="main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-8">
                         Hello Ediola! <br />
