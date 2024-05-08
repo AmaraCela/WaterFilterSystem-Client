@@ -1,4 +1,9 @@
 import * as React from "react";
+import { customStringValidation } from "../utils/validations";
+import { RootState, useAppDispatch } from "../store/store";
+import { useSelector } from "react-redux";
+import { addReferences, allClients } from "../store/client/clientThunks";
+import { resetReferences } from "../store/client/clientSlice";
 
 interface ReferenceFormProps {
   referenceNumber: number;
@@ -9,7 +14,7 @@ interface ReferenceFormProps {
 }
 
 interface ReferenceInformation {
-  originClient: string;
+  originClientId: number;
   referralName: string;
   address?: string;
   phoneNumber: string;
@@ -25,6 +30,10 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
   onSubmit,
   isVisible,
 }) => {
+
+  const dispatch = useAppDispatch();
+  const originClients = useSelector((state: RootState) => state.client.clients);
+
   const [originClient, setOriginClient] = React.useState("");
   const [referralName, setReferralName] = React.useState("");
   const [address, setAddress] = React.useState("");
@@ -33,9 +42,11 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
   const [financiallyQualified, setFinanciallyQualified] = React.useState(false);
   const [notFinanciallyQualified, setNotFinanciallyQualified] = React.useState(false);
   const [comments, setComments] = React.useState("");
+  const [originClientId, setOriginClientId] = React.useState<number>(-1);
+  const [clientSuggestion, setClientSuggestion] = React.useState("hidden");
 
   const [inputs, setInputs] = React.useState<ReferenceInformation>({
-    originClient: "",
+    originClientId: -1,
     referralName: "",
     address: "",
     phoneNumber: "",
@@ -45,37 +56,37 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
   });
 
   React.useEffect(() => {
-    setInputs({...inputs, originClient})
-  }, [originClient]);
+    setInputs({ ...inputs, originClientId });
+  }, [originClientId]);
 
   React.useEffect(() => {
-    setInputs({...inputs, referralName})
+    setInputs({ ...inputs, referralName })
   }, [referralName]);
 
   React.useEffect(() => {
-    setInputs({...inputs, address})
+    setInputs({ ...inputs, address })
   }, [address]);
 
   React.useEffect(() => {
-    setInputs({...inputs, phoneNumber})
+    setInputs({ ...inputs, phoneNumber })
   }, [phoneNumber]);
 
   React.useEffect(() => {
-    setInputs({...inputs, profession})
+    setInputs({ ...inputs, profession })
   }, [profession]);
 
   React.useEffect(() => {
-    setInputs({...inputs, financiallyQualified})
+    setInputs({ ...inputs, financiallyQualified })
   }, [financiallyQualified]);
 
   React.useEffect(() => {
-    setInputs({...inputs, comments})
+    setInputs({ ...inputs, comments })
   }, [comments]);
 
 
   React.useEffect(() => {
     const newArray = information;
-    newArray[referenceNumber-1] = inputs;
+    newArray[referenceNumber - 1] = inputs;
     setInformation(newArray);
   }, [inputs]);
 
@@ -86,6 +97,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
 
   // Function to handle origin client change
   const handleOriginClientChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.target.value.length > 2 && dispatch(allClients(event.target.value));
     setOriginClient(event.target.value);
   };
 
@@ -147,13 +159,29 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
             Origin Client
           </label>
           <input
-            type="text"
+            type="search"
             id={`originClient-${referenceNumber}`}
             value={originClient}
-            onChange={(e) => handleOriginClientChange(e)}
+            onChange={(e) => {
+              handleOriginClientChange(e);
+              setClientSuggestion('block');
+            }}
             className="flex flex-col justify-center items-start px-2 py-1"
             aria-label={`Enter origin client for reference ${referenceNumber}`}
           />
+          <div className={`${clientSuggestion}`}>
+            {(originClients && originClients.length > 0) ? originClients.map((client) => (
+              <button key={client.id} className="hover:bg-gray-200 cursor-pointer w-full" onClick={() => {
+                setOriginClientId(client.id);
+                setClientSuggestion("hidden");
+                const nameToDisplay = (client.name ? client.name : '') + ' ' + (client.surname ? client.surname : '');
+                setOriginClient(nameToDisplay ?? '');
+              }} >
+                {client.name} {client.surname}
+              </button>
+            )) :
+              <p className="text-[#ff0000e0]">No clients match your search.</p>}
+          </div>
         </div>
         <div className="flex flex-col justify-center px-3 py-1.5 bg-white rounded-lg shadow-md">
           <label
@@ -217,7 +245,8 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
             type="text"
             id={`profession-${referenceNumber}`}
             value={profession}
-            onChange={(e) => handleProfessionChange(e)}
+            onChange={(e) => handleProfessionChange(e)
+            }
             className="flex flex-col justify-center items-start px-2 py-1"
             aria-label={`Enter profession for reference ${referenceNumber}`}
           />
@@ -269,14 +298,12 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
 };
 
 const MyComponent: React.FC = () => {
+  const dispatch = useAppDispatch();
 
   const [numberOfReferences, setNumberOfReferences] = React.useState(1);
   const [selectedReference, setSelectedReference] = React.useState(1);
   const [inputs, setInputs] = React.useState<ReferenceInformation[]>([]);
-
-  React.useEffect(() => {
-    console.log(inputs);
-  }, [inputs]);
+  const addReferencesSuccessful = useSelector((state: RootState) => state.client.referencesSuccesful);
 
   // Function to handle number of references change
   const handleNumberOfReferencesChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -288,8 +315,12 @@ const MyComponent: React.FC = () => {
     setSelectedReference(referenceNumber);
   };
 
+  const handleSubmit = () => {
+    dispatch(addReferences(inputs));
+  }
+
   return (
-    <div className="flex flex-col mr-36 max-w-full w-[1500px] max-md:mr-2.5 ml-5">
+    <div className="flex flex-col mr-36 max-w-full w-[1500px] max-md:mr-2.5 ml-5 mb-7">
       <form>
         <div className="flex gap-4 self-start max-md:flex-wrap max-md:mt-10">
           <div className="flex flex-col text-gray-600">
@@ -318,7 +349,7 @@ const MyComponent: React.FC = () => {
           <React.Fragment key={index}>
             <ReferenceForm
               setInformation={setInputs}
-              information = {inputs}
+              information={inputs}
               referenceNumber={index + 1}
               onSubmit={() => { }}
               isVisible={selectedReference === index + 1}
@@ -341,10 +372,20 @@ const MyComponent: React.FC = () => {
       <button
         type="submit"
         className="justify-center items-start self-stretch mt-3 mr-0 max-w-[344px] h-10 text-xl font-bold text-center text-white bg-indigo-500 rounded-xl"
+        onClick={handleSubmit}
       >
         Submit All
       </button>
+      {addReferencesSuccessful && <div className="w-screen h-screen top-0 left-0 absolute z-10 flex items-center justify-center bg-[#81808065]">
+        <div className="w-1/2 h-1/3 bg-white border-1 border-black rounded-md flex justify-evenly flex-col items-center">
+          <p>{addReferencesSuccessful}.</p>
+          <button className="rounded-md bg-[#64aa64] px-4 py-2" onClick={() => {
+            dispatch(resetReferences());
+          }}>Okay</button>
+        </div>
+      </div>}
     </div>
+
   );
 };
 
