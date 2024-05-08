@@ -27,7 +27,7 @@ function SalesTable() {
     approved && dispatch(getUnapprovedSales());
     declined && dispatch(getUnapprovedSales());
     dispatch(resetState());
-  },[approved, declined]);
+  }, [approved, declined]);
 
   const handleApprove = (saleId: number) => {
     dispatch(approveSale(saleId));
@@ -52,60 +52,64 @@ function SalesTable() {
 
 
   return (
-    <div className="table-container" style={{ width: "100%", height: "75%", overflow: "scroll", position: "relative", display: "flex", justifyContent: "center", alignItems: "start", marginTop:"32px"}}>
-      <table>
-        <tbody>
-          {unapprovedSales.map((sale) => (
-            <tr key={sale.sale_id}>
-              <td>
-                <div className="flex gap-5 justify-between py-4 pr-4 pl-11 rounded-xl bg-zinc-100 max-md:flex-wrap max-md:pl-5 max-md:max-w-full">
-                  <div className="flex gap-5 justify-between">
-                    <img
-                      loading="lazy"
-                      src={mastercard}
-                      className="shrink-0 aspect-[1.27] w-[63px]"
-                      alt="Mastercard Logo"
-                    />
-                    <div className="flex flex-col my-auto">
-                      <div className="font-semibold text-black">{sale.SalesAgent?.User.name} {sale.SalesAgent?.User.surname}</div>
-                      <div className="mt-2.5 text-black text-opacity-40">
-                        {sale.monthlyPayment ? 'Monthly payment' : 'Full payment'} • {sale.time && new Date(sale.time).getDate()}/{sale.time && new Date(sale.time).getMonth()}/{sale.time && new Date(sale.time).getFullYear()}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-5 justify-between my-auto text-right whitespace-nowrap">
-                    <div className="flex flex-col">
-                      <div className="self-start ml-4 font-semibold text-black max-md:ml-2.5">
-                        {sale.price}
-                      </div>
-                      <div className="mt-2.5 font-medium text-blue-700">Pending</div>
-                    </div>
-                    <button onClick={() => handleApproveClick(sale.sale_id ?? 1)}>
+    <div className="table-container" style={{ width: "100%", height: "75%", overflow: "scroll", position: "relative", display: "flex", justifyContent: "center", alignItems: "start", marginTop: "32px" }}>
+      {unapprovedSales ?
+        <table>
+          <tbody>
+            {unapprovedSales.map((sale) => (
+              <tr key={sale.sale_id}>
+                <td>
+                  <div className="flex gap-5 justify-between py-4 pr-4 pl-11 rounded-xl bg-zinc-100 max-md:flex-wrap max-md:pl-5 max-md:max-w-full">
+                    <div className="flex gap-5 justify-between">
                       <img
                         loading="lazy"
-                        src={approve}
-                        className="shrink-0 self-start aspect-[1] w-[30px]"
-                        alt="Approve Button"
+                        src={mastercard}
+                        className="shrink-0 aspect-[1.27] w-[63px]"
+                        alt="Mastercard Logo"
                       />
-                    </button>
-                    <button onClick={() => handleDeclineClick(sale.sale_id ?? 1)}>
-                      <img
-                        loading="lazy"
-                        src={decline}
-                        className="shrink-0 self-start aspect-[1] w-[30px]"
-                        alt="Decline Button"
-                      />
-                    </button>
+                      <div className="flex flex-col my-auto">
+                        <div className="font-semibold text-black">{sale.SalesAgent?.User.name} {sale.SalesAgent?.User.surname}</div>
+                        <div className="mt-2.5 text-black text-opacity-40">
+                          {sale.monthlyPayment ? 'Monthly payment' : 'Full payment'} • {sale.time && new Date(sale.time).getDate()}/{sale.time && new Date(sale.time).getMonth()}/{sale.time && new Date(sale.time).getFullYear()}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-5 justify-between my-auto text-right whitespace-nowrap">
+                      <div className="flex flex-col">
+                        <div className="self-start ml-4 font-semibold text-black max-md:ml-2.5">
+                          {sale.price}
+                        </div>
+                        <div className="mt-2.5 font-medium text-blue-700">Pending</div>
+                      </div>
+                      <button onClick={() => handleApproveClick(sale.sale_id ?? 1)}>
+                        <img
+                          loading="lazy"
+                          src={approve}
+                          className="shrink-0 self-start aspect-[1] w-[30px]"
+                          alt="Approve Button"
+                        />
+                      </button>
+                      <button onClick={() => handleDeclineClick(sale.sale_id ?? 1)}>
+                        <img
+                          loading="lazy"
+                          src={decline}
+                          className="shrink-0 self-start aspect-[1] w-[30px]"
+                          alt="Decline Button"
+                        />
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table> :
+        <p>
+          There are no sales to approve
+        </p>}
       <div style={{ position: "absolute", top: 0 }}>
-        {showRedAlert && <AlertRed setShowRedAlert={setShowRedAlert} handleDecline={handleDecline} id={selectedId}/>}
-        {showGreenAlert && <AlertGreen setShowGreenAlert={setShowGreenAlert} handleApprove={handleApprove} id={selectedId}/>}
+        {showRedAlert && <AlertRed setShowRedAlert={setShowRedAlert} handleDecline={handleDecline} id={selectedId} />}
+        {showGreenAlert && <AlertGreen setShowGreenAlert={setShowGreenAlert} handleApprove={handleApprove} id={selectedId} />}
       </div>
     </div>
   );

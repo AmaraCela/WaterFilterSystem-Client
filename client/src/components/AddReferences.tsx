@@ -2,12 +2,26 @@ import * as React from "react";
 
 interface ReferenceFormProps {
   referenceNumber: number;
+  information: ReferenceInformation[];
+  setInformation: any;
   onSubmit: () => void;
   isVisible: boolean;
 }
 
+interface ReferenceInformation {
+  originClient: string;
+  referralName: string;
+  address?: string;
+  phoneNumber: string;
+  profession?: string;
+  financiallyQualified: boolean;
+  comments?: string;
+}
+
 const ReferenceForm: React.FC<ReferenceFormProps> = ({
   referenceNumber,
+  information,
+  setInformation,
   onSubmit,
   isVisible,
 }) => {
@@ -19,6 +33,51 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
   const [financiallyQualified, setFinanciallyQualified] = React.useState(false);
   const [notFinanciallyQualified, setNotFinanciallyQualified] = React.useState(false);
   const [comments, setComments] = React.useState("");
+
+  const [inputs, setInputs] = React.useState<ReferenceInformation>({
+    originClient: "",
+    referralName: "",
+    address: "",
+    phoneNumber: "",
+    profession: "",
+    financiallyQualified: false,
+    comments: ""
+  });
+
+  React.useEffect(() => {
+    setInputs({...inputs, originClient})
+  }, [originClient]);
+
+  React.useEffect(() => {
+    setInputs({...inputs, referralName})
+  }, [referralName]);
+
+  React.useEffect(() => {
+    setInputs({...inputs, address})
+  }, [address]);
+
+  React.useEffect(() => {
+    setInputs({...inputs, phoneNumber})
+  }, [phoneNumber]);
+
+  React.useEffect(() => {
+    setInputs({...inputs, profession})
+  }, [profession]);
+
+  React.useEffect(() => {
+    setInputs({...inputs, financiallyQualified})
+  }, [financiallyQualified]);
+
+  React.useEffect(() => {
+    setInputs({...inputs, comments})
+  }, [comments]);
+
+
+  React.useEffect(() => {
+    const newArray = information;
+    newArray[referenceNumber-1] = inputs;
+    setInformation(newArray);
+  }, [inputs]);
 
   // Function to handle form submission
   const handleSubmit = () => {
@@ -73,9 +132,8 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
 
   return (
     <div
-      className={`flex flex-col px-5 py-6 rounded-lg bg-indigo-50 max-w-[500px] ${
-        isVisible ? "" : "hidden"
-      }`}
+      className={`flex flex-col px-5 py-6 rounded-lg bg-indigo-50 max-w-[500px] ${isVisible ? "" : "hidden"
+        }`}
     >
       <h2 className="text-2xl font-bold leading-6 text-indigo-800">
         Reference {referenceNumber}
@@ -92,7 +150,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
             type="text"
             id={`originClient-${referenceNumber}`}
             value={originClient}
-            onChange={handleOriginClientChange}
+            onChange={(e) => handleOriginClientChange(e)}
             className="flex flex-col justify-center items-start px-2 py-1"
             aria-label={`Enter origin client for reference ${referenceNumber}`}
           />
@@ -108,7 +166,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
             type="text"
             id={`referralName-${referenceNumber}`}
             value={referralName}
-            onChange={handleReferralNameChange}
+            onChange={(e) => handleReferralNameChange(e)}
             className="flex flex-col justify-center items-start px-2 py-1"
             aria-label={`Enter referral's full name for reference ${referenceNumber}`}
           />
@@ -127,7 +185,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
             type="text"
             id={`address-${referenceNumber}`}
             value={address}
-            onChange={handleAddressChange}
+            onChange={(e) => handleAddressChange(e)}
             className="flex flex-col justify-center items-start px-2 py-1"
             aria-label={`Enter address for reference ${referenceNumber}`}
           />
@@ -143,7 +201,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
             type="tel"
             id={`phoneNumber-${referenceNumber}`}
             value={phoneNumber}
-            onChange={handlePhoneNumberChange}
+            onChange={(e) => handlePhoneNumberChange(e)}
             className="flex flex-col justify-center items-start px-2 py-1"
             aria-label={`Enter phone number for reference ${referenceNumber}`}
           />
@@ -159,7 +217,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
             type="text"
             id={`profession-${referenceNumber}`}
             value={profession}
-            onChange={handleProfessionChange}
+            onChange={(e) => handleProfessionChange(e)}
             className="flex flex-col justify-center items-start px-2 py-1"
             aria-label={`Enter profession for reference ${referenceNumber}`}
           />
@@ -170,7 +228,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               type="checkbox"
               id={`financiallyQualified-${referenceNumber}`}
               checked={financiallyQualified}
-              onChange={handleFinanciallyQualifiedChange}
+              onChange={(e) => handleFinanciallyQualifiedChange(e)}
               className="shrink-0 self-start w-5 h-3.5 bg-white rounded-lg border border-solid border-neutral-400"
               aria-label={`Reference ${referenceNumber} is financially qualified`}
             />
@@ -183,7 +241,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
               type="checkbox"
               id={`notFinanciallyQualified-${referenceNumber}`}
               checked={notFinanciallyQualified}
-              onChange={handleNotFinanciallyQualifiedChange}
+              onChange={(e) => handleNotFinanciallyQualifiedChange(e)}
               className="shrink-0 self-start w-5 h-3.5 bg-white rounded-lg border border-solid border-neutral-400"
               aria-label={`Reference ${referenceNumber} is not financially qualified`}
             />
@@ -202,7 +260,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
       <textarea
         id={`comments-${referenceNumber}`}
         value={comments}
-        onChange={handleCommentsChange}
+        onChange={(e) => handleCommentsChange(e)}
         className="shrink-0 bg-white rounded-lg border border-solid border-neutral-400 h-[72px] max-md:max-w-full"
         aria-label={`Enter optional comments for reference ${referenceNumber}`}
       />
@@ -211,8 +269,14 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
 };
 
 const MyComponent: React.FC = () => {
+
   const [numberOfReferences, setNumberOfReferences] = React.useState(1);
   const [selectedReference, setSelectedReference] = React.useState(1);
+  const [inputs, setInputs] = React.useState<ReferenceInformation[]>([]);
+
+  React.useEffect(() => {
+    console.log(inputs);
+  }, [inputs]);
 
   // Function to handle number of references change
   const handleNumberOfReferencesChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -231,7 +295,7 @@ const MyComponent: React.FC = () => {
           <div className="flex flex-col text-gray-600">
             <div className="flex flex-col justify-center text-base leading-6 fill-white">
               <div className="flex gap-5 justify-between px-3.5 py-3 rounded-lg border border-solid border-neutral-400">
-                <select value={numberOfReferences} onChange={handleNumberOfReferencesChange}>
+                <select value={numberOfReferences} onChange={(e) => handleNumberOfReferencesChange(e)}>
                   {[...Array(10)].map((_, index) => (
                     <option key={index + 1} value={index + 1}>
                       {index + 1}
@@ -253,8 +317,10 @@ const MyComponent: React.FC = () => {
         {[...Array(numberOfReferences)].map((_, index) => (
           <React.Fragment key={index}>
             <ReferenceForm
+              setInformation={setInputs}
+              information = {inputs}
               referenceNumber={index + 1}
-              onSubmit={() => {}}
+              onSubmit={() => { }}
               isVisible={selectedReference === index + 1}
             />
           </React.Fragment>
@@ -263,9 +329,8 @@ const MyComponent: React.FC = () => {
           {[...Array(numberOfReferences)].map((_, index) => (
             <div
               key={index}
-              className={`w-6 h-6 rounded-full border-2 border-gray-400 flex items-center justify-center cursor-pointer ${
-                selectedReference === index + 1 ? 'bg-indigo-500 border-indigo-500' : 'bg-white'
-              }`}
+              className={`w-6 h-6 rounded-full border-2 border-gray-400 flex items-center justify-center cursor-pointer ${selectedReference === index + 1 ? 'bg-indigo-500 border-indigo-500' : 'bg-white'
+                }`}
               onClick={() => handleReferenceSelection(index + 1)}
             >
               {selectedReference === index + 1 && <div className="w-3 h-3 rounded-full bg-white" />}

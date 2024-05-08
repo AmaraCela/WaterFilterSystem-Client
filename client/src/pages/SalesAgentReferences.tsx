@@ -6,7 +6,7 @@ const SalesAgentAddReferences = () => {
     return (
         <div className="dashboard rounded-3xl flex flex-row h-lvh overflow-hidden">
             <DashboardSideSalesAgent />
-            <div className="main-content flex flex-col w-full w-3/4"> 
+            <div className="main-content flex flex-col w-full w-3/4 overflow-y-scroll"> 
                 <div className="flex flex-row w-full pt-4 pr-8 justify-end items-end absolute top-0 right-0"> 
                     <TopIcons />
                 </div>
