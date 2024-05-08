@@ -3,10 +3,12 @@ import { addReferences, allClients, editClient, getClient, redListClients } from
 import { Client } from "../../types/types";
 
 interface ClientState {
-    clients: Client [],
-    redlistClients: Client [],
+    clients: Client[],
+    redlistClients: Client[],
     clientToEdit: Client | null,
     referencesSuccesful: string | null,
+    referenceError: string | null,
+    phoneNoError: string | null,
 }
 
 const initialState: ClientState = {
@@ -14,16 +16,18 @@ const initialState: ClientState = {
     redlistClients: [],
     clientToEdit: null,
     referencesSuccesful: null,
-
+    referenceError: null,
+    phoneNoError: null,
 }
 
 
 const clientSlice = createSlice({
     name: 'client',
-    initialState, 
+    initialState,
     reducers: {
         resetReferences: (state: ClientState) => {
             state.referencesSuccesful = null;
+            state.phoneNoError = null;
         }
     },
     extraReducers: builder => {
@@ -32,15 +36,20 @@ const clientSlice = createSlice({
         }).addCase(allClients.fulfilled, (state: ClientState, action: any) => {
             state.clients = action.payload;
         }).addCase(allClients.rejected, (state: ClientState, action: any) => {
-            console.log('rejectedddddddddd');
+
         }).addCase(getClient.fulfilled, (state: ClientState, action: any) => {
             state.clientToEdit = action.payload;
         }).addCase(editClient.fulfilled, (state: ClientState, action: any) => {
             state.clientToEdit = action.payload;
-        }).addCase(addReferences.pending, (state: ClientState) =>{
+        }).addCase(addReferences.pending, (state: ClientState) => {
             state.referencesSuccesful = null;
-        }).addCase(addReferences.fulfilled, (state: ClientState, action: any)=> {
+        }).addCase(addReferences.fulfilled, (state: ClientState, action: any) => {
             state.referencesSuccesful = action.payload;
+        }).addCase(addReferences.rejected, (state: ClientState, action: any) => {
+            console.log(action.payload);
+            if (action.payload.errors.phoneNo) {
+                state.phoneNoError = "The phone number is either invalid or taken."
+            }
         })
     }
 })

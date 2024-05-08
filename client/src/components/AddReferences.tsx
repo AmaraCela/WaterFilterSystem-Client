@@ -304,6 +304,7 @@ const MyComponent: React.FC = () => {
   const [selectedReference, setSelectedReference] = React.useState(1);
   const [inputs, setInputs] = React.useState<ReferenceInformation[]>([]);
   const addReferencesSuccessful = useSelector((state: RootState) => state.client.referencesSuccesful);
+  const phoneNoError = useSelector((state: RootState) => state.client.phoneNoError);
 
   // Function to handle number of references change
   const handleNumberOfReferencesChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -376,9 +377,9 @@ const MyComponent: React.FC = () => {
       >
         Submit All
       </button>
-      {addReferencesSuccessful && <div className="w-screen h-screen top-0 left-0 absolute z-10 flex items-center justify-center bg-[#81808065]">
+      {(addReferencesSuccessful || phoneNoError) && <div className="w-screen h-screen top-0 left-0 absolute z-10 flex items-center justify-center bg-[#81808065]">
         <div className="w-1/2 h-1/3 bg-white border-1 border-black rounded-md flex justify-evenly flex-col items-center">
-          <p>{addReferencesSuccessful}.</p>
+          <p>{addReferencesSuccessful ?? phoneNoError}</p>
           <button className="rounded-md bg-[#64aa64] px-4 py-2" onClick={() => {
             dispatch(resetReferences());
           }}>Okay</button>
