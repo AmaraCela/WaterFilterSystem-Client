@@ -27,6 +27,7 @@ const clientSlice = createSlice({
     reducers: {
         resetReferences: (state: ClientState) => {
             state.referencesSuccesful = null;
+            state.phoneNoErrors = [];
         }
     },
     extraReducers: builder => {
@@ -48,7 +49,13 @@ const clientSlice = createSlice({
         }).addCase(addReferences.rejected, (state: ClientState, action: any) => {
             for (let error of action.payload) {
                 if (error.data.errors.phoneNo) {
-                    state.phoneNoErrors && state.phoneNoErrors.push({data: error.data.errors.phoneNo, reference: error.reference});
+                    if (error.data.errors.phoneNo.includes('unique')) {
+                        state.phoneNoErrors && state.phoneNoErrors.push({ data: 'Phone number is already entered.', reference: error.reference });
+                    }
+                    else {
+                        state.phoneNoErrors && state.phoneNoErrors.push({ data: 'Phone number format is incorrect.', reference: error.reference });
+                    }
+
                 }
             }
 

@@ -248,13 +248,11 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
             className="flex flex-col justify-center items-start px-2 py-1"
             aria-label={`Enter phone number for reference ${referenceNumber}`}
           />
-          {phoneNoError && <p className="text-[#ff0000e0]">
+          {phoneNoError ? <p className="text-[#ff0000e0]">
             {phoneNoError}
-            </p>}
-          {phoneNumberError.length > 0 && <p className="text-[#ff0000e0]">
+            </p> : phoneNumberError.length > 0 && <p className="text-[#ff0000e0]">
             {phoneNumberError}
-          </p>
-          }
+          </p> }
         </div>
         <div className="flex flex-col justify-center px-3 py-2.5 bg-white rounded-lg shadow-md">
           <label
@@ -329,6 +327,10 @@ const MyComponent: React.FC = () => {
   const [inputs, setInputs] = React.useState<ReferenceInformation[]>([]);
   const addReferencesSuccessful = useSelector((state: RootState) => state.client.referencesSuccesful);
   const phoneNoErrors = useSelector((state: RootState) => state.client.phoneNoErrors);
+
+  React.useEffect(() => {
+    dispatch(resetReferences());
+  }, []);
 
   // Function to handle number of references change
   const handleNumberOfReferencesChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -405,11 +407,11 @@ const MyComponent: React.FC = () => {
         Submit All
       </button>
       {(addReferencesSuccessful || (submitClicked && (hasErrors || phoneNoErrors.length > 0))) && <div className="w-screen h-screen top-0 left-0 absolute z-10 flex items-center justify-center bg-[#81808065]">
-        <div className="w-1/2 h-1/3 bg-white border-1 border-black rounded-md flex justify-evenly flex-col items-center">
-          {addReferencesSuccessful && <p>{addReferencesSuccessful}</p>}
-          {phoneNoErrors && phoneNoErrors.length > 0 && <p>An error has occurred. Check the references for more details.</p>}
+        <div className="w-1/3 h-1/3 bg-white border-1 border-black rounded-md flex justify-evenly flex-col items-center">
+          {addReferencesSuccessful && <p className="text-center p-2">{addReferencesSuccessful}</p>}
+          {phoneNoErrors && phoneNoErrors.length > 0 && <p className="text-center p-2 text-[#ff0000e0]" >An error has occurred. Check the references for more details.</p>}
           <button className="rounded-md bg-[#64aa64] px-4 py-2" onClick={() => {
-            dispatch(resetReferences());
+            addReferencesSuccessful && dispatch(resetReferences());
             setSubmitClicked(false);
           }}>Okay</button>
         </div>
