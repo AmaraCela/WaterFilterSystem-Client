@@ -8,7 +8,7 @@ interface ClientState {
     clientToEdit: Client | null,
     referencesSuccesful: string | null,
     referenceError: string | null,
-    phoneNoError: string | null,
+    phoneNoErrors: { data: string, reference: number }[],
 }
 
 const initialState: ClientState = {
@@ -17,7 +17,7 @@ const initialState: ClientState = {
     clientToEdit: null,
     referencesSuccesful: null,
     referenceError: null,
-    phoneNoError: null,
+    phoneNoErrors: [],
 }
 
 
@@ -27,7 +27,6 @@ const clientSlice = createSlice({
     reducers: {
         resetReferences: (state: ClientState) => {
             state.referencesSuccesful = null;
-            state.phoneNoError = null;
         }
     },
     extraReducers: builder => {
@@ -43,13 +42,16 @@ const clientSlice = createSlice({
             state.clientToEdit = action.payload;
         }).addCase(addReferences.pending, (state: ClientState) => {
             state.referencesSuccesful = null;
+            state.phoneNoErrors = [];
         }).addCase(addReferences.fulfilled, (state: ClientState, action: any) => {
             state.referencesSuccesful = action.payload;
         }).addCase(addReferences.rejected, (state: ClientState, action: any) => {
-            console.log(action.payload);
-            if (action.payload.errors.phoneNo) {
-                state.phoneNoError = "The phone number is either invalid or taken."
+            for (let error of action.payload) {
+                if (error.data.errors.phoneNo) {
+                    state.phoneNoErrors && state.phoneNoErrors.push({data: error.data.errors.phoneNo, reference: error.reference});
+                }
             }
+
         })
     }
 })

@@ -91,8 +91,8 @@ export const addReferences = createAsyncThunk(
     }[], { rejectWithValue }) => {
         try {
             let flag = true;
-            let data;
-            console.log(information);
+            let errors: any[] = [];
+            let i = 0;
             for (const info of information) {
                 let name = info.referralName.split(' ')[0];
                 let surname = info.referralName.split(' ').length > 0 ? info.referralName.split(' ')[1] : null;
@@ -104,11 +104,13 @@ export const addReferences = createAsyncThunk(
                 let body = referredBy ? {name, surname, phoneNo, address, profession, hasMadePurchase, referredBy} : {name, surname, phoneNo, address, profession, hasMadePurchase};
 
                 const response = await createAPI('clients', { method: 'POST' })(body);
-                data = await response.json();
-                console.log(data);
+                const data = await response.json();
+                const errorInfo = {data, reference: i}
+                !response.ok && errors.push(errorInfo);
                 flag = flag && response.ok;
+                i++;
             }
-            return flag ? 'References added successfully' : rejectWithValue(data);
+            return flag ? 'References added successfully' : rejectWithValue(errors);
         }
         catch (error) {
             console.log(error);

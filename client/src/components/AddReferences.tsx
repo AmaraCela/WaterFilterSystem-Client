@@ -1,5 +1,5 @@
 import * as React from "react";
-import { customStringValidation } from "../utils/validations";
+import { customStringValidation, phoneNumberValidation } from "../utils/validations";
 import { RootState, useAppDispatch } from "../store/store";
 import { useSelector } from "react-redux";
 import { addReferences, allClients } from "../store/client/clientThunks";
@@ -11,6 +11,8 @@ interface ReferenceFormProps {
   setInformation: any;
   onSubmit: () => void;
   isVisible: boolean;
+  setHasErrors: any;
+  phoneNoError: string | null;
 }
 
 interface ReferenceInformation {
@@ -29,6 +31,8 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
   setInformation,
   onSubmit,
   isVisible,
+  setHasErrors,
+  phoneNoError,
 }) => {
 
   const dispatch = useAppDispatch();
@@ -45,6 +49,9 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
   const [originClientId, setOriginClientId] = React.useState<number>(-1);
   const [clientSuggestion, setClientSuggestion] = React.useState("hidden");
 
+  console.log(phoneNoError);
+  const [phoneNumberError, setPhoneNumberError] = React.useState("");
+
   const [inputs, setInputs] = React.useState<ReferenceInformation>({
     originClientId: -1,
     referralName: "",
@@ -54,6 +61,10 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
     financiallyQualified: false,
     comments: ""
   });
+
+  React.useEffect(() => {
+    setHasErrors(phoneNumberError ? true : false)
+  }, [phoneNumberError]);
 
   React.useEffect(() => {
     setInputs({ ...inputs, originClientId });
@@ -68,7 +79,8 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
   }, [address]);
 
   React.useEffect(() => {
-    setInputs({ ...inputs, phoneNumber })
+    setInputs({ ...inputs, phoneNumber });
+    phoneNumber.length > 0 && setPhoneNumberError(phoneNumberValidation(phoneNumber));
   }, [phoneNumber]);
 
   React.useEffect(() => {
@@ -94,6 +106,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
   const handleSubmit = () => {
     onSubmit();
   };
+
 
   // Function to handle origin client change
   const handleOriginClientChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,6 +141,7 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
       setNotFinanciallyQualified(false);
     }
   };
+
 
   // Function to handle not financially qualified checkbox change
   const handleNotFinanciallyQualifiedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -180,7 +194,8 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
                 {client.name} {client.surname}
               </button>
             )) :
-              <p className="text-[#ff0000e0]">No clients match your search.</p>}
+              <p className="text-[#ff0000e0]">No clients match your search.
+              <br /> This reference will be registered with no referrer.</p>}
           </div>
         </div>
         <div className="flex flex-col justify-center px-3 py-1.5 bg-white rounded-lg shadow-md">
@@ -233,6 +248,13 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
             className="flex flex-col justify-center items-start px-2 py-1"
             aria-label={`Enter phone number for reference ${referenceNumber}`}
           />
+          {phoneNoError && <p className="text-[#ff0000e0]">
+            {phoneNoError}
+            </p>}
+          {phoneNumberError.length > 0 && <p className="text-[#ff0000e0]">
+            {phoneNumberError}
+          </p>
+          }
         </div>
         <div className="flex flex-col justify-center px-3 py-2.5 bg-white rounded-lg shadow-md">
           <label
@@ -302,9 +324,11 @@ const MyComponent: React.FC = () => {
 
   const [numberOfReferences, setNumberOfReferences] = React.useState(1);
   const [selectedReference, setSelectedReference] = React.useState(1);
+  const [hasErrors, setHasErrors] = React.useState(false);
+  const [submitClicked, setSubmitClicked] = React.useState(false);
   const [inputs, setInputs] = React.useState<ReferenceInformation[]>([]);
   const addReferencesSuccessful = useSelector((state: RootState) => state.client.referencesSuccesful);
-  const phoneNoError = useSelector((state: RootState) => state.client.phoneNoError);
+  const phoneNoErrors = useSelector((state: RootState) => state.client.phoneNoErrors);
 
   // Function to handle number of references change
   const handleNumberOfReferencesChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -317,7 +341,8 @@ const MyComponent: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    dispatch(addReferences(inputs));
+    setSubmitClicked(true);
+    !hasErrors && dispatch(addReferences(inputs));
   }
 
   return (
@@ -354,6 +379,8 @@ const MyComponent: React.FC = () => {
               referenceNumber={index + 1}
               onSubmit={() => { }}
               isVisible={selectedReference === index + 1}
+              setHasErrors={setHasErrors}
+              phoneNoError={(phoneNoErrors.filter((error) => (error.reference === index)).length === 1 ? phoneNoErrors.filter((error) => (error.reference === index))[0].data : null)}
             />
           </React.Fragment>
         ))}
@@ -377,11 +404,13 @@ const MyComponent: React.FC = () => {
       >
         Submit All
       </button>
-      {(addReferencesSuccessful || phoneNoError) && <div className="w-screen h-screen top-0 left-0 absolute z-10 flex items-center justify-center bg-[#81808065]">
+      {(addReferencesSuccessful || (submitClicked && (hasErrors || phoneNoErrors.length > 0))) && <div className="w-screen h-screen top-0 left-0 absolute z-10 flex items-center justify-center bg-[#81808065]">
         <div className="w-1/2 h-1/3 bg-white border-1 border-black rounded-md flex justify-evenly flex-col items-center">
-          <p>{addReferencesSuccessful ?? phoneNoError}</p>
+          {addReferencesSuccessful && <p>{addReferencesSuccessful}</p>}
+          {phoneNoErrors && phoneNoErrors.length > 0 && <p>An error has occurred. Check the references for more details.</p>}
           <button className="rounded-md bg-[#64aa64] px-4 py-2" onClick={() => {
             dispatch(resetReferences());
+            setSubmitClicked(false);
           }}>Okay</button>
         </div>
       </div>}
