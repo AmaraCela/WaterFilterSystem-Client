@@ -33,11 +33,12 @@ import SalesAgentMeetings from '../pages/SalesAgentMeetings';
 import PhoneAgent_Meetings from '../pages/PhoneAgent_Meetings';
 import AddNewMeeting from '../components/addNewMeeting';
 import MeetingOutcomeForm from '../components/logMeetingOutcome';
+import ChangeDateOfMeeting from '../components/changeDateOfMeeting';
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< MeetingOutcomeForm />}/>
+                <Route path='/' element={< ChangeDateOfMeeting />}/>
             </Routes>
         </Router>
     )
