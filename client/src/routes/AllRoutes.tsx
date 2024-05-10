@@ -34,11 +34,13 @@ import PhoneAgent_Meetings from '../pages/PhoneAgent_Meetings';
 import AddNewMeeting from '../components/addNewMeeting';
 import MeetingOutcomeForm from '../components/logMeetingOutcome';
 import ChangeDateOfMeeting from '../components/changeDateOfMeeting';
+import SuccessfulRescheduleAlert from '../components/successfulRescheduleAlert';
+import RedlistAlert from '../components/redlistAlert';
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< ChangeDateOfMeeting />}/>
+                <Route path='/' element={< RedlistAlert />}/>
             </Routes>
         </Router>
     )
