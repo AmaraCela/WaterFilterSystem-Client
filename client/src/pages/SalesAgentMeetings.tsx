@@ -6,7 +6,7 @@ import TopIcons from "../components/TopIcons";
 
 const SalesAgentMeetings = () => {
     return (
-        <div className="dashboard rounded-3xl flex flex-row h-lvh">
+        <div className="dashboard rounded-3xl flex flex-row h-lvh ">
             <DashboardSideSalesAgent />
             <div className="main-content flex flex-col w-full w-3/4">
                 <div className="flex flex-row pt-4 pr-8 justify-end items-end">

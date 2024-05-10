@@ -27,14 +27,15 @@ import Note from '../components/Inventory_Note';
 import NewTask from '../components/Inventory-assignNewTask'
 import ChiefOfOperations_Inventory_assignNewTask from '../pages/ChiefOfOperations_Inventory_assignNewTask';
 import ChiefOperationsDashboard_SalesToApprove from '../pages/ChiefOfOperations_SalesToApprove';
-import PhoneAgentDashboard from '../components/phoneAgent-Dashboard';
 import HomeWidget from '../components/phoneAgent-HomeWidget';
 import PhoneAgent_HomePage from '../pages/PhoneAgent_HomePage';
+import SalesAgentMeetings from '../pages/SalesAgentMeetings';
+import PhoneAgent_Meetings from '../pages/PhoneAgent_Meetings';
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< PhoneAgent_HomePage />}/>
+                <Route path='/' element={< PhoneAgent_Meetings />}/>
             </Routes>
         </Router>
     )

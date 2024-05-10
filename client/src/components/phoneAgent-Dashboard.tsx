@@ -8,7 +8,7 @@ function PhoneAgentDashboard() {
   };
 
   return (
-    <div className="pt-8 pr-8 pb-12 pl-16 bg-white border border-solid border-black border-opacity-30 rounded-[30px] max-md:px-5">
+    <div className="pt-8 pr-8 pb-12 pl-16 bg-white rounded-[30px] max-md:px-5">
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">
         <div className="flex flex-col w-[79%] max-md:ml-0 max-md:w-full">
           <div className="flex grow gap-5 justify-between text-lg font-bold text-indigo-800 max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
@@ -33,7 +33,7 @@ function PhoneAgentDashboard() {
                 
               </button>
                 </div>
-            <div className="shrink-0 self-end mt-6 w-px border border-solid bg-black bg-opacity-20 border-black border-opacity-20 h-[140px]" />
+            <div className="shrink-0 self-end mt-6 w-px   bg-black bg-opacity-20  h-[140px]" />
             <div className="flex flex-col text-center">
               <img
                 loading="lazy"
@@ -72,7 +72,7 @@ function PhoneAgentDashboard() {
         </div>
         <div className="flex flex-col ml-5 w-[21%] max-md:ml-0 max-md:w-full">
           <div className="flex grow gap-5 justify-between mt-6 max-md:mt-10">
-            <div className="shrink-0 w-0.5 border border-solid bg-black bg-opacity-20 border-black border-opacity-20 h-[139px]" />
+            <div className="shrink-0 w-0.5  bg-black bg-opacity-20   h-[139px]" />
             <div className="flex gap-5 justify-between px-5">
               <button>
                 <img
