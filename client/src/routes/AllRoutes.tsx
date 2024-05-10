@@ -31,11 +31,12 @@ import HomeWidget from '../components/phoneAgent-HomeWidget';
 import PhoneAgent_HomePage from '../pages/PhoneAgent_HomePage';
 import SalesAgentMeetings from '../pages/SalesAgentMeetings';
 import PhoneAgent_Meetings from '../pages/PhoneAgent_Meetings';
+import AddNewMeeting from '../components/addNewMeeting';
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< PhoneAgent_Meetings />}/>
+                <Route path='/' element={< AddNewMeeting />}/>
             </Routes>
         </Router>
     )
