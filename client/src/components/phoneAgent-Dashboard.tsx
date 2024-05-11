@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom"; // Import Link from React Router
-
+import Notifications from "./notifications";
+import Inbox from "./inbox";
 function PhoneAgentDashboard() {
   const [greenText, setGreenText] = useState("");
 
@@ -61,11 +62,14 @@ function PhoneAgentDashboard() {
               <button onClick={() => handleClick("Call History")}>
                 <div className={`mt-4 ${greenText === "Call History" ? "text-green-500" : ""}`}>Call History</div>
               </button>
-              <button onClick={() => handleClick("Reserved Calls List")}>
+              <Link to='/reservedCalls'>
+               <button onClick={() => handleClick("Reserved Calls List")}>
                 <div className={`self-stretch mt-4 ${greenText === "Reserved Calls List" ? "text-green-500" : ""}`}>
                   Reserved Calls List
                 </div>
               </button>
+              </Link>
+             
               <Link to="/redlistPhoneAgent">
               <button onClick={() => handleClick("Redlist")}>
                 <div className={`mt-3.5 ${greenText === "Redlist" ? "text-green-500" : ""}`}>Redlist</div>
@@ -78,20 +82,8 @@ function PhoneAgentDashboard() {
           <div className="flex grow gap-5 justify-between mt-6 max-md:mt-10">
             <div className="shrink-0 w-0.5  bg-black bg-opacity-20   h-[139px]" />
             <div className="flex gap-5 justify-between px-5">
-              <button>
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/4b7e524ccb06fe7f5ded75cab24eee8dbeeb3188c351ab782b72d500ab119aa7?"
-                  className="shrink-0 my-auto w-9 aspect-[0.9]"
-                />
-              </button>
-              <button>
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/33ecc9188aa793653ccd76a8910978ffbdedc39715704ea421ef2e118a25cb4d?"
-                  className="shrink-0 aspect-[1.06] w-[49px]"
-                />
-              </button>
+              <Notifications/>
+              <Inbox/>
               <button>
                 <img
                   loading="lazy"

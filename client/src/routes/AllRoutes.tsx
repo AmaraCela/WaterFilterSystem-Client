@@ -46,11 +46,17 @@ import PhoneAgentDashboard from '../components/phoneAgent-Dashboard';
 import ManualRedlistAdd from '../components/addToRedlistManually';
 import RedlistTable from '../components/redlist_Table';
 import PhoneAgent_Redlist from '../pages/PhoneAgent_Redlist';
+import ReservedTable from '../components/reservedCalls_Table';
+import PhoneAgent_ReservedCalls from '../pages/PhoneAgent_ReservedCalls';
+import Notifications from '../components/notifications';
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< PhoneAgent_Redlist />}/>
+                <Route path='/reservedCalls' element={< PhoneAgent_ReservedCalls />}/>
+            </Routes>
+            <Routes>
+                <Route path='/notifs' element={< Notifications />}/>
             </Routes>
             <Routes>
                 <Route path='/home' element={< PhoneAgent_HomePage />}/>
