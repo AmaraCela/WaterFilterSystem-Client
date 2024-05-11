@@ -22,7 +22,7 @@ const DashboardSideSalesAgent = () => {
             <DashboardLink to={"/agentreferences"} src={reference} text={"References"} highlighted = {false}/>
             <DashboardLink to={""} src={chart} text={"Sales"} highlighted={false} />
             <div className="header-container">
-              <DashboardLink to={""} src ={empty} text={"Add new sale"} highlighted={false} />
+              <DashboardLink to={"/agentaddsale"} src ={empty} text={"Add new sale"} highlighted={false} />
               <DashboardLink to={""} src ={empty} text={"My Sales"} highlighted={false} />
             </div>
         </div>
