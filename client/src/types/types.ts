@@ -9,6 +9,11 @@ export interface Client {
     hasMadePurchase: boolean
     nextContactDate?: string;
     createdAt: string;
+    lastCallDate?: string;
+    referrals: number[];
+    referredBy?: number;
+    assignedOperator: number;
+    referredInSale?: number;
 }
 
 export interface Call {

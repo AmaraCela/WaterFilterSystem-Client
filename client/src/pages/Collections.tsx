@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getReferences } from "../store/client/clientThunks";
 import { getPhoneOperators } from "../store/users/userThunks";
 import { addCalls } from "../store/calls/callsThunk";
+import { resetState } from "../store/calls/callsSlice";
 const arrow = require('../assets/Subtract.png');
 
 const Collections = () => {
@@ -18,16 +19,33 @@ const Collections = () => {
     const [allSelected, setAllSelected] = useState(false);
     const [visibility, setVisibility] = useState(false);
 
+    const addSuccessful = useSelector((state: RootState) => state.call.addSuccessful);
+    const addError = useSelector((state: RootState) => state.call.addError);
+
     useEffect(() => {
         dispatch(getReferences());
         dispatch(getPhoneOperators());
+        dispatch(resetState());
     }, []);
+
+    useEffect(() => {
+        !visibility && dispatch(resetState());
+    }, [visibility]);
+
+    useEffect(() => {
+        addSuccessful && setVisibility(false);
+        dispatch(getReferences());
+    }, [addSuccessful])
 
     useEffect(() => {
         references && selectedReferences.length === references.length && setAllSelected(true);
     }, [selectedReferences])
 
+    useEffect(() => {
+        console.log(references);
+    }, [references])
 
+    
     return (
         <>
             <div className="flex relative dashboard h-screen">
@@ -64,11 +82,13 @@ const Collections = () => {
                                 <p className="w-[24%] shrink-0 grow-0">{new Date(reference.createdAt).getDate()}/{new Date(reference.createdAt).getMonth()}/{new Date(reference.createdAt).getFullYear()}</p>
                             </div>
                         ))}
+                        {(!references || references.length === 0) && <p>
+                            There are no unassigned references.</p>}
                     </div>
-                    <button className="flex bg-[#b2bedca1] w-fit rounded-md p-2 items-center" onClick={() => setVisibility(true)}>
+                    {selectedReferences.length > 0 && <button className="flex bg-[#b2bedca1] w-fit rounded-md p-2 items-center" onClick={() => setVisibility(true)}>
                         <img src={arrow} alt="" className="object-contain" />
                         <p className="main-font text-[#2C3876] font-bold">SEND</p>
-                    </button>
+                    </button>}
                 </div>
             </div>
             {visibility && <div className="h-screen w-screen absolute top-0 z-10 flex items-center justify-center bg-[#11111144]">
@@ -80,7 +100,8 @@ const Collections = () => {
                             <div className="flex items-baseline" key={operator.id}>
                                 <input type="radio" name="operators" id={operator.id.toString()} className="accent-[#844B2A]" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     e.target.checked && setSelectedOperator(() => operator.id);
-                                }} />
+                                }}
+                                checked = {selectedOperator === operator.id} />
                                 <label className="ml-3 inter text-[#844B2A]" htmlFor={operator.id.toString()}>{operator.name} {operator.surname}</label>
                             </div>
                         ))}
@@ -88,11 +109,14 @@ const Collections = () => {
                     <div>
                         <label htmlFor="date" className="inter text-[#844B2A]">Call date:</label>
                         <input id="date" type="date" className="ml-2 border-[#844B2A] border-2 rounded-md bg-[#fd9e305c]" min={`${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}-${new Date().getDate().toString().padStart(2, '0')}`}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {setSelectedDate(e.target.value)}} />
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setSelectedDate(e.target.value) }} 
+                            value={selectedDate}/>
                     </div>
+                    {addError && <p className="text-red-600">{addError}</p>}
                     <div className="flex justify-evenly w-1/2">
                         <button className="rounded-md px-4 border-2 border-[#E97652] inter font-semibold" onClick={() => {
                             const inputs = {
+                                clientObjects: references,
                                 clients: selectedReferences,
                                 phoneOperatorId: selectedOperator,
                                 scheduledTime: selectedDate,
