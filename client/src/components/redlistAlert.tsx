@@ -1,8 +1,10 @@
 import * as React from "react";
-
-function RedlistAlert() {
+interface RedlistProps {
+  onClose: () => void;
+}
+function RedlistAlert({ onClose }: RedlistProps)  {
   return (
-    <div className="flex flex-col rounded-md border border-solid shadow-2xl border-rose-800 border-opacity-20 max-w-[332px]">
+    <div className="flex flex-col rounded-md border border-solid shadow-2xl border-rose-800 border-opacity-20 max-w-[332px]" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', boxShadow: '10px 4px 6px rgba(1, 1, 1, 0.1), 0 6px 12px rgba(0, 0, 0, 0.1)'}}>
       <div className="flex flex-col justify-center p-4 w-full text-rose-800 bg-rose-50">
         <div className="flex gap-2.5">
           <div className="flex flex-1 gap-4">

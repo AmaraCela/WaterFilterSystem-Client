@@ -33,15 +33,40 @@ import SalesAgentMeetings from '../pages/SalesAgentMeetings';
 import PhoneAgent_Meetings from '../pages/PhoneAgent_Meetings';
 import AddNewMeeting from '../components/addNewMeeting';
 import MeetingOutcomeForm from '../components/logMeetingOutcome';
-import ChangeDateOfMeeting from '../components/changeDateOfMeeting';
+import ChangeDateOfMeeting from '../components/ChangeDateOfMeeting';
 import SuccessfulRescheduleAlert from '../components/successfulRescheduleAlert';
 import RedlistAlert from '../components/redlistAlert';
+import ChiefOfOperations_Inventory_ListOfTasks from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
+import SalesAndDebtsTable from '../components/SalesAndDebtsTable';
+import RefTableHead from '../components/referenceTable_PhoneAgent'
+import PhoneAgent_Refs from '../pages/PhoneAgent_References';
+import CompletedCall from '../components/completedCallAlert';
+import ReferenceTable from '../components/ReferenceTable';
+import PhoneAgentDashboard from '../components/phoneAgent-Dashboard';
+import ManualRedlistAdd from '../components/addToRedlistManually';
+import RedlistTable from '../components/redlist_Table';
+import PhoneAgent_Redlist from '../pages/PhoneAgent_Redlist';
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< RedlistAlert />}/>
+                <Route path='/' element={< PhoneAgent_Redlist />}/>
             </Routes>
+            <Routes>
+                <Route path='/home' element={< PhoneAgent_HomePage />}/>
+            </Routes> 
+            <Routes>
+            <Route path='/latestReferencesPhoneAgent' element={<PhoneAgent_Refs />} />
+            </Routes> 
+            <Routes>
+            <Route path='/viewAllMeetings' element={<PhoneAgent_Meetings />} />
+            </Routes> 
+            <Routes>
+            <Route path='/redlistPhoneAgent' element={<PhoneAgent_Redlist />} />
+            </Routes> 
+             
+             
+           
         </Router>
     )
 }

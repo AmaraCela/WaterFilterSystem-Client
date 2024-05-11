@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom"; // Import Link from React Router
 
 function PhoneAgentDashboard() {
   const [greenText, setGreenText] = useState("");
@@ -21,17 +22,16 @@ function PhoneAgentDashboard() {
               <div className={`mt-3.5 ${greenText === "Anxhela Peri" ? "text-green-500" : ""}`} onClick={() => handleClick("Anxhela Peri")}>
                 Anxhela Peri
               </div>
-              <button>
+              <Link to="/home"> {/* Use Link component to navigate to the "/home" path */}
                 <div className="flex gap-2 px-3 py-2 text-base font-bold text-center text-indigo-800 whitespace-nowrap rounded-lg bg-zinc-300 bg-opacity-10 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-sm:-mr-1">
-                <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/5c058a858ec5bb22b5c12be435fa48e694741a42b29e2b18f92e2d3a963d065d?"
-                    className="shrink-0 aspect-square w-[15px]"
-                />
-            <div>Home</div>
+                  <img
+                      loading="lazy"
+                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/5c058a858ec5bb22b5c12be435fa48e694741a42b29e2b18f92e2d3a963d065d?"
+                      className="shrink-0 aspect-square w-[15px]"
+                  />
+                  <div>Home</div>
                 </div>
-                
-              </button>
+              </Link>
                 </div>
             <div className="shrink-0 self-end mt-6 w-px   bg-black bg-opacity-20  h-[140px]" />
             <div className="flex flex-col text-center">
@@ -40,15 +40,17 @@ function PhoneAgentDashboard() {
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/719ad7da939dae36edb3efb313a32f2699d837e442390a76772ad05e2b0b35ef?"
                 className="self-center aspect-[0.93] w-[66px]"
               />
+              <Link to="/viewAllMeetings">
               <button onClick={() => handleClick("View All Meetings")}>
-                <div className={`mt-1.5 ${greenText === "View All Meetings" ? "text-green-500" : ""}`}>View All Meetings</div>
+                <div className={`mt-1.5 ${greenText === "View All Meetings" ? "text-green-500" : ""}`}>Meetings</div>
               </button>
-              <button onClick={() => handleClick("Set a new Meeting")}>
-                <div className={`mt-4 ${greenText === "Set a new Meeting" ? "text-green-500" : ""}`}>Set a new Meeting</div>
-              </button>
+              </Link>
+              
+              <Link to="/latestReferencesPhoneAgent">
               <button onClick={() => handleClick("Latest References")}>
                 <div className={`mt-4 ${greenText === "Latest References" ? "text-green-500" : ""}`}>Latest References</div>
               </button>
+              </Link>
             </div>
             <div className="flex flex-col items-center self-start mt-2.5 text-center">
               <img
@@ -64,9 +66,11 @@ function PhoneAgentDashboard() {
                   Reserved Calls List
                 </div>
               </button>
+              <Link to="/redlistPhoneAgent">
               <button onClick={() => handleClick("Redlist")}>
                 <div className={`mt-3.5 ${greenText === "Redlist" ? "text-green-500" : ""}`}>Redlist</div>
               </button>
+              </Link>
             </div>
           </div>
         </div>
