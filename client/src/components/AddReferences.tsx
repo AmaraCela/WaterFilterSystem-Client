@@ -382,7 +382,7 @@ const MyComponent: React.FC = () => {
               onSubmit={() => { }}
               isVisible={selectedReference === index + 1}
               setHasErrors={setHasErrors}
-              phoneNoError={(phoneNoErrors.filter((error) => (error.reference === index)).length === 1 ? phoneNoErrors.filter((error) => (error.reference === index))[0].data : null)}
+              phoneNoError={phoneNoErrors && (phoneNoErrors.filter((error) => (error.reference === index)).length === 1 ? phoneNoErrors.filter((error) => (error.reference === index))[0].data : null)}
             />
           </React.Fragment>
         ))}

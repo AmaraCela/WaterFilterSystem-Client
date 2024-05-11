@@ -101,11 +101,11 @@ export const addReferences = createAsyncThunk(
                 let profession = info.profession;
                 let hasMadePurchase = false;
                 let referredBy = info.originClientId === -1 ? null : info.originClientId;
-                let body = referredBy ? {name, surname, phoneNo, address, profession, hasMadePurchase, referredBy} : {name, surname, phoneNo, address, profession, hasMadePurchase};
+                let body = referredBy ? { name, surname, phoneNo, address, profession, hasMadePurchase, referredBy } : { name, surname, phoneNo, address, profession, hasMadePurchase };
 
                 const response = await createAPI('clients', { method: 'POST' })(body);
                 const data = await response.json();
-                const errorInfo = {data, reference: i}
+                const errorInfo = { data, reference: i }
                 !response.ok && errors.push(errorInfo);
                 flag = flag && response.ok;
                 i++;
@@ -118,3 +118,18 @@ export const addReferences = createAsyncThunk(
         }
     }
 )
+
+
+export const getReferences = createAsyncThunk(
+    'getReferences',
+    async(_, { rejectWithValue }) => {
+        try {
+            const response = await createAPI('clients?type=References', {})(null);
+            const data = await response.json();
+            return response.ok ? data : rejectWithValue('Could not retrieve references');
+        }
+        catch (error) {
+            return rejectWithValue(error);
+        }
+    }
+);

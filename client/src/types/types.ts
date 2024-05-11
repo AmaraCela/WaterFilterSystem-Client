@@ -49,6 +49,16 @@ export interface Sale {
     SalesAgent?: SalesAgent;
 }
 
+
+export interface PhoneOperator {
+    id: number;
+    name: string;
+    surname: string;
+    email: string;
+    calls: number[];
+    callHistory: number[];
+}
+
 export interface SalesAgent {
     agent_id: number;
     User: User;
