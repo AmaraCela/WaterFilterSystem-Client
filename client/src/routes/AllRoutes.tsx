@@ -86,6 +86,21 @@ const AllRoutes = () => {
                     throw new Error('Function not implemented.');
                 }} />} />
             </Routes>
+            <Routes>
+                <Route path='/home' element={< PhoneAgent_HomePage />}/>
+            </Routes> 
+            <Routes>
+            <Route path='/latestReferencesPhoneAgent' element={<PhoneAgent_Refs />} />
+            </Routes> 
+            <Routes>
+            <Route path='/viewAllMeetings' element={<PhoneAgent_Meetings />} />
+            </Routes> 
+            <Routes>
+            <Route path='/redlistPhoneAgent' element={<PhoneAgent_Redlist />} />
+            </Routes> 
+             
+             
+           
         </Router>
     )
 }

@@ -2,7 +2,6 @@ import * as React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
 function AddNewMeeting() {
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = React.useState<string>("");
@@ -19,13 +18,17 @@ function AddNewMeeting() {
         setCancelClicked(false);
     };
 
+    if (saveClicked || cancelClicked) {
+        return null; // Render nothing if either save or cancel is clicked
+    }
+
     return (
-        <div className="flex flex-col px-20 pt-12 pb-5 border border-solid backdrop-blur-[50px] bg-white bg-opacity-30 border-black border-opacity-50 max-w-[686px] rounded-[30px] max-md:px-5">
-             <div className="flex self-center mt-0 text-3xl font-medium font-bold tracking-tight leading-9 text-indigo-800 max-md:max-w-full mb-10">
+        <div className="flex flex-col px-16 pt-10 mt-20 border border-solid backdrop-blur-[50px] bg-white border-black border-opacity-50 max-w-[686px] rounded-[30px] max-md:px-5" style={{ position: 'absolute', top: '70%', left: '50%', transform: 'translate(-50%, -50%)', boxShadow: '10px 4px 6px rgba(1, 1, 1, 0.1), 0 6px 12px rgba(0, 0, 0, 0.1)', overflow: 'auto', resize: 'both' }}>
+            <div className="flex self-center mt-0 text-3xl font-medium font-bold tracking-tight leading-9 text-indigo-800 max-md:max-w-full mb-10">
                 Register a new meeting
             </div>
-            
-            <div className="mt-0 text-2xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
+
+            <div className="mt-0 text-xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
                 Name of Client
             </div>
             <input
@@ -34,7 +37,7 @@ function AddNewMeeting() {
                 placeholder="Enter name of client"
             />
 
-            <div className="mt-1 text-2xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
+            <div className="mt-1 text-xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
                 Address of Client
             </div>
             <input
@@ -43,7 +46,7 @@ function AddNewMeeting() {
                 placeholder="Enter address of client"
             />
 
-            <div className="mt-1 text-2xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
+            <div className="mt-1 text-xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
                 Phone Number
             </div>
             <input
@@ -52,7 +55,7 @@ function AddNewMeeting() {
                 placeholder="Enter phone number"
             />
 
-            <div className="mt-1 text-2xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
+            <div className="mt-1 text-xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
                 Sales Agent
             </div>
             <input
@@ -61,7 +64,7 @@ function AddNewMeeting() {
                 placeholder="Enter sales agent"
             />
 
-            <div className="mt-1 text-2xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
+            <div className="mt-1 text-xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
                 Special Notes (optional)
             </div>
             <textarea
@@ -69,7 +72,7 @@ function AddNewMeeting() {
                 placeholder="Enter special notes"
             ></textarea>
 
-            <div className="mt-1 text-2xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
+            <div className="mt-1 text-xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
                 Date and Time
             </div>
             <div className="mt-3 flex gap-5 max-md:flex-col max-md:gap-0">
@@ -85,7 +88,7 @@ function AddNewMeeting() {
                     className="w-full px-4 py-2 border border-black border-solid rounded-md"
                 />
             </div>
-            <div className="flex gap-3 justify-between self-center mt-10 text-xs font-bold leading-4 text-gray-900 uppercase whitespace-nowrap tracking-[2px]">
+            <div className="flex gap-3 justify-between self-center mt-10 text-xs font-bold leading-4 text-gray-900 uppercase whitespace-nowrap tracking-[2px] mb-10">
                 <button onClick={handleCancelClick}>
                     <div className={`justify-center px-4 py-2 bg-${cancelClicked ? "blue" : "white"} rounded border-2 border-indigo-800 border-solid max-md:px-5 hover:bg-blue-500`}>
                         CANCEL
