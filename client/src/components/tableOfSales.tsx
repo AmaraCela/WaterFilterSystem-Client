@@ -56,7 +56,7 @@ function SalesTable() {
       {unapprovedSales ?
         <table>
           <tbody>
-            {unapprovedSales.map((sale) => (
+            {unapprovedSales.map((sale: any) => (
               <tr key={sale.sale_id}>
                 <td>
                   <div className="flex gap-5 justify-between py-4 pr-4 pl-11 rounded-xl bg-zinc-100 max-md:flex-wrap max-md:pl-5 max-md:max-w-full">

@@ -2,12 +2,21 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom"; // Import Link from React Router
 import Notifications from "./notifications";
 import Inbox from "./inbox";
+import HistoryCalls from "./HistoryCalls";
 function PhoneAgentDashboard() {
   const [greenText, setGreenText] = useState("");
+  const [showCallHistory, setShowCallHistory] = useState(false); // State to control the visibility of CallHistory popup
 
-  const handleClick = (text: string) => {
+  const handleClick = (text: any) => {
     setGreenText(text);
+    if (text === "Call History") {
+      setShowCallHistory(true); // Show the CallHistory popup when "Call History" is clicked
+    } else {
+      setShowCallHistory(false); // Hide the CallHistory popup for other options
+    }
   };
+
+ 
 
   return (
     <div className="pt-8 pr-8 pb-12 pl-16 bg-white rounded-[30px] max-md:px-5">
@@ -95,6 +104,7 @@ function PhoneAgentDashboard() {
           </div>
         </div>
       </div>
+      {showCallHistory && <HistoryCalls />}
     </div>
   );
 }
