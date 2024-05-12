@@ -33,7 +33,7 @@ import SalesAgentMeetings from '../pages/SalesAgentMeetings';
 import PhoneAgent_Meetings from '../pages/PhoneAgent_Meetings';
 import AddNewMeeting from '../components/addNewMeeting';
 import MeetingOutcomeForm from '../components/logMeetingOutcome';
-import ChangeDateOfMeeting from '../components/changeDateOfMeeting';
+// import ChangeDateOfMeeting from '../components/changeDateOfMeeting';
 import Schedules from '../pages/Schedules';
 import Statistics from '../pages/Statistics';
 import RedList from '../pages/RedList';
@@ -50,7 +50,7 @@ const AllRoutes = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< ChangeDateOfMeeting />}/>
+                {/* <Route path='/' element={< ChangeDateOfMeeting />}/> */}
                 <Route path='/login' element={<LoginWidget />} />
                 <Route path='/dashboard' element={<DashboardSide highlighted={'none'} />} />
                 <Route path='/calls' element={<PhoneCallsPage />} />
@@ -89,15 +89,15 @@ const AllRoutes = () => {
             <Routes>
                 <Route path='/home' element={< PhoneAgent_HomePage />}/>
             </Routes> 
-            <Routes>
+            {/* <Routes>
             <Route path='/latestReferencesPhoneAgent' element={<PhoneAgent_Refs />} />
-            </Routes> 
+            </Routes>  */}
             <Routes>
             <Route path='/viewAllMeetings' element={<PhoneAgent_Meetings />} />
             </Routes> 
-            <Routes>
+            {/* <Routes>
             <Route path='/redlistPhoneAgent' element={<PhoneAgent_Redlist />} />
-            </Routes> 
+            </Routes>  */}
              
              
            

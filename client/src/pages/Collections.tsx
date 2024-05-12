@@ -41,10 +41,6 @@ const Collections = () => {
         references && selectedReferences.length === references.length && setAllSelected(true);
     }, [selectedReferences])
 
-    useEffect(() => {
-        console.log(references);
-    }, [references])
-
     
     return (
         <>
