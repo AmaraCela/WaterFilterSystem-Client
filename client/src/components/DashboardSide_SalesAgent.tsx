@@ -17,9 +17,12 @@ const DashboardSideSalesAgent = () => {
 
             <DashboardLink to={"/workschedule"} src={calling} text={"Set Work schedule"} highlighted={false} />
             <DashboardLink to={"/agentmeetings"} src={calendar} text={"My Meetings"} highlighted={false} />
-            <DashboardLink to={"/reviewMeetings"} src={log} text={"Log Meetings"} highlighted = {false}/>
-            <DashboardLink to={"/agentreferences"} src={insta} text={"References"} highlighted = {false}/>
-            <DashboardLink to={"/mysales"} src={sales} text={"Sales"} highlighted = {false}/> 
+            <DashboardLink to={"/reviewMeetings"} src={calendarAdd} text={"Log Meetings"} highlighted = {false}/>
+            <DashboardLink to={"/agentreferences"} src={reference} text={"References"} highlighted = {false}/>
+            <div className="header-container">
+              <DashboardLink to={"/agentaddsale"} src ={empty} text={"Add new sale"} highlighted={false} />
+              <DashboardLink to={"/mysales"} src ={empty} text={"My Sales"} highlighted={false} />
+            </div>
         </div>
     );
 }

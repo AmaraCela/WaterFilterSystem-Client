@@ -11,41 +11,9 @@ import BuyTemplate from '../components/buyTemplate';
 import PhoneCall from '../components/pa-phoneCall';
 import DashboardSide2 from '../components/DashboardSide_PhoneAgent';
 import PhoneAgentTemplate from '../pages/PhoneAgentDashboard';
-import DashboardSideSalesAgent from '../components/DashboardSide_SalesAgent';
-import SalesAgentTemplate from '../pages/SalesAgentMeetingSchedule';
-import DashboardSide_ChiefOfOperations from '../components/DashboardSide_ChiefOfOperations';
-import DashboardSidePhoneAgent from '../components/DashboardSide_PhoneAgent';
-import ChiefOperationsDashboard_AgentCommissions from '../pages/ChiefOfOperationsDashboard_AgentCommissions';
-import SalesTable from '../components/tableOfSales';
-import CommissionTable from '../components/commissionTable'; 
-import TableRow from '../components/SalesAndDebts-row';
-import MyComponent from '../components/SalesAndDebtsTable';
-import Insights from '../components/insightsOfAgents';
-import ChiefOperations_Inventory from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
-import Note from '../components/Inventory_Note'; 
-import NewTask from '../components/Inventory-assignNewTask'
-import ChiefOfOperations_Inventory_assignNewTask from '../pages/ChiefOfOperations_Inventory_assignNewTask';
-import ChiefOperationsDashboard_SalesToApprove from '../pages/ChiefOfOperations_SalesToApprove';
-import SalesDebts from "../pages/ChiefOfOperations_ListOfSalesAndDebts";
-import HomeWidget from '../components/phoneAgent-HomeWidget';
-import PhoneAgent_HomePage from '../pages/PhoneAgent_HomePage';
-import SalesAgentMeetings from '../pages/SalesAgentMeetings';
-import PhoneAgent_Meetings from '../pages/PhoneAgent_Meetings';
-import AddNewMeeting from '../components/addNewMeeting';
-import MeetingOutcomeForm from '../components/logMeetingOutcome';
-// import ChangeDateOfMeeting from '../components/changeDateOfMeeting';
-import Schedules from '../pages/Schedules';
-import Statistics from '../pages/Statistics';
-import RedList from '../pages/RedList';
-import BuyersAndReferences from '../pages/BuyersAndReferences';
-import SalesAgentSchedules from '../pages/SalesAgentSchedules';
-import ReviewMeetings from '../pages/ReviewMeetings';
-import MySales from '../pages/MySales';
-import PageNumber from '../components/pageNo';
-import SalesAgentAddReferences from '../pages/SalesAgentReferences';
-import SalesAgentReferences from '../pages/SalesAgentReferences';
-import SortDropdown from '../components/com-sortDropdown';
-import Collections from '../pages/Collections';
+import PhoneAgentMeetings from '../pages/PhoneAgentMeetings';
+import SalesAgentAddSale from '../pages/SalesAgentAddSale';
+
 const AllRoutes = () => {
     return (
         <Router>
@@ -79,12 +47,10 @@ const AllRoutes = () => {
                 <Route path='/agentreferences' element={<SalesAgentReferences />}/>
                 <Route path='/tasks' element={<ChiefOperations_Inventory />}/>
                 <Route path='/agentreferences' element={<SalesAgentAddReferences />}/>
-                <Route path='/addReferences' element={<SalesAgentAddReferences />}/>
-                <Route path='/assignTask' element={<ChiefOfOperations_Inventory_assignNewTask />}/>
-                <Route path='/collections' element={<Collections />}/>
-                <Route path='/3' element={<SortDropdown onSelect={function (value: string): void {
-                    throw new Error('Function not implemented.');
-                }} />} />
+                <Route path='/agentaddsale' element={<SalesAgentAddSale />}/>
+                <Route path='' element={<SalesAgentAddReferences />}/>
+                <Route path='/padashboard' element={<PhoneAgentTemplate/>}/>
+                <Route path='/allmeetings' element={<PhoneAgentMeetings/>}/>
             </Routes>
             <Routes>
                 <Route path='/home' element={< PhoneAgent_HomePage />}/>

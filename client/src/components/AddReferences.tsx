@@ -353,8 +353,8 @@ const MyComponent: React.FC = () => {
         <div className="flex gap-4 self-start max-md:flex-wrap max-md:mt-10">
           <div className="flex flex-col text-gray-600">
             <div className="flex flex-col justify-center text-base leading-6 fill-white">
-              <div className="flex gap-5 justify-between px-3.5 py-3 rounded-lg border border-solid border-neutral-400">
-                <select value={numberOfReferences} onChange={(e) => handleNumberOfReferencesChange(e)}>
+              <div className="flex gap-5 justify-between px-3.5 py-3 rounded-lg border bg-white border-solid border-neutral-400">
+                <select value={numberOfReferences} onChange={(e) => handleNumberOfReferencesChange(e)} className="input-field w-full">
                   {[...Array(10)].map((_, index) => (
                     <option key={index + 1} value={index + 1}>
                       {index + 1}
