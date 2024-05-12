@@ -104,6 +104,57 @@ export function retrieveCallInfoFromServer(callId: number) {
     });
 }
 
+export function retrieveRedListFromServer() {
+    return fetch(`${apiUrl}/clients?status=IN_REDLIST`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to retrieve redlist", data.message);
+                return null;
+            });
+        }
+        else {
+            return response.json().then(data => {
+                console.log("Redlist data retrieved successfully", data);
+                return data;
+            });
+        }
+    }).catch((error) => {
+        console.log("Failed to retrieve redlist", error);
+        return null;
+    });
+}
+
+export function removeClientFromRedlist(clientId: number) {
+    return fetch(`${apiUrl}/clients/${clientId}/redlistremoval`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to remove client from redlist", data.message);
+                return false;
+            });
+        }
+        else {
+            return response.json().then(data => {
+                console.log("Client removed from redlist successfully", data);
+                return true;
+            });
+        }
+    }).catch((error) => {
+        console.log("Failed to remove client from redlist", error);
+        return false;
+    });
+
+}
+
 export function logout() {
     localStorage.removeItem("session_user_id");
     window.location.href = "/login";

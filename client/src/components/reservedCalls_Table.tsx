@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RedlistAlert from "../components/completedCallAlert";
-import { getLoggedUserId, retrieveCallInfoFromServer, retrieveCallsFromServer } from "../serverUtils/serverUtils";
+import { retrieveCallInfoFromServer, retrieveCallsFromServer } from "../serverUtils/serverUtils";
 
 function ReservedTable() {
     const [selectedRow, setSelectedRow] = useState<number | null>(null);
@@ -93,6 +93,10 @@ function ReservedTable() {
                         setTableRows([...tableRows, newRow]);
                     }
                 });
+            }
+
+            if (calls.length === 0) {
+                setTableRows([headRow]);
             }
         });
     }, []);
