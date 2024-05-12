@@ -219,9 +219,9 @@ const MyComponent: React.FC = () => {
       <div className="flex flex-col mr-36 max-w-full w-[1500px] max-md:mr-2.5 ml-5">
         <div className="flex gap-4 mb-4">
           <div>
-            <div className="text-sm text-black-600">Credentials</div>
+            <div className="text-sm text-black-600 mb-2">Credentials</div>
             <div className="flex flex-col justify-center text-base leading-6 fill-white">
-              <div className="flex gap-5 justify-between px-3.5 py-3 rounded-lg border border-solid border-neutral-400">
+              <div className="flex gap-5 justify-between px-3.5 py-3 bg-white rounded-lg border border-solid border-neutral-400">
                 <input
                   type="text"
                   id="buyerName"
@@ -233,33 +233,35 @@ const MyComponent: React.FC = () => {
             </div>
           </div>
           <div className="checkbox-box">
-            <div>
-              <div className="text-sm text-black-600">Payment details:</div>
-              <input
-                type="checkbox"
-                id="fullPayment"
-                checked={paymentOption === 'Full'}
-                onChange={() => handlePaymentOptionChange('Full')}
-              />
-              <label htmlFor="fullPayment">Full</label>
+            <div className="text-sm text-black-600 mb-2">Payment details:</div>
+              <div className="flex justify-between">
+                <div className="flex justify-between gap-2 px-4 py-2 rounded-lg bg-white border border-solid border-neutral-400 mr-4">
+                  <input
+                    type="checkbox"
+                    id="fullPayment"
+                    checked={paymentOption === 'Full'}
+                    onChange={() => handlePaymentOptionChange('Full')}
+                  />
+                  <label htmlFor="fullPayment">Full</label>
+                  </div>
+                <div className="flex justify-between gap-2 px-4 py-2 rounded-lg bg-white border border-solid border-neutral-400">
+                  <input
+                    type="checkbox"
+                    id="monthlyPayment"
+                    checked={paymentOption === 'Monthly'}
+                    onChange={() => handlePaymentOptionChange('Monthly')}
+                  />
+                  <label htmlFor="monthlyPayment">Monthly</label>
+                </div>
+              </div>
             </div>
-            <div>
-              <input
-                type="checkbox"
-                id="monthlyPayment"
-                checked={paymentOption === 'Monthly'}
-                onChange={() => handlePaymentOptionChange('Monthly')}
-              />
-              <label htmlFor="monthlyPayment">Monthly</label>
-            </div>
-          </div>
         </div>
         <form>
           <div className="flex gap-4 self-start max-md:flex-wrap max-md:mt-10">
           <div className="flex flex-col text-gray-600">
             <div className="flex flex-col justify-center text-base leading-6 fill-white">
-              <div className="flex gap-5 justify-between px-3.5 py-3 rounded-lg border border-solid border-neutral-400">
-                <select value={numberOfReferences} onChange={handleNumberOfReferencesChange} className="input-field">
+              <div className="flex gap-5 bg-white justify-between px-3.5 py-3 rounded-lg border border-solid border-neutral-400">
+                <select value={numberOfReferences} onChange={handleNumberOfReferencesChange} className="input-field w-full">
                   {[...Array(10)].map((_, index) => (
                     <option key={index + 1} value={index + 1}>
                       {index + 1}
