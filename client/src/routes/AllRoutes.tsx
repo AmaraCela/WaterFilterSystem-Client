@@ -1,20 +1,20 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ChiefMarketingDashboard from '../pages/ChiefMarketingDashboard';
 import LoginWidget from '../components/loginWidget';
+import LoginPage from '../pages/Login';
 import AddReferenceForm from '../components/com-formToAddReference';
 import HistoryUpload from '../components/com-historyUpload';
-import PhoneCallsPage from '../pages/com-PhoneCalls';
-import SortDropdown from '../components/com-sortDropdown';
-import PageNumber from '../components/pageNo';
-// import { MyComponent } from '../components/Calendar';
-import Schedules from '../pages/Schedules';
-import Statistics from '../pages/Statistics';
-import RedList from '../pages/RedList';
+import PhoneCallsPage from '../pages/com-PhoneCalls'; 
+import DashboardSide from '../components/DashboardSide'; 
+import RefTemplate from '../components/referenceTemplate'; 
 import BuyTemplate from '../components/buyTemplate';
-import RefTemplate from '../components/referenceTemplate';
-import BuyersAndReferences from '../pages/BuyersAndReferences';
-import SalesAgentSchedules from '../pages/SalesAgentSchedules';
-import SalesAgentAddReferences from '../pages/SalesAgentReferences';
+import PhoneCall from '../components/pa-phoneCall';
+import DashboardSide2 from '../components/DashboardSide_PhoneAgent';
+import PhoneAgentTemplate from '../pages/PhoneAgentDashboard';
+import DashboardSideSalesAgent from '../components/DashboardSide_SalesAgent';
+import SalesAgentTemplate from '../pages/SalesAgentMeetingSchedule';
+import DashboardSide_ChiefOfOperations from '../components/DashboardSide_ChiefOfOperations';
+import DashboardSidePhoneAgent from '../components/DashboardSide_PhoneAgent';
 import ChiefOperationsDashboard_AgentCommissions from '../pages/ChiefOfOperationsDashboard_AgentCommissions';
 import SalesTable from '../components/tableOfSales';
 import CommissionTable from '../components/commissionTable'; 
@@ -22,59 +22,45 @@ import ChiefOperationsDashboard_ListOfSalesAndDebts from '../pages/ChiefOfOperat
 import TableRow from '../components/SalesAndDebts-row';
 import MyComponent from '../components/SalesAndDebtsTable';
 import Insights from '../components/insightsOfAgents';
-import ChiefOperationsInventory from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
+import ChiefOperations_Inventory from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
 import Note from '../components/Inventory_Note'; 
 import NewTask from '../components/Inventory-assignNewTask'
-import ChiefOfOperationsInventoryAssignNewTask from '../pages/ChiefOfOperations_Inventory_assignNewTask';
+import ChiefOfOperations_Inventory_assignNewTask from '../pages/ChiefOfOperations_Inventory_assignNewTask';
 import ChiefOperationsDashboard_SalesToApprove from '../pages/ChiefOfOperations_SalesToApprove';
-import SalesAgentReferences from '../pages/SalesAgentReferences';
+import HomeWidget from '../components/phoneAgent-HomeWidget';
+import PhoneAgent_HomePage from '../pages/PhoneAgent_HomePage';
 import SalesAgentMeetings from '../pages/SalesAgentMeetings';
-import ReviewMeetings from '../pages/ReviewMeetings';
-import MySales from '../pages/MySales';
-import DashboardSide from '../components/DashboardSide';
-import SalesAndDebts from '../pages/ChiefOfOperations_ListOfSalesAndDebts';
-import SalesToApprove from '../pages/ChiefOfOperations_SalesToApprove';
-import Comissions from '../pages/ChiefOfOperationsDashboard_AgentCommissions';
-
-
+import PhoneAgent_Meetings from '../pages/PhoneAgent_Meetings';
+import AddNewMeeting from '../components/addNewMeeting';
+import MeetingOutcomeForm from '../components/logMeetingOutcome';
+import ChangeDateOfMeeting from '../components/ChangeDateOfMeeting';
+import SuccessfulRescheduleAlert from '../components/successfulRescheduleAlert';
+import RedlistAlert from '../components/redlistAlert';
+import ChiefOfOperations_Inventory_ListOfTasks from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
+import SalesAndDebtsTable from '../components/SalesAndDebtsTable';
+import RefTableHead from '../components/referenceTable_PhoneAgent'
+import PhoneAgent_Refs from '../pages/PhoneAgent_References';
+import CompletedCall from '../components/completedCallAlert';
+import ReferenceTable from '../components/ReferenceTable';
+import PhoneAgentDashboard from '../components/phoneAgent-Dashboard';
+import ManualRedlistAdd from '../components/addToRedlistManually';
+import RedlistTable from '../components/redlist_Table';
+import PhoneAgent_Redlist from '../pages/PhoneAgent_Redlist';
+import ReservedTable from '../components/reservedCalls_Table';
+import PhoneAgent_ReservedCalls from '../pages/PhoneAgent_ReservedCalls';
+import Notifications from '../components/notifications';
+import HistoryCalls from '../components/HistoryCalls';
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
+                <Route path='/reservedCalls' element={< PhoneAgent_ReservedCalls />}/>
+                <Route path='/' element={< HistoryCalls />}/>
+                <Route path='/home' element={< PhoneAgent_HomePage />}/>
+                <Route path='/latestReferencesPhoneAgent' element={<PhoneAgent_Refs />} />
+                <Route path='/viewAllMeetings' element={<PhoneAgent_Meetings />} />
+                <Route path='/redlistPhoneAgent' element={<PhoneAgent_Redlist />} />
                 <Route path='/login' element={<LoginWidget />} />
-                <Route path='/dashboard' element={<DashboardSide highlighted={'none'} />} />
-                <Route path='/calls' element={<PhoneCallsPage />} />
-                <Route path='/schedules' element={<Schedules />} />
-                <Route path='/statistics' element={<Statistics />} />
-                <Route path='/redlist' element={<RedList />} />
-                <Route path='/phoneCalls' element={<PhoneCallsPage />} />
-                <Route path='/buyersReferences' element={<BuyersAndReferences />} />
-                <Route path='/agentSchedule' element={<SalesAgentSchedules />} />
-                <Route path='/agentMeetings' element={<SalesAgentMeetings />} />
-                <Route path='/reviewMeetings' element={<ReviewMeetings />} /> 
-                <Route path='/mysales' element={<MySales />} /> 
-                {/* <Route path='/' element={< ChiefOperationsDashboard/>}/> */}
-                <Route path='/workschedule' element={<SalesAgentSchedules/>}></Route>
-                <Route path='/login' element={<LoginWidget />}></Route>
-                <Route path='/1' element={<AddReferenceForm />} />
-                <Route path='/2' element={<HistoryUpload />} />
-                <Route path='/4' element={<PageNumber number={0} />} />
-                <Route path='/5' element={<MyComponent />} />
-                <Route path='/6' element={<BuyTemplate />} />
-                <Route path='/7' element={<RefTemplate />} />
-                <Route path='/salesdebts' element={<SalesAndDebts />} />
-                <Route path='/approvesales' element={<SalesToApprove />} />
-                <Route path='/agentmeetings' element={<SalesAgentMeetings />} />
-                <Route path='/commissions' element={<Comissions />} />
-                <Route path='/agentreferences' element={<SalesAgentReferences />}/>
-                <Route path='/tasks' element={<ChiefOperationsInventory />}/>
-                <Route path='/agentreferences' element={<SalesAgentAddReferences />}/>
-                <Route path='/addReferences' element={<SalesAgentAddReferences />}/>
-                <Route path='/assignTask' element={<ChiefOfOperationsInventoryAssignNewTask />}/>
-                <Route path='/3' element={<SortDropdown onSelect={function (value: string): void {
-                    throw new Error('Function not implemented.');
-                }} />} />
-                <Route path='/' element={<ChiefMarketingDashboard />} />
             </Routes>
         </Router>
     )
