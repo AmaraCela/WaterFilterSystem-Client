@@ -1,4 +1,4 @@
-import "../styles/SideCalendar.css";
+import "../styles/sideCalendar.css";
 
 const SideCalendar = () => {
     const currentDate = new Date();

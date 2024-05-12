@@ -27,7 +27,7 @@ const MeetingSchedule = () => {
 
         setDates(newDates);
 
-        const user_id = getLoggedUserId();
+        const user_id = "1"; //getLoggedUserId();
         dispatch(getMeetings(user_id));
     }, []);
 
