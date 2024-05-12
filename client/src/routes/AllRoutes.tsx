@@ -50,6 +50,7 @@ import ReservedTable from '../components/reservedCalls_Table';
 import PhoneAgent_ReservedCalls from '../pages/PhoneAgent_ReservedCalls';
 import Notifications from '../components/notifications';
 import HistoryCalls from '../components/HistoryCalls';
+import SalesAgentSchedules from '../pages/SalesAgentSchedules';
 const AllRoutes = () => {
     return (
         <Router>
@@ -61,6 +62,7 @@ const AllRoutes = () => {
                 <Route path='/viewAllMeetings' element={<PhoneAgent_Meetings />} />
                 <Route path='/redlistPhoneAgent' element={<PhoneAgent_Redlist />} />
                 <Route path='/login' element={<LoginWidget />} />
+                <Route path='/schedules' element={<SalesAgentSchedules />} />
             </Routes>
         </Router>
     )

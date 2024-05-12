@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getLoggedUserId, getLoggedInUser } from '../serverUtils/serverUtils';
+import { getLoggedUserId, getLoggedInUser, retrieveScheduleFromServer, saveScheduleToServer } from '../serverUtils/serverUtils';
 import { UserRole } from '../serverUtils/UserRole';
 
 interface Timeslot {
@@ -93,86 +93,8 @@ const AgentScheduleComponent = () => {
     const [selectedDay, setSelectedDay] = useState<number>(1);
     let loggedUser: any | null;
 
-    const retrieveScheduleFromServer = () => {
-        const apiUrl = process.env.REACT_APP_API_ENDPOINT;
-        const user_id = getLoggedUserId();
-    
-        return fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }).then((response) => {
-            if (!response.ok) {
-                return response.json().then(data => {
-                    console.log("Failed to retrieve schedule", data.message);
-                    return null;
-                });
-            }
-            else {
-                return response.json().then(data => {
-                    // console.log("Retrieved schedule", data);
-                    return data;
-                });
-            }
-        }).catch((error) => {
-            console.log("Failed to retrieve schedule", error);
-            return null;
-        });
-    }
-    
-    const saveScheduleToServer = (selectedDay: number) => {
-        const day = new Date();
-        day.setDate(day.getDate() + (selectedDay + 7 - day.getDay()) % 7); 
-        day.setHours(0, 0, 0, 0);
-    
-        const apiUrl = process.env.REACT_APP_API_ENDPOINT;
-        const user_id = localStorage.getItem("session_user_id");
-        if (user_id === null) {
-            console.log("Not logged in!");
-            return;
-        }
-    
-        const timeslots = schedule[selectedDay];
-        for (let i = 0; i < timeslots.length; i++) {
-            const timeslot = {
-                day: day,
-                startTime: timeslots[i].start,
-                endTime: timeslots[i].end,
-            };
-    
-            fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(timeslot),
-            }).then((response) => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        console.log("Failed to save schedule", data.message);
-                    });
-                }
-                else {
-                    return response.json().then(data => {
-                        console.log("Saved schedule", data);
-                        
-                        const newSchedule = timeslots.map((slot) => {
-                            return { ...slot, readonly: true };
-                        });
-
-                        setSchedule({
-                            ...schedule,
-                            [selectedDay]: newSchedule,
-                        });
-                    });
-                }
-            });
-        }
-    }
-
     useEffect(() => {
-        retrieveScheduleFromServer().then((schedules) => {
+        retrieveScheduleFromServer().then((schedules: any) => {
             if (schedules === null) {
                 return;
             }
@@ -215,6 +137,8 @@ const AgentScheduleComponent = () => {
     }, []);
 
     const selectedDayReadonly = (selectedDay: number) => {
+        return false; // temporary for testing
+        
         if (loggedUser && loggedUser.role == UserRole.MARKETING_MANAGER) {
             return false;
         }
@@ -469,7 +393,20 @@ const AgentScheduleComponent = () => {
             <div className="day-container">
                 {renderTimeslots()}
             </div>
-            { !selectedDayReadonly(selectedDay) ? (<button onClick={() => saveScheduleToServer(selectedDay)}>Save</button>) : null }
+            { !selectedDayReadonly(selectedDay) ? (<button onClick={() => {
+                saveScheduleToServer(schedule, selectedDay).then(() => {
+                    const timeslots = schedule[selectedDay];
+                    
+                    const newSchedule = timeslots.map((slot) => {
+                        return { ...slot, readonly: true };
+                    });
+
+                    setSchedule({
+                        ...schedule,
+                        [selectedDay]: newSchedule,
+                    });
+                });
+            }}>Save</button>) : null }
         </StyledComponent>
     );
 };

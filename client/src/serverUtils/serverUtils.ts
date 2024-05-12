@@ -155,6 +155,80 @@ export function removeClientFromRedlist(clientId: number) {
 
 }
 
+export function retrieveScheduleFromServer() {
+    const user_id = getLoggedUserId();
+
+    return fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to retrieve schedule", data.message);
+                return null;
+            });
+        }
+        else {
+            return response.json().then(data => {
+                // console.log("Retrieved schedule", data);
+                return data;
+            });
+        }
+    }).catch((error) => {
+        console.log("Failed to retrieve schedule", error);
+        return null;
+    });
+}
+
+export function saveScheduleToServer(schedule: any, selectedDay: number) {
+    const day = new Date();
+    day.setDate(day.getDate() + (selectedDay + 7 - day.getDay()) % 7); 
+    day.setHours(0, 0, 0, 0);
+
+    const apiUrl = process.env.REACT_APP_API_ENDPOINT;
+    const user_id = getLoggedUserId();
+    if (user_id === null) {
+        console.log("Not logged in!");
+        return new Promise((resolve, reject) => {
+            reject(false);
+        });
+    }
+
+    const timeslots = schedule[selectedDay];
+    for (let i = 0; i < timeslots.length; i++) {
+        const timeslot = {
+            day: day,
+            startTime: timeslots[i].start,
+            endTime: timeslots[i].end,
+        };
+
+        fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(timeslot),
+        }).then((response) => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    console.log("Failed to save schedule", data.message);
+                });
+            }
+            else {
+                return response.json().then(data => {
+                    console.log("Saved schedule", data);
+                });
+            }
+        });
+    }
+
+    return new Promise((resolve, reject) => {
+        resolve(true);
+    });
+}
+
 export function logout() {
     localStorage.removeItem("session_user_id");
     window.location.href = "/login";
