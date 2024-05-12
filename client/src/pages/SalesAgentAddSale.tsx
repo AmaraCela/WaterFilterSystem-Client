@@ -1,7 +1,7 @@
 import AddSale from "../components/AddSale";
 import DashboardSideSalesAgent from "../components/DashboardSide_SalesAgent";
 import TopIcons from "../components/TopIcons";
-
+import AddReferences from "../components/AddReferences";
 const SalesAgentAddReferences = () => {
     return (
         <div className="dashboard rounded-3xl flex flex-row h-lvh overflow-hidden">
@@ -13,9 +13,9 @@ const SalesAgentAddReferences = () => {
                 <p className="main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-10">
                     Add a new sale
                 </p>
-                <div className="flex w-full justify-between mt-8">
-                    <div className="w-full overflow-hidden h-full mr-16">
-                        <AddSale />
+                <div className="flex w-full justify-between mt-8 overflow-y-auto">
+                    <div className="w-full h-full mr-16 overflow-x-hidden">
+                        < AddSale/>
                     </div>
                 </div>
             </div>

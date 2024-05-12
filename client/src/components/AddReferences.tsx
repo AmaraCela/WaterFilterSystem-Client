@@ -1,5 +1,5 @@
 import * as React from "react";
-import { customStringValidation, phoneNumberValidation } from "../utils/validations";
+import { phoneNumberValidation } from "../utils/validations";
 import { RootState, useAppDispatch } from "../store/store";
 import { useSelector } from "react-redux";
 import { addReferences, allClients } from "../store/client/clientThunks";
@@ -49,7 +49,6 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
   const [originClientId, setOriginClientId] = React.useState<number>(-1);
   const [clientSuggestion, setClientSuggestion] = React.useState("hidden");
 
-  console.log(phoneNoError);
   const [phoneNumberError, setPhoneNumberError] = React.useState("");
 
   const [inputs, setInputs] = React.useState<ReferenceInformation>({
@@ -101,11 +100,6 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
     newArray[referenceNumber - 1] = inputs;
     setInformation(newArray);
   }, [inputs]);
-
-  // Function to handle form submission
-  const handleSubmit = () => {
-    onSubmit();
-  };
 
 
   // Function to handle origin client change

@@ -11,8 +11,27 @@ import BuyTemplate from '../components/buyTemplate';
 import PhoneCall from '../components/pa-phoneCall';
 import DashboardSide2 from '../components/DashboardSide_PhoneAgent';
 import PhoneAgentTemplate from '../pages/PhoneAgentDashboard';
-import PhoneAgentMeetings from '../pages/PhoneAgentMeetings';
+import PhoneAgentMeetings from '../pages/PhoneAgent_Meetings';
 import SalesAgentAddSale from '../pages/SalesAgentAddSale';
+import SalesDebts from "../pages/ChiefOfOperations_ListOfSalesAndDebts";
+import Schedules from '../pages/Schedules';
+import Statistics from '../pages/Statistics';
+import RedList from '../pages/RedList';
+import BuyersAndReferences from '../pages/BuyersAndReferences';
+import SalesAgentSchedules from '../pages/SalesAgentSchedules';
+import SalesAgentMeetings from '../pages/SalesAgentMeetings';
+import ReviewMeetings from '../pages/ReviewMeetings';
+import MySales from '../pages/MySales';
+import PageNumber from '../components/pageNo';
+import MyComponent from '../components/AddSale';
+import ChiefOperationsDashboard_SalesToApprove from '../pages/ChiefOfOperations_SalesToApprove';
+import SalesAgentReferences from '../pages/SalesAgentReferences';
+import SalesAgentAddReferences from '../pages/SalesAgentAddSale';
+import ChiefOperationsDashboard_AgentCommissions from '../pages/ChiefOfOperationsDashboard_AgentCommissions';
+import ChiefOperations_Inventory from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
+import PhoneAgent_HomePage from '../pages/PhoneAgent_HomePage';
+import PhoneAgent_Meetings from '../pages/PhoneAgent_Meetings';
+import Collections from '../pages/Collections';
 
 const AllRoutes = () => {
     return (
@@ -51,6 +70,7 @@ const AllRoutes = () => {
                 <Route path='' element={<SalesAgentAddReferences />}/>
                 <Route path='/padashboard' element={<PhoneAgentTemplate/>}/>
                 <Route path='/allmeetings' element={<PhoneAgentMeetings/>}/>
+                <Route path='/collections' element={<Collections/>}/>
             </Routes>
             <Routes>
                 <Route path='/home' element={< PhoneAgent_HomePage />}/>
