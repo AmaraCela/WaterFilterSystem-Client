@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"; // Import Link from React Router
 import Notifications from "./notifications";
 import Inbox from "./inbox";
 import HistoryCalls from "./HistoryCalls";
-import { getLoggedUserId, logout } from "../loginUtils/loginUtils";
+import { logout, retrievePhoneOperatorFromServer } from "../serverUtils/serverUtils";
 
-function PhoneAgentDashboard({fullName}: any) {
+function PhoneAgentDashboard() {
     const [greenText, setGreenText] = useState("");
     const [showCallHistory, setShowCallHistory] = useState(false); // State to control the visibility of CallHistory popup
+    const [fullName, setFullName] = useState("");
+    const [callHistory, setCallHistory] = useState([]);
 
     const handleClick = (text: any) => {
         setGreenText(text);
@@ -21,6 +23,15 @@ function PhoneAgentDashboard({fullName}: any) {
     const closeCallHistory = () => {
         setShowCallHistory(false); // Hide the CallHistory popup when the "Cancel" button is clicked
     }
+
+    useEffect(() => {
+        retrievePhoneOperatorFromServer().then((data) => {
+            if (data) {
+                setFullName(data.name + " " + data.surname);
+                setCallHistory(data.callHistory);
+            }
+        });
+    }, []);
 
     return (
         <div className="pt-8 pr-8 pb-12 pl-16 bg-white rounded-[30px] max-md:px-5">
@@ -110,7 +121,7 @@ function PhoneAgentDashboard({fullName}: any) {
             </div>
             </div>
         </div>
-        {showCallHistory && <HistoryCalls onClose={closeCallHistory}/>}
+        {showCallHistory && <HistoryCalls onClose={closeCallHistory} callHistory={callHistory}/>}
         </div>
     );
 }

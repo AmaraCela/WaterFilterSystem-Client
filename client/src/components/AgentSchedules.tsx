@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getLoggedUserId, getLoggedInUser } from '../loginUtils/loginUtils';
-import { UserRole } from '../loginUtils/UserRole';
+import { getLoggedUserId, getLoggedInUser } from '../serverUtils/serverUtils';
+import { UserRole } from '../serverUtils/UserRole';
 
 interface Timeslot {
     start: string;

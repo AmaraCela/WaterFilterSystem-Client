@@ -4,7 +4,7 @@ import DashboardSidePhoneAgent from "../components/DashboardSide_PhoneAgent";
 import PhoneCall from "../components/pa-phoneCall";
 import DashboardSideSalesAgent from  "../components/DashboardSide_SalesAgent";
 import AgentScheduleComponent from "../components/AgentSchedules";
-import { logout } from "../loginUtils/loginUtils";
+import { logout } from "../serverUtils/serverUtils";
 
 const bell = require("../assets/bell.png");
 const message = require("../assets/message.png");

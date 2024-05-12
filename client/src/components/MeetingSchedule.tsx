@@ -4,7 +4,7 @@ import { getMeetings } from "../store/meetings/meetingsThunk";
 import { RootState, useAppDispatch } from "../store/store";
 import ScheduleSlot from "./ScheduleSlot";
 import { Meeting } from "../types/types";
-import { getLoggedUserId } from "../loginUtils/loginUtils";
+import { getLoggedUserId } from "../serverUtils/serverUtils";
 
 const MeetingSchedule = () => {
     const meetings = useSelector((state: RootState) => state.meeting.meetings);
