@@ -403,8 +403,8 @@ const MyComponent: React.FC = () => {
       {(addReferencesSuccessful || (submitClicked && (hasErrors || phoneNoErrors.length > 0))) && <div className="w-screen h-screen top-0 left-0 absolute z-10 flex items-center justify-center bg-[#81808065]">
         <div className="w-1/3 h-1/3 bg-white border-1 border-black rounded-md flex justify-evenly flex-col items-center">
           {addReferencesSuccessful && <p className="text-center p-2">{addReferencesSuccessful}</p>}
-          {phoneNoErrors && phoneNoErrors.length > 0 && <p className="text-center p-2 text-[#ff0000e0]" >An error has occurred. Check the references for more details.</p>}
-          <button className="rounded-md bg-[#64aa64] px-4 py-2" onClick={() => {
+          {phoneNoErrors && phoneNoErrors.length > 0 && <p className="text-center p-2 text-[#ff0000e0] font-semibold" >An error has occurred. Check the references for more details.</p>}
+          <button className="rounded-md bg-[#5272E9] text-white px-4 py-2" onClick={() => {
             addReferencesSuccessful && dispatch(resetReferences());
             setSubmitClicked(false);
           }}>Okay</button>

@@ -286,6 +286,7 @@ const MyComponent: React.FC = () => {
   const addSaleSuccessful = useSelector((state: RootState) => state.sale.addSaleSuccessful);
   const phoneNoErrors = useSelector((state: RootState) => state.client.phoneNoErrors);
   const [referrerError, setReferrerError] = useState("");
+  const [paymentOptionError, setPaymentOptionError] = useState("");
   const [upfrontPayment, setUpfrontPayment] = useState(0);
   const [upfrontError, setUpfrontError] = useState("");
 
@@ -312,7 +313,7 @@ const MyComponent: React.FC = () => {
   }, [addReferencesSuccessful]);
 
   React.useEffect(() => {
-    
+
   }, [referrerError]);
 
   // React.useEffect(() => {
@@ -332,6 +333,7 @@ const MyComponent: React.FC = () => {
   // Function to handle payment option change
   const handlePaymentOptionChange = (option: string) => {
     setPaymentOption(option);
+    setPaymentOptionError('');
   };
 
   // Function to handle number of references change
@@ -346,7 +348,8 @@ const MyComponent: React.FC = () => {
 
   const handleSubmit = () => {
     originClientId === -1 && setReferrerError('Enter a valid client.');
-    !hasErrors && originClientId !==-1 && dispatch(addReferences(inputs));
+    !paymentOption && setPaymentOptionError('Choose a payment option.');
+    !hasErrors && originClientId !== -1 && !paymentOptionError && dispatch(addReferences(inputs));
   }
 
   return (
@@ -401,6 +404,9 @@ const MyComponent: React.FC = () => {
               <label htmlFor="monthlyPayment">Monthly</label>
             </div>
           </div>
+          {paymentOptionError && <p className="text-[#ff0000e0]">
+            {paymentOptionError}
+          </p>}
         </div>
         {/* <div>
       <div className="text-sm text-black-600 mb-2">Upfront payment:</div>
@@ -466,7 +472,7 @@ const MyComponent: React.FC = () => {
       </button>
       {((submitClicked && (hasErrors || phoneNoErrors.length > 0 || referrerError))) && <div className="w-screen h-screen top-0 left-0 absolute z-10 flex items-center justify-center bg-[#81808065]">
         <div className="w-1/3 h-1/3 bg-white border-1 border-black rounded-md flex justify-evenly flex-col items-center">
-          {((phoneNoErrors && phoneNoErrors.length > 0) || referrerError) && <><p className="text-center p-2 text-[#ff0000e0]">An error has occurred. Check the form for more details.</p><button className="rounded-md bg-[#64aa64] px-4 py-2" onClick={() => {
+          {((phoneNoErrors && phoneNoErrors.length > 0) || referrerError) && <><p className="text-center p-2 text-[#ff0000e0] font-semibold">An error has occurred. Check the form for more details.</p><button className="rounded-md bg-[#5272E9] text-white px-4 py-2" onClick={() => {
             setSubmitClicked(false);
           }}>Okay</button></>
           }
@@ -475,7 +481,7 @@ const MyComponent: React.FC = () => {
       {addSaleSuccessful && <div className="w-screen h-screen top-0 left-0 absolute z-10 flex items-center justify-center bg-[#81808065]">
         <div className="w-1/3 h-1/3 bg-white border-1 border-black rounded-md flex justify-evenly flex-col items-center">
           <p>Sale added successfully.</p>
-          <button className="rounded-md bg-[#64aa64] px-4 py-2" onClick={() => { dispatch(resetState()); setSubmitClicked(false) }}>
+          <button className="rounded-md bg-[#5272E9]text-white px-4 py-2" onClick={() => { dispatch(resetState()); setSubmitClicked(false) }}>
             Okay
           </button>
         </div>
