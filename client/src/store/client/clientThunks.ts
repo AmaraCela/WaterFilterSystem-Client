@@ -68,7 +68,6 @@ export const editClient = createAsyncThunk(
     }
 );
 
-
 export const addReferences = createAsyncThunk(
     'addReferences',
     async (information: {
