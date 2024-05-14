@@ -1,32 +1,29 @@
-import { Client } from "../types/types";
+import { Client, findReferrerName } from "../types/types";
+import { sampleClients } from "../pages/ChiefMarketing_BuyersAndReferences";
 const calendar = require("../assets/Calendarr.png");
 const history = require("../assets/Ticket_alt.png");
 const close = require("../assets/Close Icon.png");
 
 const ReferenceInfo = ({ client, setDivVisibility }: { client: Client, setDivVisibility: any }) => {
     return ( 
-        <div className="bg-[#38ff34ad] rounded-[49px] h-full flex flex-col items-center">
+        <div className="bg-[#38ff34ad] rounded-[49px] h-full flex flex-col items-center" style={{width :'450px'}}>
             <div className="bg-[#ffffffa6] w-11/12 px-7 h-max mt-8 rounded-[49px] pt-4 flex flex-col items-center inner-div">
-                <div className="flex justify-between w-full">
-                    <p className="rubik text-[#281D96] font-semibold text-lg">{client.name} {client.surname}</p>
-                    <div className="flex ml-2">
-                        <img src={calendar} alt="calendar" className="size-6 mr-2" />
-                        <p className="mali text-[#0000004d]">Referenced by</p>
-                        <p className="mali text-[#2ADA26] ml-1">name</p>
-                    </div>
-                </div>
+                <p className="mali text-[#2ADA26] ml-1">{client.name} {client.surname} 
+                <p className="flex text-xs"> Referred By: <p className=" flex underline text-xs">{findReferrerName(client.referredBy, sampleClients)}</p></p></p>
                 <div className="w-3/4 mt-2">
                     <div className="flex justify-between">
                         <p className="rubik font-bold text-[#2B437B]">ID:</p>
-                        <p className="rubik ml-16 text-[#0000004d]">{client.id}</p>
+                        <p className="text-xs rubik ml-16 text-[#0000004d]">{client.id}</p>
                     </div>
                     <div className="flex justify-between">
                         <p className="rubik font-bold text-[#2B437B]">Address:</p>
-                        <p className="rubik ml-16 text-[#0000004d]">{client.address}</p>
+                        <p className="text-xs flex rubik ml-16 text-[#0000004d]">{client.address}</p>
                     </div>
                     <div className="flex justify-between">
-                        <p className="rubik font-bold text-[#2B437B]">Phone No.:</p>
-                        <p className="rubik ml-16 text-[#0000004d]">{client.phoneNo}</p>
+                        <p className="flex rubik font-bold text-[#2B437B]">Phone No.:</p>
+                       
+                        <p className="flex text-xs rubik ml-16 text-[#0000004d]"> <br
+                        ></br>{client.phoneNo}</p>
                     </div>
                 </div>
 
@@ -48,4 +45,4 @@ const ReferenceInfo = ({ client, setDivVisibility }: { client: Client, setDivVis
      );
 }
  
-export default ReferenceInfo;
+export default ReferenceInfo ;

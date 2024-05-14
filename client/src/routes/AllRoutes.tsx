@@ -51,6 +51,9 @@ import Notifications from '../components/notifications';
 import HistoryCalls from '../components/HistoryCalls';
 import Inbox from '../components/inbox';
 import Collections from '../pages/Collections';
+import ChiefMarketingBR from '../pages/ChiefMarketing_BuyersAndReferences';
+import ClientDisplay from '../components/Client';
+import BuyerInfo from '../components/BuyerInfo';
 
 const AllRoutes = () => {
     return (
@@ -73,11 +76,15 @@ const AllRoutes = () => {
                 <Route path='/phoneagents/:id/reservedCalls' element={<PhoneAgent_ReservedCalls />} />
                 <Route path='/phoneagents/:id/calls' element={<PhoneCallsPage />} />
                 <Route path='/phoneagents/:id' element={<PhoneAgentTemplate />} />
-
                 {/* CHIEF MARKETING */}
                 <Route path='/chief-marketing/dashboard' element={<ChiefMarketingDashboard />} />
                 <Route path='/chief-marketing' element={<ChiefMarketingDashboard />} />
+                <Route path='/chief-marketing/Collections' element={<ChiefMarketingDashboard />} />
+                <Route path='/collections' element={<Collections />} />
+                <Route path='' element={<BuyersAndReferences />} />
+                {/* <Route path='infoClient' element={<BuyerInfo client={undefined} setDivVisibility={undefined} />} /> */}
 
+                
                 {/* COMMON ROUTES */}
                 <Route path='/login' element={<LoginPage />} />
                 {/* <Route path='/dashboard' element={<DashboardSide />} /> */}
