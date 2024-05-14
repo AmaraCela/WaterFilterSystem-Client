@@ -50,6 +50,7 @@ import ReservedTable from '../components/reservedCalls_Table';
 import PhoneAgent_ReservedCalls from '../pages/PhoneAgent_ReservedCalls';
 import Notifications from '../components/notifications';
 import HistoryCalls from '../components/HistoryCalls';
+import Inbox from '../components/inbox';
 const AllRoutes = () => {
     return (
         <Router>
@@ -57,7 +58,7 @@ const AllRoutes = () => {
                 <Route path='/reservedCalls' element={< PhoneAgent_ReservedCalls />}/>
             </Routes>
             <Routes>
-                <Route path='/' element={< HistoryCalls />}/>
+                <Route path='/calls' element={< HistoryCalls />}/>
             </Routes>
             <Routes>
                 <Route path='/home' element={< PhoneAgent_HomePage />}/>
@@ -70,6 +71,12 @@ const AllRoutes = () => {
             </Routes> 
             <Routes>
             <Route path='/redlistPhoneAgent' element={<PhoneAgent_Redlist />} />
+            </Routes> 
+            <Routes>
+            <Route path='/notifications' element={<Notifications />} />
+            </Routes> 
+            <Routes>
+            <Route path='/inbox' element={<Inbox />} />
             </Routes> 
              
              

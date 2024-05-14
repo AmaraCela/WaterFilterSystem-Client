@@ -48,7 +48,7 @@ function RedlistTable() {
     tableRows.push(
       <div
         key={i}
-        className={`flex gap-5 self-stretch text-xs leading-4 border-b border-solid border-zinc-200 max-w-[400px] max-md:flex-wrap ${selectedRow === i ? 'bg-gray-200' : ''} `}
+        className={`flex gap-5 self-stretch text-xs leading-4 border-b border-solid border-zinc-200  bg-[#FFFFFF] max-w-[400px] max-md:flex-wrap ${selectedRow === i ? 'bg-gray-200' : ''} `}
         onClick={() => handleRowClick(i)}
         style={{ width: '100%', minWidth: '100%' }} // Adjust the width here
       >

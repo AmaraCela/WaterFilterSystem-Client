@@ -19,9 +19,9 @@ function PhoneAgentDashboard() {
  
 
   return (
-    <div className="pt-8 pr-8 pb-12 pl-16 bg-white rounded-[30px] max-md:px-5">
+    <div className="pt-8 pr-8 pb-12 pl-16 bg-white rounded-[30px] max-md:px-5 border-b-2 border-gray-300"> {/* Added border */}
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-        <div className="flex flex-col w-[79%] max-md:ml-0 max-md:w-full">
+            <div className="flex flex-col w-[79%] max-md:ml-0 max-md:w-full">
           <div className="flex grow gap-5 justify-between text-lg font-bold text-indigo-800 max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
             <div className="flex flex-col my-auto text-2xl text-sky-950">
               <img
@@ -33,13 +33,13 @@ function PhoneAgentDashboard() {
                 Anxhela Peri
               </div>
               <Link to="/home"> {/* Use Link component to navigate to the "/home" path */}
-                <div className="flex gap-2 px-3 py-2 text-base font-bold text-center text-indigo-800 whitespace-nowrap rounded-lg bg-zinc-300 bg-opacity-10 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-sm:-mr-1">
+                <div className="flex justify-center gap-2 px-3 py-2 text-base font-bold text-center text-indigo-800 whitespace-nowrap rounded-lg bg-zinc-300 bg-opacity-10 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-sm:-mr-1 ">
                   <img
                       loading="lazy"
                       src="https://cdn.builder.io/api/v1/image/assets/TEMP/5c058a858ec5bb22b5c12be435fa48e694741a42b29e2b18f92e2d3a963d065d?"
                       className="shrink-0 aspect-square w-[15px]"
                   />
-                  <div>Home</div>
+                  <div className="">Home</div>
                 </div>
               </Link>
                 </div>
