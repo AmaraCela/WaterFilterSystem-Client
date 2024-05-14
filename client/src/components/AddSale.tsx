@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { phoneNumberValidation } from "../utils/validations";
 import { addReferences, allClients } from "../store/client/clientThunks";
 import { resetReferences } from "../store/client/clientSlice";
+import { addSale } from "../store/sales/saleThunks";
+import { resetState } from "../store/sales/saleSlice";
 
 interface ReferenceFormProps {
   referenceNumber: number;
@@ -35,7 +37,6 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
   setHasErrors,
   phoneNoError,
 }) => {
-  const dispatch = useAppDispatch();
   const [referralName, setReferralName] = React.useState("");
   const [address, setAddress] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
@@ -197,6 +198,11 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
             className="flex flex-col justify-center items-start px-2 py-1"
             aria-label={`Enter phone number for reference ${referenceNumber}`}
           />
+          {phoneNoError ? <p className="text-[#ff0000e0]">
+            {phoneNoError}
+          </p> : phoneNumberError.length > 0 && <p className="text-[#ff0000e0]">
+            {phoneNumberError}
+          </p>}
         </div>
         <div className="flex flex-col justify-center px-3 py-2.5 bg-white rounded-lg shadow-md">
           <label
@@ -271,10 +277,13 @@ const MyComponent: React.FC = () => {
   const [hasErrors, setHasErrors] = React.useState(false);
   const [submitClicked, setSubmitClicked] = React.useState(false);
   const [inputs, setInputs] = React.useState<ReferenceInformation[]>([]);
-  const [clientSuggestion, setClientSuggestion] = React.useState("hidden");
   const [originClientId, setOriginClientId] = React.useState<number>(-1);
+  const [saleInputs, setSaleInputs] = React.useState<{ clientId: number, salesAgentId: number, phoneOperatorId: number, price: number, monthlyPayment: number }>({ clientId: originClientId, salesAgentId: 6, phoneOperatorId: 5, price: 1495, monthlyPayment: 0 });
+  const [clientSuggestion, setClientSuggestion] = React.useState("hidden");
   const addReferencesSuccessful = useSelector((state: RootState) => state.client.referencesSuccesful);
+  const addSaleSuccessful = useSelector((state: RootState) => state.sale.addSaleSuccessful);
   const phoneNoErrors = useSelector((state: RootState) => state.client.phoneNoErrors);
+  const [referrerError, setReferrerError] = useState("");
 
   React.useEffect(() => {
     dispatch(resetReferences());
@@ -282,11 +291,27 @@ const MyComponent: React.FC = () => {
 
   React.useEffect(() => {
     setInputs(inputs.map((input) => ({ ...input, originClientId })));
+    setSaleInputs({ ...saleInputs, clientId: originClientId });
   }, [originClientId]);
 
   React.useEffect(() => {
-    console.log(inputs);
-  }, [inputs]);
+    const monthlyPayment = paymentOption === 'full' ? 0 : (saleInputs.price / 12);
+    setSaleInputs({ ...saleInputs, monthlyPayment });
+  }, [paymentOption]);
+
+  React.useEffect(() => {
+    if (addReferencesSuccessful) {
+      setSaleInputs({ ...saleInputs, price: (1495 - numberOfReferences * 50) });
+    }
+  }, [addReferencesSuccessful]);
+
+  // React.useEffect(() => {
+  //   console.log(inputs);
+  // }, [inputs]);
+
+  React.useEffect(() => {
+    addReferencesSuccessful && dispatch(addSale(saleInputs));
+  }, [saleInputs]);
 
   // Function to handle buyer name change
   const handleBuyerNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -311,6 +336,7 @@ const MyComponent: React.FC = () => {
 
   const handleSubmit = () => {
     setSubmitClicked(true);
+    originClientId === -1 && setReferrerError('Enter a valid client.');
     !hasErrors && dispatch(addReferences(inputs));
   }
 
@@ -331,6 +357,7 @@ const MyComponent: React.FC = () => {
                 }}
                 placeholder="Enter buyer's name"
               />
+              <p>{referrerError}</p>
             </div>
             <div className={`${clientSuggestion} flex-col bg-white max-h-20 overflow-auto`}>
               {(originClients && originClients.length > 0) && originClients.map((client) => (
@@ -425,12 +452,13 @@ const MyComponent: React.FC = () => {
       >
         Proceed
       </button>
-      {(addReferencesSuccessful || (submitClicked && (hasErrors || phoneNoErrors.length > 0))) && <div className="w-screen h-screen top-0 left-0 absolute z-10 flex items-center justify-center bg-[#81808065]">
+      {((addReferencesSuccessful && addSaleSuccessful) || (submitClicked && (hasErrors || phoneNoErrors.length > 0))) && <div className="w-screen h-screen top-0 left-0 absolute z-10 flex items-center justify-center bg-[#81808065]">
         <div className="w-1/3 h-1/3 bg-white border-1 border-black rounded-md flex justify-evenly flex-col items-center">
-          {addReferencesSuccessful && <p className="text-center p-2">{addReferencesSuccessful}</p>}
+          {addReferencesSuccessful && addSaleSuccessful && <p className="text-center p-2">Sale added succesfully.</p>}
           {phoneNoErrors && phoneNoErrors.length > 0 && <p className="text-center p-2 text-[#ff0000e0]" >An error has occurred. Check the references for more details.</p>}
           <button className="rounded-md bg-[#64aa64] px-4 py-2" onClick={() => {
             addReferencesSuccessful && dispatch(resetReferences());
+            addSaleSuccessful && dispatch(resetState());
             setSubmitClicked(false);
           }}>Okay</button>
         </div>
