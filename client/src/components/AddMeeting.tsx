@@ -1,27 +1,34 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useNavigate } from "react-router-dom";
+import LogThisMeeting from "../components/LogThisMeeting";
+
+
 
 const edit = require("../assets/edit.png");
 const calendar = require("../assets/calendaar.png");
 
 const AddMeeting = ({ onCancel }: { onCancel: () => void }) => {
-  const navigate = useNavigate();
+  
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [cancelClicked, setCancelClicked] = useState<boolean>(false);
   const [saveClicked, setSaveClicked] = useState<boolean>(false);
 
+
+  
+
   const handleCancelClick = () => {
     setCancelClicked(true);
     setSaveClicked(false);
-    onCancel();
+    onCancel(); 
   };
 
   const handleSaveClick = () => {
     setSaveClicked(true);
     setCancelClicked(false);
+    
+
   };
 
   return (
@@ -121,18 +128,16 @@ const AddMeeting = ({ onCancel }: { onCancel: () => void }) => {
             CANCEL
           </div>
         </button>
-        <button onClick={handleSaveClick}>
-          <div
-            className={`justify-center px-4 py-2 bg-${
-              saveClicked ? "blue" : "white"
-            } rounded border-2 border-indigo-800 border-solid max-md:px-7 hover:bg-blue-500`}
-          >
-            SAVE
-          </div>
-        </button>
+        <button>
+  <div
+    className={`justify-center px-4 py-2 bg-${saveClicked ? "blue" : "white"
+    } rounded border-2 border-indigo-800 border-solid max-md:px-7 hover:bg-blue-500`}
+  >
+    SAVE
+  </div>
+</button>
       </div>
     </div>
   );
 };
-
 export default AddMeeting;
