@@ -56,7 +56,7 @@ const AllRoutes = () => {
         <Router>
             <Routes>
                 <Route path='/reservedCalls' element={< PhoneAgent_ReservedCalls />}/>
-                <Route path='/' element={< HistoryCalls />}/>
+                <Route path='/' element={< SalesAgentMeetings />}/>
                 <Route path='/home' element={< PhoneAgent_HomePage />}/>
                 <Route path='/latestReferencesPhoneAgent' element={<PhoneAgent_Refs />} />
                 <Route path='/viewAllMeetings' element={<PhoneAgent_Meetings />} />

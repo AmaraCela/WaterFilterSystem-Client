@@ -229,6 +229,33 @@ export function saveScheduleToServer(schedule: any, selectedDay: number) {
     });
 }
 
+export function retrieveAllScheduleFromServer() {
+    const user_id = getLoggedUserId();
+
+    return fetch(`${apiUrl}/users/salesagents/schedules`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to retrieve schedule", data.message);
+                return null;
+            });
+        }
+        else {
+            return response.json().then(data => {
+                // console.log("Retrieved schedule", data);
+                return data;
+            });
+        }
+    }).catch((error) => {
+        console.log("Failed to retrieve schedule", error);
+        return null;
+    });
+}
+
 export function logout() {
     localStorage.removeItem("session_user_id");
     window.location.href = "/login";

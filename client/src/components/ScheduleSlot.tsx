@@ -1,15 +1,19 @@
 const clockimg = require("../assets/Vector.png");
-const ScheduleSlot = ({height, name, surname, time}: {height: string, name: string, surname: string, time: string}) => {
-    const date = new Date(time);
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const timeStart = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+const ScheduleSlot = ({height, name, surname, startHour, startMin, duration}: {height: string, name: string, surname: string, startHour: number, startMin: number, duration: number}) => {
+    // const diff = Math.ceil(duration/60) - 2;
+    // startHour -= diff;
+    // if (startHour === 7) {
+    //     console.log("DUR = ", duration)
+    // }
+    const timeStart = `${startHour.toString().padStart(2, '0')}:${startMin.toString().padStart(2, '0')}`;
+    let endHour = startHour;
+    let endMin = startMin + duration;
+    while (endMin >= 60) {
+        endHour++;
+        endMin -= 60;
+    }
 
-    // assuming meeting is 90 minutes
-    date.setMinutes(date.getMinutes() + 90);
-    const hoursEnd = date.getHours();
-    const minutesEnd = date.getMinutes();
-    const timeEnd = `${hoursEnd.toString().padStart(2, '0')}:${minutesEnd.toString().padStart(2, '0')}`;
+    const timeEnd = `${endHour.toString().padStart(2, '0')}:${endMin.toString().padStart(2, '0')}`;
 
     return (
         <div className={`rounded-md pl-2 overflow-hidden bg-[#67E952] ${height}`}>
