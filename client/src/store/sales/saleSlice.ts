@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Sale } from "../../types/types";
-import { approveSale, declineSale, getSales, getUnapprovedSales } from "./saleThunks";
+import { addSale, approveSale, declineSale, getSales, getUnapprovedSales } from "./saleThunks";
 
 interface SaleState {
     sales: Sale[],
     unapprovedSales: Sale[],
     approved: boolean,
     declined: boolean,
+    addSaleSuccessful: boolean,
 }
 
 const initialState: SaleState = {
@@ -14,6 +15,7 @@ const initialState: SaleState = {
     unapprovedSales: [],
     approved: false,
     declined: false,
+    addSaleSuccessful: false,
 }
 
 const saleSlice = createSlice({
@@ -23,6 +25,7 @@ const saleSlice = createSlice({
         resetState(state: SaleState) {
             state.approved = false;
             state.declined = false;
+            state.addSaleSuccessful = false;
         }
     },
     extraReducers: builder => {
@@ -42,7 +45,14 @@ const saleSlice = createSlice({
         }).addCase(declineSale.fulfilled, (state: SaleState) => {
             state.approved = false;
             state.declined = true;
+        }).addCase(addSale.fulfilled, (state: SaleState) => {
+            state.addSaleSuccessful = true;
+        }).addCase(addSale.pending, (state: SaleState) => {
+            state.addSaleSuccessful = false;
+        }).addCase(addSale.rejected, (state: SaleState) => {
+            state.addSaleSuccessful = false;
         })
+
     }
 });
 

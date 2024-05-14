@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addReferences, allClients, editClient, getClient, redListClients } from "./clientThunks";
+import { addReferences, allClients, editClient, getClient, getReferences, redListClients } from "./clientThunks";
 import { Client } from "../../types/types";
 
 interface ClientState {
     clients: Client[],
     redlistClients: Client[],
+    references: Client[],
     clientToEdit: Client | null,
     referencesSuccesful: string | null,
     referenceError: string | null,
@@ -14,6 +15,7 @@ interface ClientState {
 const initialState: ClientState = {
     clients: [],
     redlistClients: [],
+    references: [],
     clientToEdit: null,
     referencesSuccesful: null,
     referenceError: null,
@@ -59,7 +61,9 @@ const clientSlice = createSlice({
                 }
             }
 
-        })
+        }).addCase(getReferences.fulfilled, (state: ClientState, action: any) => {
+            state.references = action.payload;
+        }) 
     }
 })
 

@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { createAPI } from "../../utils/api";
+import { Client } from "../../types/types";
 
 export const redListClients = createAsyncThunk(
     'redListClients',
@@ -53,18 +54,8 @@ export const getClient = createAsyncThunk(
 
 export const editClient = createAsyncThunk(
     'editClient',
-    async (client: {
-        id?: number;
-        name?: string;
-        surname?: string;
-        phoneNo?: string;
-        profession?: string;
-        address?: string;
-        status?: "IN_WAITLIST" | "IN_REDLIST";
-        hasMadePurchase?: boolean;
-        nextContactDate?: string;
-        createdAt?: string;
-    }, { rejectWithValue }) => {
+    async (client: Client, { rejectWithValue }) => {
+        console.log('called');
         try {
             let response = await createAPI(`clients/${client.id}`, { method: 'PUT' })(client);
             let data = await response.json();
@@ -101,11 +92,11 @@ export const addReferences = createAsyncThunk(
                 let profession = info.profession;
                 let hasMadePurchase = false;
                 let referredBy = info.originClientId === -1 ? null : info.originClientId;
-                let body = referredBy ? {name, surname, phoneNo, address, profession, hasMadePurchase, referredBy} : {name, surname, phoneNo, address, profession, hasMadePurchase};
+                let body = referredBy ? { name, surname, phoneNo, address, profession, hasMadePurchase, referredBy } : { name, surname, phoneNo, address, profession, hasMadePurchase };
 
                 const response = await createAPI('clients', { method: 'POST' })(body);
                 const data = await response.json();
-                const errorInfo = {data, reference: i}
+                const errorInfo = { data, reference: i }
                 !response.ok && errors.push(errorInfo);
                 flag = flag && response.ok;
                 i++;
@@ -118,3 +109,18 @@ export const addReferences = createAsyncThunk(
         }
     }
 )
+
+
+export const getReferences = createAsyncThunk(
+    'getReferences',
+    async(_, { rejectWithValue }) => {
+        try {
+            const response = await createAPI('clients?type=References', {})(null);
+            const data = await response.json();
+            return response.ok ? data : rejectWithValue('Could not retrieve references');
+        }
+        catch (error) {
+            return rejectWithValue(error);
+        }
+    }
+);

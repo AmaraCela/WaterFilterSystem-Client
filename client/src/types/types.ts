@@ -9,6 +9,11 @@ export interface Client {
     hasMadePurchase: boolean
     nextContactDate?: string;
     createdAt: string;
+    lastCallDate?: string;
+    referrals: number[];
+    referredBy?: number;
+    assignedOperator: number;
+    referredInSale?: number;
 }
 
 export interface Call {
@@ -47,6 +52,16 @@ export interface Sale {
     referredClients: number[];
     Client: Client;
     SalesAgent?: SalesAgent;
+}
+
+
+export interface PhoneOperator {
+    id: number;
+    name: string;
+    surname: string;
+    email: string;
+    calls: number[];
+    callHistory: number[];
 }
 
 export interface SalesAgent {
