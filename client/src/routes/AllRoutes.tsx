@@ -54,6 +54,7 @@ import Inbox from '../components/inbox';
 const AllRoutes = () => {
     return (
         <Router>
+            {/* PHONE AGENT */}
             <Routes>
                 <Route path='/reservedCalls' element={< PhoneAgent_ReservedCalls />}/>
             </Routes>
@@ -71,16 +72,22 @@ const AllRoutes = () => {
             </Routes> 
             <Routes>
             <Route path='/redlistPhoneAgent' element={<PhoneAgent_Redlist />} />
-            </Routes> 
+            </Routes>
             <Routes>
             <Route path='/notifications' element={<Notifications />} />
             </Routes> 
             <Routes>
             <Route path='/inbox' element={<Inbox />} />
-            </Routes> 
-             
-             
-           
+            </Routes>
+
+            {/* CHIEF OF MARKETING */}
+            <Routes>
+            <Route path='/chiefOfO' element={<ChiefOperationsDashboard_SalesToApprove />} />
+            </Routes>
+            <Routes>
+            <Route path='/inbox' element={<Inbox />} />
+            </Routes>
+
         </Router>
     )
 }

@@ -4,12 +4,14 @@ const HistoryCalls = ({ onClose }: any) => {
     const missedCalls = [
         { name: "John Doe", number: "+123456789", time: "12:34 PM" },
         { name: "Jane Smith", number: "+987654321", time: "1:30 PM" },
+        { name: "Heidi Klum", number: "+987654321", time: "1:40 PM" },
+
         // Add more missed call items as needed
     ];
 
     return (
-        <div className="flex flex-col flex-auto flex-shrink-0 antialiased bg-gray-50 text-gray-800 max-w-xs" style={{ position: 'absolute', bottom: '35%', right: '10%', transform: 'translate(-50%, -50%)', boxShadow: '10px 4px 6px rgba(1, 1, 1, 0.1), 0 6px 12px rgba(0, 0, 0, 0.1)'}}>
-            <div className={`max-h-30 ${missedCalls.length > 5 ? 'overflow-y-auto' : ''}`}>
+        <div className="flex flex-col flex-auto flex-shrink-0 antialiased bg-gray-50 text-gray-800 max-w-xs" style={{ position: 'absolute', bottom: '32%', right: '10%', transform: 'translate(-50%, -50%)', boxShadow: '10px 4px 6px rgba(1, 1, 1, 0.1), 0 6px 12px rgba(0, 0, 0, 0.1)', zIndex: '9999' }}>
+            <div className={`max-h-30  ml-5 mr-5 mt-1 ${missedCalls.length > 5 ? 'overflow-y-auto' : ''}`}>
                 <ul className="p-2 space-y-2">
                     {/* Missed call items */}
                     {missedCalls.map((call, index) => (
@@ -27,7 +29,7 @@ const HistoryCalls = ({ onClose }: any) => {
                 </ul>
             </div>
             {/* Cancel button */}
-            <button className="mt-4 mx-auto px-4 py-2 bg-gray-200 text-gray-800 rounded-lg" onClick={onClose}>Cancel</button>
+            <button className="mt-4 mb-4  mx-auto px-4 py-2 bg-gray-200 text-gray-800 rounded-lg" onClick={onClose}>Cancel</button>
         </div>
     );
 };
