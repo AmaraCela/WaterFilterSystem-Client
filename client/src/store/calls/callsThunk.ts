@@ -12,10 +12,11 @@ export const addCalls = createAsyncThunk(
         scheduledTime: string;
     }, { rejectWithValue, dispatch }) => {
         try {
+            let done = true;
+            let errorMessage;
             for (let clientId of inputs.clients) {
                 const response = await createAPI('calls', { method: 'POST' })({ clientId, phoneOperatorId: inputs.phoneOperatorId, scheduledTime: inputs.scheduledTime });
                 const data = await response.json();
-                let errorMessage;
                 if (data.errors) {
                     if (data.errors.scheduledTime) {
                         errorMessage = 'Enter a valid scheduled time.'
@@ -40,9 +41,9 @@ export const addCalls = createAsyncThunk(
                     dispatch(editClient(client));
                 }
 
-
-                return response.ok ? true : rejectWithValue(errorMessage);
+                done = response.ok && done;
             }
+            return done ? true : rejectWithValue(errorMessage);
 
         }
         catch (error) {

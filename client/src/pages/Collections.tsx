@@ -26,22 +26,24 @@ const Collections = () => {
         dispatch(getReferences());
         dispatch(getPhoneOperators());
         dispatch(resetState());
+        setAllSelected(false);
     }, []);
 
     useEffect(() => {
-        !visibility && dispatch(resetState());
-    }, [visibility]);
-
-    useEffect(() => {
-        addSuccessful && setVisibility(false);
         dispatch(getReferences());
+        addSuccessful && setVisibility(false);
+        addSuccessful && dispatch(resetState());
     }, [addSuccessful])
 
     useEffect(() => {
-        references && selectedReferences.length === references.length && setAllSelected(true);
+        references && references.length > 0 && selectedReferences.length === references.length && setAllSelected(true);
     }, [selectedReferences])
 
     
+    useEffect(() => {
+        references.length === 0 && setAllSelected(false);
+    }, [references])
+
     return (
         <>
             <div className="flex relative dashboard h-screen">
@@ -61,7 +63,7 @@ const Collections = () => {
                             <p className="w-[24%] shrink-0 grow-0">Phone number</p>
                             <p className="w-[24%] shrink-0 grow-0">Date of reference</p>
                         </div>
-                        {references && references.map((reference) => (
+                        {(references && references.length > 0) ? references.map((reference) => (
                             <div key={reference.id} className="flex w-full justify-between py-1">
                                 <div className="w-[24%] shrink-0 grow-0 pl-8"><input type="checkbox" checked={selectedReferences.includes(reference.id)} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     if (e.target.checked) {
@@ -77,9 +79,8 @@ const Collections = () => {
                                 <p className="w-[24%] shrink-0 grow-0">{reference.phoneNo}</p>
                                 <p className="w-[24%] shrink-0 grow-0">{new Date(reference.createdAt).getDate()}/{new Date(reference.createdAt).getMonth()}/{new Date(reference.createdAt).getFullYear()}</p>
                             </div>
-                        ))}
-                        {(!references || references.length === 0) && <p>
-                            There are no unassigned references.</p>}
+                        )) : <p>
+                        There are no unassigned references.</p>}
                     </div>
                     {selectedReferences.length > 0 && <button className="flex bg-[#b2bedca1] w-fit rounded-md p-2 items-center" onClick={() => setVisibility(true)}>
                         <img src={arrow} alt="" className="object-contain" />

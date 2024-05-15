@@ -30,6 +30,7 @@ const clientSlice = createSlice({
         resetReferences: (state: ClientState) => {
             state.referencesSuccesful = null;
             state.phoneNoErrors = [];
+
         }
     },
     extraReducers: builder => {
@@ -63,7 +64,9 @@ const clientSlice = createSlice({
 
         }).addCase(getReferences.fulfilled, (state: ClientState, action: any) => {
             state.references = action.payload;
-        }) 
+        }).addCase(getReferences.pending, (state: ClientState) => {
+            state.references = [];
+        })
     }
 })
 

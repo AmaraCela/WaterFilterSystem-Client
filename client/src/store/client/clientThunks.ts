@@ -55,7 +55,6 @@ export const getClient = createAsyncThunk(
 export const editClient = createAsyncThunk(
     'editClient',
     async (client: Client, { rejectWithValue }) => {
-        console.log('called');
         try {
             let response = await createAPI(`clients/${client.id}`, { method: 'PUT' })(client);
             let data = await response.json();
