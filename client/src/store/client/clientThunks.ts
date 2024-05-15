@@ -58,7 +58,6 @@ export const editClient = createAsyncThunk(
         try {
             let response = await createAPI(`clients/${client.id}`, { method: 'PUT' })(client);
             let data = await response.json();
-
             return response.ok ? data : rejectWithValue("Error occured");
         }
         catch (error) {

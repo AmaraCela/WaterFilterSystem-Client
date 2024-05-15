@@ -31,6 +31,14 @@ export const addCalls = createAsyncThunk(
                 if (!response.ok && data.message?.includes('Phone operator not found')) {
                     errorMessage = 'Select 1 phone operator.';
                 }
+                if (errorMessage) {
+                    done = false;
+                    break;
+                }
+                done = response.ok && done;
+
+            }
+            if (done) {
                 const clientArr = inputs.clientObjects.filter((cl) => (inputs.clients.includes(cl.id)));
                 for (let client of clientArr) {
                     client = { ...client, assignedOperator: inputs.phoneOperatorId };
@@ -40,13 +48,12 @@ export const addCalls = createAsyncThunk(
                     !client.referredInSale && delete (client.referredInSale)
                     dispatch(editClient(client));
                 }
-
-                done = response.ok && done;
             }
             return done ? true : rejectWithValue(errorMessage);
 
         }
         catch (error) {
+            console.log(error);
             return rejectWithValue(error);
         }
     }

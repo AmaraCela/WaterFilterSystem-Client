@@ -59,7 +59,6 @@ const Statistics = () => {
   }, [calls]);
   
 
-
   const [barChartData, setBarChartData] = useState({
     labels: Data.map((data) => data.month),
     datasets: [

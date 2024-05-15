@@ -18,7 +18,8 @@ const Collections = () => {
     const [selectedDate, setSelectedDate] = useState('');
     const [allSelected, setAllSelected] = useState(false);
     const [visibility, setVisibility] = useState(false);
-
+    const [buttonClicked, setButtonClicked] = useState(false);
+    const [operatorError, setOperatorError] = useState('');
     const addSuccessful = useSelector((state: RootState) => state.call.addSuccessful);
     const addError = useSelector((state: RootState) => state.call.addError);
 
@@ -27,17 +28,28 @@ const Collections = () => {
         dispatch(getPhoneOperators());
         dispatch(resetState());
         setAllSelected(false);
+        setButtonClicked(false)
     }, []);
 
     useEffect(() => {
         dispatch(getReferences());
         addSuccessful && setVisibility(false);
         addSuccessful && dispatch(resetState());
+        setButtonClicked(false);
     }, [addSuccessful])
 
     useEffect(() => {
         references && references.length > 0 && selectedReferences.length === references.length && setAllSelected(true);
     }, [selectedReferences])
+
+    useEffect(() => {
+        buttonClicked && selectedOperator === -1 && setOperatorError("Select 1 operator.");
+        buttonClicked && selectedOperator !== -1 && setOperatorError("");
+    }, [buttonClicked])
+
+    useEffect(() => {
+        selectedOperator !== -1 && setOperatorError("");
+    }, [selectedOperator])
 
     
     useEffect(() => {
@@ -110,15 +122,17 @@ const Collections = () => {
                             value={selectedDate}/>
                     </div>
                     {addError && <p className="text-red-600">{addError}</p>}
+                    {operatorError && <p className="text-red-600">{operatorError}</p>}
                     <div className="flex justify-evenly w-1/2">
                         <button className="rounded-md px-4 border-2 border-[#E97652] inter font-semibold" onClick={() => {
+                            setButtonClicked(true);
                             const inputs = {
                                 clientObjects: references,
                                 clients: selectedReferences,
                                 phoneOperatorId: selectedOperator,
                                 scheduledTime: selectedDate,
                             }
-                            dispatch(addCalls(inputs));
+                            selectedOperator !== -1 && dispatch(addCalls(inputs));
                         }}>
                             ASSIGN
                         </button>
