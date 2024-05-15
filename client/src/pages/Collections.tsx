@@ -20,6 +20,7 @@ const Collections = () => {
     const [visibility, setVisibility] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
     const [operatorError, setOperatorError] = useState('');
+    const [searchWord, setSearchWord] = useState('');
     const addSuccessful = useSelector((state: RootState) => state.call.addSuccessful);
     const addError = useSelector((state: RootState) => state.call.addError);
 
@@ -103,9 +104,9 @@ const Collections = () => {
             {visibility && <div className="h-screen w-screen absolute top-0 z-10 flex items-center justify-center bg-[#11111144]">
                 <div className="h-1/2 px-8 flex flex-col items-center justify-evenly bg-white border-[#844B2A] border-2 rounded-md shadow-[#844B2A] shadow-md">
                     <p className="main-font text-[#844B2A] font-semibold">Assign {selectedReferences.length} calls to: </p>
-                    <input type="search" className="pl-2 border-[#844B2A] border-2 rounded-md bg-[#fd9e305c] w-[500px]" placeholder="Search for an operator..." />
+                    <input type="search" value={searchWord} className="pl-2 border-[#844B2A] border-2 rounded-md bg-[#fd9e305c] w-[500px]" placeholder="Search for an operator..." onChange={(e) => setSearchWord(e.target.value)}/>
                     <div className="h-fit max-h-[50%] overflow-y-auto">
-                        {operators && operators.map((operator) => (
+                        {operators && operators.filter((op) => (op.name.includes(searchWord) || op.surname.includes(searchWord))).map((operator) => (
                             <div className="flex items-baseline" key={operator.id}>
                                 <input type="radio" name="operators" id={operator.id.toString()} className="accent-[#844B2A]" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                     e.target.checked && setSelectedOperator(() => operator.id);
