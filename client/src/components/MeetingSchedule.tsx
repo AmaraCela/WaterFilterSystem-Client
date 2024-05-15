@@ -58,11 +58,7 @@ const MeetingSchedule = ({showCompact}: any) => {
             });
 
             const busySlots = [];
-            for (let i = 9; i <= 18; i++) {
-                let emptySlot = {startingHour: i, rowSpan: 2, slot: <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>};
-                busySlots.push(emptySlot);
-            }
-
+        
             let currentSlot: { startingHour: number; startingMin: number; rowSpan: number; slot: any } | null = null;
 
             for (let meeting of meetings) {
@@ -79,11 +75,8 @@ const MeetingSchedule = ({showCompact}: any) => {
                     )};
                     busySlots[meetingHour - 9] = currentSlot;
                 } else if (meetingHour <= currentSlot.startingHour + currentSlot.rowSpan) {
-                    const endHour = Math.max(
-                        currentSlot.startingHour + currentSlot.rowSpan,
-                        meetingEndHour
-                    );
-                    currentSlot.rowSpan = endHour - currentSlot.startingHour;
+                    const diffRowSpan = meetingEndHour - currentSlot.startingHour - currentSlot.rowSpan;
+                    currentSlot.rowSpan = meetingEndHour - currentSlot.startingHour;
                     // todo fix ending time
                     currentSlot.slot = (
                         <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={currentSlot.rowSpan}>
@@ -99,6 +92,33 @@ const MeetingSchedule = ({showCompact}: any) => {
                     busySlots[meetingHour - 9] = currentSlot;
                 }
             }
+
+            // for (let i = 9; i <= 18; i++) {
+            //     let emptySlot = {startingHour: i, rowSpan: 1, slot: <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>};
+            //     busySlots.push(emptySlot);
+            // }
+
+            let hour = 9;
+            // const copySlots = [...busySlots];
+            for (const slot of busySlots) {
+                if (slot === undefined) {
+                    continue;
+                }
+
+                while (slot.startingHour > hour) {
+                    let emptySlot = {startingHour: hour, startingMin: 0, rowSpan: 1, slot: <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>};
+                    busySlots.splice(hour - 9, 1, emptySlot);
+                    hour++;
+                }
+                hour += slot.rowSpan;
+
+                while (hour <= 18) {
+                    let emptySlot = {startingHour: hour, startingMin: 0, rowSpan: 1, slot: <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>};
+                    busySlots.splice(hour - 9, 1, emptySlot);
+                    hour++;
+                }
+            }
+
             return busySlots;
         });
     }
@@ -146,9 +166,8 @@ const MeetingSchedule = ({showCompact}: any) => {
 
         for (let schedule of schedules) {
             const date = new Date(schedule.day);
-            
             const now = new Date();
-            if (date < now) {
+            if (date.getDate() < now.getDate()) {
                 continue;
             }
 
