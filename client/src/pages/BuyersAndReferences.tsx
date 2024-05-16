@@ -1,59 +1,88 @@
-import { useSelector } from "react-redux";
-import ClientDisplay from "../components/Client";
+import ClientTable from "../components/TableUsers_ChM";
+import ReferenceInfo from "../components/ReferenceInfo";
+import BuyerInfo from "../components/BuyerInfo";
 import DashboardSide from "../components/DashboardSide";
 import TopIcons from "../components/TopIcons";
-import { RootState, useAppDispatch } from "../store/store";
-import { useEffect, useState } from "react";
-import { allClients } from "../store/client/clientThunks";
-import BuyerInfo from "../components/BuyerInfo";
+import { useState } from "react";
 import { Client } from "../types/types";
-import ReferenceInfo from "../components/ReferenceInfo";
 
+const sampleClients: Client[] = [
+    {
+      id: 1,
+      name: "Gjergj",
+      surname: "Shqiponja",
+      phoneNo: "123-456-7890",
+      address: "Rruga e Këngëtarëve, Tiranë",
+      status: "IN_WAITLIST",
+      hasMadePurchase: true,
+      createdAt: "2024-05-14",
+      assignedOperator: 1, 
+        referrals: [],
+        referredBy: 2
+    },
+    {
+      id: 2,
+      name: "Vangjush",
+      surname: "Ujqër",
+      phoneNo: "456-789-0123",
+      address: "Sheshi i Fluturimeve, Vlorë",
+      status: "IN_REDLIST",
+      hasMadePurchase: false,
+      createdAt: "2024-05-15",
+      assignedOperator: 2,
+      referrals: [1],
+      referredBy: 1
+    },
+    // Add more data...
+  ];
 const BuyersAndReferences = () => {
-
-    const dispatch = useAppDispatch();
-    const clients = useSelector((state: RootState) => state.client.clients);
     const [keyword, setKeyword] = useState("");
-    const [divVisibility, setDivVisibility] = useState(false);
-    const [client, setClient] = useState<Client | null>(null);
+    const [selectedClient, setSelectedClient] = useState<Client | null>(null);
 
-    useEffect(() => {
-        dispatch(allClients(null));
-    }, []);
+    const filteredClients = sampleClients.filter(client =>
+        client.name && client.name.toLowerCase().includes(keyword.toLowerCase()) ||
+        (client.surname && client.surname.toLowerCase().includes(keyword.toLowerCase())) // Type guard
+    );
+
+    const handleRowClick = (client: Client) => {
+        setSelectedClient(client);
+    };
+
+    const closePopup = () => {
+        setSelectedClient(null);
+    };
 
     return (
         <>
-            <div className="flex justify-center items-center h-fit">
+            <div className="flex justify-center items-center h-fit ">
                 <div className="dashboard w-3/4 h-max rounded-3xl flex flex-row">
                     <DashboardSide highlighted={"Buyers"} />
-                    <div className="w-3/4 main-content">
+                    <div className="w-3/4 main-content ml-10 mr-10">
                         <TopIcons />
                         <p className="main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-8">Buyers and References</p>
-                        <input type="search" className="w-1/2 rounded-3xl ml-12 mt-2 search-bar pl-4 h-7 flex items-center" placeholder="Search a buyer/reference" value={keyword} onChange={(e) => setKeyword(e.target.value)} onKeyUp={(e) => { e.key === 'Enter' && dispatch(allClients(keyword)); }} />
-                        <div className="flex ml-12  mt-1 items-center">
-                            <div className="h-3 w-3 bg-[#28D372] ml-2"></div>
-                            <p className="text-[#28D372] rubik ml-2">Reference</p>
-                            <div className="h-3 w-3 bg-[#3D5AA1] ml-8"></div>
-                            <p className="text-[#3D5AA1] rubik ml-2">Buyer</p>
-                        </div>
-                        <div className="overflow-x-hidden overflow-y-scroll flex w-4/5 h-3/5 mt-4 ml-12 bg-[#ffffff80] border border-black rounded-[10px] flex-wrap p-4">
-                            {clients && clients.length > 0 && clients.map((client) => (
-                                client.hasMadePurchase ? <ClientDisplay setClient={setClient} setDivVisibility={setDivVisibility} key={client.id} type="Buyer" client={client} /> : <ClientDisplay setClient={setClient} setDivVisibility={setDivVisibility} key={client.id} type="Reference" client={client} />
-                            ))}
-                            {clients.length === 0 && 
-                            <p>There are no clients or references to display.</p>
-                            }
-                        </div>
+                        <input type="search" className="w-1/2 rounded-3xl ml-12 mt-2 search-bar pl-4 h-7 flex items-center" placeholder="Search a buyer/reference" value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+                        <div className="flex gap-7 ml-5 mt-10  px-5 text-xs font-medium text-center whitespace-nowrap">
+                    <div className="shrink-0 self-start w-3.5 h-3 bg-emerald-300" />
+                    <div className="my-auto text-green-600">Reference</div>
+                    <div className="shrink-0 self-start w-3.5 h-3 bg-indigo-500" />
+                    <div className="text-indigo-800">Buyer</div>
+                    </div>
+                      <div className="ml-10 mr-10 mt-10">
+                   <ClientTable clients={filteredClients} handleRowClick={handleRowClick} selectedClient={selectedClient} />
+
+                      </div>
                     </div>
                 </div>
             </div>
-            {divVisibility && <div className="absolute w-full h-screen top-0 flex items-center justify-center bg-[#fdfcfcd5]" >
-                {client &&
-                    <div className="h-1/2 w-[36%]">
-                        {client.hasMadePurchase ? <BuyerInfo client={client} setDivVisibility={setDivVisibility} /> : <ReferenceInfo client={client} setDivVisibility={setDivVisibility} />}
-                    </div>
-                }
-            </div>}
+            {selectedClient && (
+                <div className="absolute w-full h-screen top-0 flex items-center justify-center bg-[#fdfcfcd5]">
+                     {selectedClient.hasMadePurchase ? (
+            <ReferenceInfo client={selectedClient} setDivVisibility={closePopup} />
+          ) : (
+            <BuyerInfo client={selectedClient} setDivVisibility={closePopup} />
+          )}
+                </div>
+            )}
         </>
     );
 }

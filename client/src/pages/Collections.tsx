@@ -64,10 +64,10 @@ const Collections = () => {
                 <DashboardSide highlighted="Collections" />
                 <div className="w-3/4 main-content">
                     <TopIcons />
-                    <p className="main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-2">
+                    <p className="mt-5 main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-2">
                         Collections
                     </p>
-                    <div className="h-[70%] w-3/4 rounded-md bg-white overflow-y-scroll">
+                    <div className=" ml-10 mt-5 h-[70%] w-3/4 rounded-md bg-white overflow-y-scroll">
                         <div className="flex w-full justify-between py-3 bg-gray-200 border-black border rounded-t-md">
                             <div className="w-[24%] shrink-0 flex justify-evenly"> <input type="checkbox" checked={allSelected} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 setAllSelected(e.target.checked);

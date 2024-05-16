@@ -92,3 +92,28 @@ export interface Debt {
     amountToCollect: number;
     sale: number;
 }
+export enum ClientStatus {
+    IN_WAITLIST,
+    IN_REDLIST
+}
+
+
+
+export const findReferrerName = (referralId: number | undefined, clients: Client[]): string => {
+    if (referralId === undefined) {
+      return ""; // Return an empty string if referralId is undefined
+    }
+  
+    // Find the referring client using referralId
+    const referringClient = clients.find(client => client.id === referralId);
+  
+    // Check if referringClient exists and has a name property
+    if (referringClient && referringClient.name) {
+      return referringClient.name;
+    } else {
+      return ""; // Return an empty string if referringClient or its name is undefined
+    }
+  };
+  
+  
+  

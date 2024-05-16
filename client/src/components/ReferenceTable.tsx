@@ -17,7 +17,7 @@ const ReferenceItem: React.FC<ReferenceItemProps> = ({
   profession,
 }) => {
   return (
-    <div className="px-3 py-5 rounded-md border border-solid bg-white bg-opacity-80 border-zinc-400 max-md:pl-5 max-md:max-w-full">
+    <div className="px-3 py-5 rounded-md border border-solid bg-white bg-opacity-80 border-zinc-400 max-md:pl-5 max-md:max-w-full mr-5">
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">
         <div className="flex flex-col w-full max-md:ml-0 max-md:w-full">
           <div className="flex grow gap-5 text-black max-md:flex-wrap max-md:mt-10 max-md:max-w-full">
@@ -39,7 +39,7 @@ const ReferenceItem: React.FC<ReferenceItemProps> = ({
               {phoneNumber}
             </div>
             <div className="box-border flex relative flex-row flex-wrap shrink-0 mx-auto">
-              <div className="self-center m-auto text-lg leading-4">
+              <div className="self-center m-auto text-lg leading-4 mr-4">
                 {profession}
               </div>
             </div>

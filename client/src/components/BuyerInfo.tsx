@@ -1,5 +1,7 @@
 import { Client } from "../types/types";
 import "../styles/buyerInfo.css";
+import { useRef } from "react"; // Import useRef
+
 const calendar = require("../assets/Calendarr.png");
 const history = require("../assets/Ticket_alt.png");
 const references = require("../assets/3 User.png");
@@ -8,11 +10,23 @@ const close = require("../assets/Close Icon.png");
 
 const BuyerInfo = ({ client, setDivVisibility }: { client: Client, setDivVisibility: any }) => {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    
+    // Reference for the BuyerInfo component
+    const buyerInfoRef = useRef<HTMLDivElement>(null);
+
+    // Function to handle drag event
+    const handleDrag = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const buyerInfo = buyerInfoRef.current;
+        if (!buyerInfo) return;
+        buyerInfo.style.position = 'absolute';
+        buyerInfo.style.left = `${event.clientX}px`;
+        buyerInfo.style.top = `${event.clientY}px`;
+    };
     return (
-        <div className="bg-[#271d9659] rounded-[49px] h-full flex flex-col items-center">
-            <div className="bg-[#ffffffa6] w-11/12 px-7 h-max mt-8 rounded-[49px] pt-4 flex flex-col items-center inner-div">
-                <div className="flex justify-between w-full">
-                    <p className="rubik text-[#281D96] font-semibold text-lg">{client.name} {client.surname}</p>
+        <div className="bg-[#271d9659] rounded-[49px] h-full flex flex-col items-center" style={{width :'480px' , height: '400px' }}>
+            <div className="bg-[#ffffffa6] w-11/12 px-7 h-max mt-8 rounded-[49px] pt-4 flex flex-col items-center inner-div"  style={{ height: '300px'}}>
+                <div className=" pt-5 pl-5 pr-5 pb-5 flex justify-between w-full">
+                    <p className="rubik text-[#281D96]  font-semibold text-lg">{client.name} {client.surname}</p>
                     <div className="flex ml-2">
                         <img src={calendar} alt="calendar" className="size-6 mr-2" />
                         <p className="text-[#0000004d] mali">Joined on</p>
@@ -22,31 +36,39 @@ const BuyerInfo = ({ client, setDivVisibility }: { client: Client, setDivVisibil
                 <div className="w-3/4 mt-2">
                     <div className="flex justify-between">
                         <p className="rubik font-bold text-[#2B437B]">ID:</p>
-                        <p className="rubik ml-16 text-[#0000004d]">{client.id}</p>
+                        <p className="rubik ml-16 text-[#0000004d] text-xs">{client.id}</p>
                     </div>
                     <div className="flex justify-between">
                         <p className="rubik font-bold text-[#2B437B]">Address:</p>
-                        <p className="rubik ml-16 text-[#0000004d]">{client.address}</p>
+                        <p className="rubik ml-16 text-[#0000004d] text-xs">{client.address}</p>
                     </div>
                     <div className="flex justify-between">
                         <p className="rubik font-bold text-[#2B437B]">Phone No.:</p>
-                        <p className="rubik ml-16 text-[#0000004d]">{client.phoneNo}</p>
+                        <p className="rubik ml-16 text-[#0000004d] text-xs mb-0">{client.phoneNo}</p>
                     </div>
                 </div>
 
-                <div className="flex justify-between w-full my-4">
-                    <div className="flex">
-                        <img src={history} alt="" />
+                <div className="pt-17  justify-between w-full my-4 mb-4">
+                    <button className="flex-col mr-3">
+                        <div className="flex justify-center mb-1">
+                        <img  className='mr-1 ' src={history} alt="" />
                         <p className="rubik font-bold text-[#60687B]">History</p>
                     </div>
-                    <div className="flex">
-                        <img src={references} alt="" />
+                    </button>
+                    <button className="ml-3">
+                        <div className="flex justify-center mb-1">
+                        <img  className='mr-1 ' src={references} alt="" />
                         <p className="rubik font-bold text-[#60687B]">References</p>
                     </div>
-                    <div className="flex">
-                        <img src={contract} alt="" />
-                        <p className="rubik font-bold text-[#60687B]">Contract</p>
+                    </button> 
+
+                    <button className="ml-3">
+                    <div className="flex justify-center mt-1 ">
+                    <img className='mr-1 'src={contract} alt="" />
+                    <p className="rubik font-bold text-[#60687B]">Contract</p>
                     </div>
+                    </button> 
+                   
                 </div>
 
             </div>
