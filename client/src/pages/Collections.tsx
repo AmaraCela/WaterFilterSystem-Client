@@ -96,7 +96,7 @@ const Collections = () => {
                         )) : <p>
                         There are no unassigned references.</p>}
                     </div>
-                    {selectedReferences.length > 0 && <button className="flex bg-[#b2bedca1] w-fit rounded-md p-2 items-center" onClick={() => setVisibility(true)}>
+                    {references && references.length > 0 && selectedReferences.length > 0 && <button className="flex bg-[#b2bedca1] w-fit rounded-md p-2 items-center" onClick={() => setVisibility(true)}>
                         <img src={arrow} alt="" className="object-contain" />
                         <p className="main-font text-[#2C3876] font-bold">SEND</p>
                     </button>}
