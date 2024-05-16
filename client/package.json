@@ -3,15 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-pdf/renderer": "^3.4.4",
     "@reduxjs/toolkit": "^2.2.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/file-saver": "^2.0.7",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.30",
     "@types/react-dom": "^18.2.22",
     "chart.js": "^4.4.2",
+    "file-saver": "^2.0.5",
+    "html-pdf": "^3.0.1",
     "html2pdf.js": "^0.10.1",
+    "jspdf": "^2.5.1",
+    "pdf-lib": "^1.17.1",
     "puppeteer": "^22.8.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
@@ -52,12 +58,8 @@
   "devDependencies": {
     "@types/babel__core": "^7.20.5",
     "@types/babel-generator": "^6.25.8",
-<<<<<<< HEAD
     "@types/react": "^18.3.1",
-=======
-    "@types/react": "^18.2.69",
     "@types/react-datepicker": "^6.2.0",
->>>>>>> test
     "tailwindcss": "^3.4.1"
   }
 }
