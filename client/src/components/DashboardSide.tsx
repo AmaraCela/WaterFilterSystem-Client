@@ -22,7 +22,7 @@ const DashboardSide = ({highlighted}: {highlighted: "Calls" | "Schedules" | "Sta
             <DashboardLink to={"/statistics"} src={chart} text={"Statistics"} highlighted = {highlighted === "Statistics"} />
             <DashboardLink to={"/redlist"} src={danger} text={"Red List"} highlighted = {highlighted === "Red List"} />
             <DashboardLink to={"/buyersReferences"} src={paper} text={"Buyers and References"} highlighted = {highlighted === "Buyers"} />
-            <DashboardLink to={""} src={bookmark} text={"Collections"} highlighted = {highlighted === "Collections"} />
+            <DashboardLink to={"/collections"} src={bookmark} text={"Collections"} highlighted = {highlighted === "Collections"} />
         </div>
     );
 }
