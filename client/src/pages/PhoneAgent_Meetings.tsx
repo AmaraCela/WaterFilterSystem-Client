@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import PhoneAgentDashboard from "../components/phoneAgent-Dashboard";
 import HomeWidget from "../components/phoneAgent-HomeWidget";
 import MeetingSchedule from "../components/MeetingSchedule";
@@ -8,7 +8,7 @@ const backgroundLight = require('../assets/backgroundLight.png').default;
 
 
 const PhoneAgent_Meetings = () => {
-    const [showAddMeeting, setShowAddMeeting] = React.useState(false); // State to manage visibility of AddNewMeeting component
+    const [showAddMeeting, setShowAddMeeting] = useState(false); // State to manage visibility of AddNewMeeting component
 
     const handleAddMeetingClick = () => {
         setShowAddMeeting(true); // Set showAddMeeting to true when "Add New Meeting" button is clicked
@@ -31,7 +31,7 @@ const PhoneAgent_Meetings = () => {
                 </button>
                 <div className="flex w-full justify-between mt-8">
                     <div className="w-3/4 overflow-y-auto  mr-16">
-                        <MeetingSchedule />
+                        <MeetingSchedule showCompact={true}/>
                     </div>
                     <div className="w-1/4 mr-4">
                         <div className="mt-2">

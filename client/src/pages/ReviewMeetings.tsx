@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import "../styles/reviewMeetingStyle.css";
 import { editClient, getClient } from "../store/client/clientThunks";
 import { Meeting } from "../types/types";
+import { getLoggedUserId } from "../serverUtils/serverUtils";
 const deleteIcon = require("../assets/delete_24px.png");
 const editIcon = require("../assets/edit_24px.png");
 
@@ -29,7 +30,8 @@ const ReviewMeetings = () => {
     const [editedInformation, setEditedInformation] = useState<EditMeetingInformation | null>(null);
     
     useEffect(() => {
-        dispatch(getMeetings("6"));
+        const user_id = getLoggedUserId();
+        dispatch(getMeetings(user_id));
     }, []);
 
     useEffect(() => {

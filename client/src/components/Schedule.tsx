@@ -28,7 +28,7 @@ const Schedule = () => {
 
                     </td>
                     <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}>
-                        <ScheduleSlot height={'h-3/4'} name="" surname=""></ScheduleSlot>
+                        <ScheduleSlot height={'h-3/4'} name="" surname="" startHour={0} startMin={0} duration={2}></ScheduleSlot>
                     </td>
                     <td className="w-[22%] h-full border-t border-[#a5a5a5]">
 
@@ -59,7 +59,7 @@ const Schedule = () => {
 
                     </td>
                     <td className="w-[22%] h-full border-t border-[#a5a5a5]">
-                        <ScheduleSlot height="h-full" name="" surname=""></ScheduleSlot>
+                        <ScheduleSlot height="h-full" name="" surname="" startHour={0} startMin={0} duration={1}></ScheduleSlot>
                     </td>
                     <td className="w-[22%] h-full border-t border-[#a5a5a5]">
 

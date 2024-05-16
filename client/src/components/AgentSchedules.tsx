@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { getLoggedUserId, getLoggedInUser, retrieveScheduleFromServer, saveScheduleToServer } from '../serverUtils/serverUtils';
+import { UserRole } from '../serverUtils/UserRole';
 
 interface Timeslot {
     start: string;
     end: string;
+    readonly: boolean;
 }
 
 interface Schedule {
@@ -78,105 +81,92 @@ const StyledComponent = styled.div`
   }
 `;
 
-function retrieveScheduleFromServer() {
-    const apiUrl = process.env.REACT_APP_API_ENDPOINT;
-    const user_id = localStorage.getItem("session_user_id");
-
-    fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    }).then((response) => {
-        if (!response.ok) {
-            return response.json().then(data => {
-                console.log("Failed to retrieve schedule", data.message);
-            });
-        }
-        else {
-            return response.json().then(data => {
-                console.log("Retrieved schedule", data);
-            });
-        }
-    });
-}
-
-function saveScheduleToServer(timeslots: any, selectedDay: string) {
-    let dayIdx;
-    switch (selectedDay) {
-        case 'Sunday':
-            dayIdx = 0;
-            break;
-        case 'Monday':
-            dayIdx = 1;
-            break;
-        case 'Tuesday':
-            dayIdx = 2;
-            break;
-        case 'Wednesday':
-            dayIdx = 3;
-            break;
-        case 'Thursday':
-            dayIdx = 4;
-            break;
-        case 'Friday':
-            dayIdx = 5;
-            break;
-        default:
-            dayIdx = 0;
-            break;
-    }
-
-
-    const day = new Date();
-    day.setDate(day.getDate() + (dayIdx + 7 - day.getDay()) % 7); 
-    
-    const apiUrl = process.env.REACT_APP_API_ENDPOINT;
-    const user_id = localStorage.getItem("session_user_id");
-    if (user_id === null) {
-        console.log("Not logged in!");
-        return;
-    }
-
-    console.log("User ID: ", user_id);
-    for (let i = 0; i < timeslots.length; i++) {
-        const timeslot = {
-            day: day,
-            startTime: timeslots[i].start,
-            endTime: timeslots[i].end,
-        };
-
-        fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(timeslot),
-        }).then((response) => {
-            if (!response.ok) {
-                return response.json().then(data => {
-                    console.log("Failed to save schedule", data.message);
-                });
-            }
-            else {
-                return response.json().then(data => {
-                    console.log("Saved schedule", data);
-                });
-            }
-        });
-    }
-
-}
 
 const AgentScheduleComponent = () => {
     const [schedule, setSchedule] = useState<Schedule>({
-        Monday: [],
-        Tuesday: [],
-        Wednesday: [],
-        Thursday: [],
-        Friday: [],
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
     });
-    const [selectedDay, setSelectedDay] = useState<string>('Monday');
+    const [selectedDay, setSelectedDay] = useState<number>(1);
+    let loggedUser: any | null;
+
+    useEffect(() => {
+        retrieveScheduleFromServer().then((schedules: any) => {
+            if (schedules === null) {
+                return;
+            }
+
+            schedules.sort((a: any, b: any) => {
+                if (a.startTime < b.startTime) {
+                    return -1;
+                }
+                if (a.startTime > b.startTime) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            let newSchedule = schedule;
+            for (let i = 0; i < schedules.length; i++) {
+                const day = new Date(schedules[i].day);
+                let dayIdx = day.getDay();
+
+                const timeslot = {
+                    start: schedules[i].startTime,
+                    end: schedules[i].endTime,
+                    readonly: true
+                };
+
+                newSchedule = {
+                    ...newSchedule,
+                    [dayIdx]: [...newSchedule[dayIdx], timeslot],
+                };
+
+                // console.log("Day: ", dayIdx, "Timeslot: ", timeslot);
+            }
+
+            setSchedule(newSchedule);
+        });
+
+        getLoggedInUser().then((user) => {
+            loggedUser = user;
+        });
+    }, []);
+
+    const selectedDayReadonly = (selectedDay: number) => {
+        return false; // temporary for testing
+        
+        if (loggedUser && loggedUser.role == UserRole.MARKETING_MANAGER) {
+            return false;
+        }
+
+        for (let i = 0; i < schedule[selectedDay].length; i++) {
+            if (schedule[selectedDay][i].readonly === true) {
+                return true;
+            }
+        }
+
+        const nextOccurrence = new Date();
+        nextOccurrence.setDate(nextOccurrence.getDate() + (selectedDay + 7 - nextOccurrence.getDay()) % 7); 
+        nextOccurrence.setHours(0, 0, 0, 0);
+
+        const nextMonday = new Date();
+        nextMonday.setDate(nextMonday.getDate() + (1 + 7 - nextMonday.getDay()) % 7); 
+        nextMonday.setHours(0, 0, 0, 0);
+        
+        if (nextMonday < new Date()) {
+            nextMonday.setDate(nextMonday.getDate() + 7);
+        }
+        
+        if (nextOccurrence >= nextMonday) {
+            return true;
+        }
+
+        return false;
+    }
 
     const getValidStartTimes = (index: number, start: string): string[] => {
         if (schedule[selectedDay][index] === undefined || start === undefined) {
@@ -254,7 +244,7 @@ const AgentScheduleComponent = () => {
         const previousSchedule = schedule[selectedDay][schedule[selectedDay].length - 1];
 
         if (!previousSchedule) {
-            newSchedule = { start: '08:00', end: '09:30' };
+            newSchedule = { start: '08:00', end: '09:30', readonly: false };
         }
         else if (previousSchedule.end !== '21:30' &&
                  previousSchedule.end !== '21:00' &&
@@ -271,7 +261,7 @@ const AgentScheduleComponent = () => {
             }
 
             const newEnd = `${newHour.toString().padStart(2, '0')}:${newMinute.toString().padStart(2, '0')}`;
-            newSchedule = { start: previousSchedule.end, end: newEnd };
+            newSchedule = { start: previousSchedule.end, end: newEnd, readonly: false};
         }
         else {
             return;
@@ -282,6 +272,14 @@ const AgentScheduleComponent = () => {
             [selectedDay]: [...schedule[selectedDay], newSchedule],
         });
     };
+
+    const removeTimeslot = (selectedDay: number, slotIndex: number) => {
+        schedule[selectedDay].splice(slotIndex, 1);
+        setSchedule({
+            ...schedule,
+            [selectedDay]: schedule[selectedDay],
+        });
+    }
 
     const updateTimeslot = (
         rowIndex: number,
@@ -324,6 +322,7 @@ const AgentScheduleComponent = () => {
                 schedule[selectedDay][columnIndex*5+rowIndex] ?
                 (<div key={`${columnIndex}-${rowIndex}`} className="timeslot">
                     <select
+                        disabled={timeslot.readonly}
                         value={timeslot.start}
                         onChange={(e) => updateTimeslot(columnIndex*5+rowIndex, 'start', e.target.value)}
                     >
@@ -335,6 +334,7 @@ const AgentScheduleComponent = () => {
                     </select>
                     &nbsp;to&nbsp;
                     <select
+                        disabled={timeslot.readonly}
                         value={timeslot.end}
                         onChange={(e) => updateTimeslot(columnIndex*5+rowIndex, 'end', e.target.value)}
                     >
@@ -344,6 +344,8 @@ const AgentScheduleComponent = () => {
                         </option>
                     ))}
                     </select>
+                    {/* { (() => { console.log("AAA ", selectedDay, columnIndex*5+rowIndex, schedule[selectedDay][columnIndex*5+rowIndex]); return null; })() } */}
+                    { schedule[selectedDay][columnIndex*5+rowIndex] && !schedule[selectedDay][columnIndex*5+rowIndex].readonly ? (<>&nbsp;<button className="remove-slot-button" onClick={() => removeTimeslot(selectedDay, columnIndex*5+rowIndex)}>x</button></>) : null }
                 </div>) : null
             ))}
             </div>
@@ -355,43 +357,56 @@ const AgentScheduleComponent = () => {
             <h2>My Work Schedule</h2>
             <div className="day-picker">
                 <button
-                    className={selectedDay === 'Monday' ? 'active' : ''}
-                    onClick={() => setSelectedDay('Monday')}
+                    className={selectedDay === 1 ? 'active' : ''}
+                    onClick={() => setSelectedDay(1)}
                 >
                     Mon
                 </button>
                 <button
-                    className={selectedDay === 'Tuesday' ? 'active' : ''}
-                    onClick={() => setSelectedDay('Tuesday')}
+                    className={selectedDay === 2 ? 'active' : ''}
+                    onClick={() => setSelectedDay(2)}
                 >
                     Tue
                 </button>
                 <button
-                    className={selectedDay === 'Wednesday' ? 'active' : ''}
-                    onClick={() => setSelectedDay('Wednesday')}
+                    className={selectedDay === 3 ? 'active' : ''}
+                    onClick={() => setSelectedDay(3)}
                 >
                     Wed
                 </button>
                 <button
-                    className={selectedDay === 'Thursday' ? 'active' : ''}
-                    onClick={() => setSelectedDay('Thursday')}
+                    className={selectedDay === 4 ? 'active' : ''}
+                    onClick={() => setSelectedDay(4)}
                 >
                     Thu
                 </button>
                 <button
-                    className={selectedDay === 'Friday' ? 'active' : ''}
-                    onClick={() => setSelectedDay('Friday')}
+                    className={selectedDay === 5 ? 'active' : ''}
+                    onClick={() => setSelectedDay(5)}
                 >
                     Fri
                 </button>
 
-                <button className="add-slot-button" onClick={addTimeslot}>+</button>
+                <button className="add-slot-button" disabled={selectedDayReadonly(selectedDay)} onClick={addTimeslot}>+</button>
             </div>
         
             <div className="day-container">
                 {renderTimeslots()}
             </div>
-            <button onClick={() => saveScheduleToServer(schedule[selectedDay], selectedDay)}>Save</button>
+            { !selectedDayReadonly(selectedDay) ? (<button onClick={() => {
+                saveScheduleToServer(schedule, selectedDay).then(() => {
+                    const timeslots = schedule[selectedDay];
+                    
+                    const newSchedule = timeslots.map((slot) => {
+                        return { ...slot, readonly: true };
+                    });
+
+                    setSchedule({
+                        ...schedule,
+                        [selectedDay]: newSchedule,
+                    });
+                });
+            }}>Save</button>) : null }
         </StyledComponent>
     );
 };
