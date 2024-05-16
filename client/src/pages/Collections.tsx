@@ -55,6 +55,7 @@ const Collections = () => {
     
     useEffect(() => {
         references.length === 0 && setAllSelected(false);
+        console.log(references);
     }, [references])
 
     return (

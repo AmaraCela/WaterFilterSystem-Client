@@ -55,6 +55,7 @@ export const getClient = createAsyncThunk(
 export const editClient = createAsyncThunk(
     'editClient',
     async (client: Client, { rejectWithValue }) => {
+        console.log('Editing client');
         try {
             let response = await createAPI(`clients/${client.id}`, { method: 'PUT' })(client);
             let data = await response.json();
@@ -111,6 +112,7 @@ export const addReferences = createAsyncThunk(
 export const getReferences = createAsyncThunk(
     'getReferences',
     async(_, { rejectWithValue }) => {
+        console.log('Getting references');
         try {
             const response = await createAPI('clients?type=References', {})(null);
             const data = await response.json();

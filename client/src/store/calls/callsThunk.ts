@@ -46,14 +46,14 @@ export const addCalls = createAsyncThunk(
                         delete (client.referredBy);
                     }
                     !client.referredInSale && delete (client.referredInSale)
-                    dispatch(editClient(client));
+                    await dispatch(editClient(client));
                 }
             }
+
             return done ? true : rejectWithValue(errorMessage);
 
         }
         catch (error) {
-            console.log(error);
             return rejectWithValue(error);
         }
     }
