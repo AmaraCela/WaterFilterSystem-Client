@@ -4,6 +4,7 @@ import { getMeetings } from "../store/meetings/meetingsThunk";
 import { RootState, useAppDispatch } from "../store/store";
 import ScheduleSlot from "./ScheduleSlot";
 import { Meeting } from "../types/types";
+import { getLoggedUserId } from "../loginUtils/loginUtils";
 
 const MeetingSchedule = () => {
     const meetings = useSelector((state: RootState) => state.meeting.meetings);
@@ -25,7 +26,9 @@ const MeetingSchedule = () => {
         }
 
         setDates(newDates);
-        dispatch(getMeetings("6"));
+
+        const user_id = "1"; //getLoggedUserId();
+        dispatch(getMeetings(user_id));
     }, []);
 
     useEffect(() => {
@@ -64,9 +67,9 @@ const MeetingSchedule = () => {
                             let upperComparisonDate = new Date(meet.time);
                             upperComparisonDate.setHours(9);
                             upperComparisonDate.setMinutes(30);
-                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth()-1 && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
+                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth() && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
                         })
-                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
+                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''} time={meeting[0].time}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
                     })}
                 </tr>
                 <tr className=" h-12">
@@ -82,9 +85,9 @@ const MeetingSchedule = () => {
                             let upperComparisonDate = new Date(meet.time);
                             upperComparisonDate.setHours(10);
                             upperComparisonDate.setMinutes(30);
-                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth()-1 && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
+                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth() && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
                         })
-                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
+                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''} time={meeting[0].time}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
                     })}
                 </tr>
                 <tr className="h-12">
@@ -100,9 +103,9 @@ const MeetingSchedule = () => {
                             let upperComparisonDate = new Date(meet.time);
                             upperComparisonDate.setHours(11);
                             upperComparisonDate.setMinutes(30);
-                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth()-1 && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
+                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth() && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
                         })
-                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
+                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''} time={meeting[0].time}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
                     })}
                 </tr>
                 <tr className="h-12">
@@ -118,9 +121,9 @@ const MeetingSchedule = () => {
                             let upperComparisonDate = new Date(meet.time);
                             upperComparisonDate.setHours(12);
                             upperComparisonDate.setMinutes(30);
-                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth()-1 && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
+                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth() && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
                         })
-                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
+                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''} time={meeting[0].time}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
                     })}
                 </tr>
                 <tr className="h-12">
@@ -136,9 +139,9 @@ const MeetingSchedule = () => {
                             let upperComparisonDate = new Date(meet.time);
                             upperComparisonDate.setHours(13);
                             upperComparisonDate.setMinutes(30);
-                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth()-1 && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
+                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth() && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
                         })
-                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
+                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''} time={meeting[0].time}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
                     })}
                 </tr>
                 <tr className="montserrat font-light text-[#B1B1B1] h-12">
@@ -152,9 +155,9 @@ const MeetingSchedule = () => {
                             let upperComparisonDate = new Date(meet.time);
                             upperComparisonDate.setHours(14);
                             upperComparisonDate.setMinutes(30);
-                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth()-1 && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
+                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth() && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
                         })
-                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}><ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
+                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}><ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''} time={meeting[0].time}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
                     })}
                 </tr>
                 <tr className="montserrat font-light text-[#B1B1B1] h-12">
@@ -168,9 +171,9 @@ const MeetingSchedule = () => {
                             let upperComparisonDate = new Date(meet.time);
                             upperComparisonDate.setHours(15);
                             upperComparisonDate.setMinutes(30);
-                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth()-1 && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
+                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth() && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
                         })
-                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}><ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
+                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}><ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''} time={meeting[0].time}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
                     })}
                 </tr>
                 <tr className="montserrat font-light text-[#B1B1B1] h-12">
@@ -184,9 +187,9 @@ const MeetingSchedule = () => {
                             let upperComparisonDate = new Date(meet.time);
                             upperComparisonDate.setHours(16);
                             upperComparisonDate.setMinutes(30);
-                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth()-1 && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
+                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth() && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
                         })
-                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}><ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
+                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}><ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''} time={meeting[0].time}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
                     })}
                 </tr>
                 <tr className="montserrat font-light text-[#B1B1B1] h-12">
@@ -200,9 +203,9 @@ const MeetingSchedule = () => {
                             let upperComparisonDate = new Date(meet.time);
                             upperComparisonDate.setHours(17);
                             upperComparisonDate.setMinutes(30);
-                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth()-1 && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
+                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth() && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
                         })
-                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}><ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
+                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}><ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''} time={meeting[0].time}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
                     })}
                 </tr>
                 <tr className="montserrat font-light text-[#B1B1B1] h-12">
@@ -216,9 +219,9 @@ const MeetingSchedule = () => {
                             let upperComparisonDate = new Date(meet.time);
                             upperComparisonDate.setHours(18);
                             upperComparisonDate.setMinutes(30);
-                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth()-1 && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
+                            return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth() && meetDate.getFullYear() === date.getFullYear() && meetDate >= lowerComparisonDate && meetDate <= upperComparisonDate
                         })
-                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}><ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
+                        return meeting.length > 0 ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}><ScheduleSlot height={'h-3/4'} name={meeting[0].Client.name ?? ''} surname={meeting[0].Client.surname ?? ''} time={meeting[0].time}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
                     })}
                 </tr>
             </tbody>

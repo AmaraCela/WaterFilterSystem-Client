@@ -1,5 +1,6 @@
 import ScheduleSlot from "./ScheduleSlot";
 
+
 const Schedule = () => {
     return (
         <table className="w-full h-full">
@@ -28,7 +29,7 @@ const Schedule = () => {
 
                     </td>
                     <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}>
-                        <ScheduleSlot height={'h-3/4'} name="" surname=""></ScheduleSlot>
+                        <ScheduleSlot height={'h-3/4'} name="" surname="" time=""></ScheduleSlot>
                     </td>
                     <td className="w-[22%] h-full border-t border-[#a5a5a5]">
 
@@ -59,7 +60,7 @@ const Schedule = () => {
 
                     </td>
                     <td className="w-[22%] h-full border-t border-[#a5a5a5]">
-                        <ScheduleSlot height="h-full" name="" surname=""></ScheduleSlot>
+                        <ScheduleSlot height="h-full" name="" surname="" time=""></ScheduleSlot>
                     </td>
                     <td className="w-[22%] h-full border-t border-[#a5a5a5]">
 

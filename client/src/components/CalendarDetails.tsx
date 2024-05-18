@@ -1,3 +1,4 @@
+import '../styles/CalendarDetails.css';
 const blueTick = require("../assets/blueTick.png");
 const redTick = require("../assets/redTick.png");
 const orangeTick = require("../assets/orangeTick.png");
