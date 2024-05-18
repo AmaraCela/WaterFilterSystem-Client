@@ -129,6 +129,56 @@ export function retrieveRedListFromServer() {
     });
 }
 
+export function retrieveWaitlistFromServer() {
+    return fetch(`${apiUrl}/clients?status=IN_WAITLIST`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to retrieve waitlist", data.message);
+                return null;
+            });
+        }
+        else {
+            return response.json().then(data => {
+                console.log("Waitlist data retrieved successfully", data);
+                return data;
+            });
+        }
+    }).catch((error) => {
+        console.log("Failed to retrieve waitlist", error);
+        return null;
+    });
+}
+
+export function addClientToRedlist(clientId: number) {
+    return fetch(`${apiUrl}/clients/${clientId}/redlistaddition`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to add client ro redlist", data.message);
+                return false;
+            });
+        }
+        else {
+            return response.json().then(data => {
+                console.log("Client added to redlist successfully", data);
+                return true;
+            });
+        }
+    }).catch((error) => {
+        console.log("Failed to add client to redlist", error);
+        return false;
+    });
+}
+
 export function removeClientFromRedlist(clientId: number) {
     return fetch(`${apiUrl}/clients/${clientId}/redlistremoval`, {
         method: "POST",
@@ -152,7 +202,6 @@ export function removeClientFromRedlist(clientId: number) {
         console.log("Failed to remove client from redlist", error);
         return false;
     });
-
 }
 
 export function retrieveScheduleFromServer() {

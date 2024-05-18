@@ -110,7 +110,7 @@ function MeetingOutcomeForm({ onClose }: MeetingOutcomeFormProps) {
       ) : (
         <ChangeDateOfMeeting onClose={handleCloseForm} />
       )}
-      {showRedListAlert && <RedlistAlert onClose={handleCloseFormRL} />} {/* Render the RedlistAlert conditionally */}
+      {showRedListAlert && <RedlistAlert  title="Redlist alert" message="Your call got moved to the Redlist Section." onClose={handleCloseFormRL} />} {/* Render the RedlistAlert conditionally */}
     </>
   );
 }

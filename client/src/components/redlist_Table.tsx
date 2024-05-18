@@ -67,7 +67,8 @@ function RedlistTable() {
 
                             if (window.confirm(`Remove ${referenceName} from redlist?`)) {
                                 removeClientFromRedlist(clients[i].id).then(() => {
-                                    setTableRows((prevRows: any) => prevRows.filter((row: any, index: any) => index !== i + 1));
+                                    // setTableRows((prevRows: any) => prevRows.filter((row: any, index: any) => index !== i + 1));
+                                    document.location.reload(); // i don't like this but for now it works
                                 });
                             }
 
