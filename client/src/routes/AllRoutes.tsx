@@ -60,22 +60,22 @@ const AllRoutes = () => {
         <Router>
             <Routes>
                 {/* PHONE AGENT */}
-                <Route path='/phoneagents/:id/dashboard' element={<DashboardSide2 />} />
-                <Route path='/phoneagents/:id/meetings' element={<PhoneAgentMeetings />} />
-                <Route path='/phoneagents/:id/add-sale' element={<SalesAgentAddSale />} />
-                <Route path='/phoneagents/:id/schedules' element={<SalesAgentSchedules />} />
-                <Route path='/phoneagents/:id/references' element={<SalesAgentReferences />} />
-                <Route path='/phoneagents/:id/add-reference' element={<SalesAgentAddReferences />} />
-                <Route path='/phoneagents/:id/redlist' element={<PhoneAgent_Redlist />} />
-                <Route path='/phoneagents/:id/home' element={<PhoneAgent_HomePage />} />
-                <Route path='/phoneagents/:id/allmeetings' element={<PhoneAgentMeetings />} />
-                <Route path='/phoneagents/:id/viewAllMeetings' element={<PhoneAgentMeetings />} />
-                <Route path='/phoneagents/:id/notifications' element={<Notifications />} />
-                <Route path='/phoneagents/:id/inbox' element={<Inbox />} />
-                <Route path='/phoneagents/:id/collections' element={<Collections />} />
-                <Route path='/phoneagents/:id/reservedCalls' element={<PhoneAgent_ReservedCalls />} />
-                <Route path='/phoneagents/:id/calls' element={<PhoneCallsPage />} />
-                <Route path='/phoneagents/:id' element={<PhoneAgentTemplate />} />
+                <Route path='/dashboard' element={<DashboardSide2 />} />
+                <Route path='/meetings' element={<PhoneAgentMeetings />} />
+                <Route path='/add-sale' element={<SalesAgentAddSale />} />
+                <Route path='/schedules' element={<SalesAgentSchedules />} />
+                <Route path='/references' element={<SalesAgentReferences />} />
+                <Route path='/add-reference' element={<SalesAgentAddReferences />} />
+                <Route path='/redlist' element={<PhoneAgent_Redlist />} />
+                <Route path='/home' element={<PhoneAgent_HomePage />} />
+                <Route path='/allmeetings' element={<PhoneAgentMeetings />} />
+                <Route path='/viewAllMeetings' element={<PhoneAgentMeetings />} />
+                <Route path='/notifications' element={<Notifications />} />
+                <Route path='/inbox' element={<Inbox />} />
+                <Route path='/collections' element={<Collections />} />
+                <Route path='/reservedCalls' element={<PhoneAgent_ReservedCalls />} />
+                <Route path='/calls' element={<PhoneCallsPage />} />
+                <Route path='/:id' element={<PhoneAgentTemplate />} />
                 {/* CHIEF MARKETING */}
                 <Route path='/chief-marketing/dashboard' element={<ChiefMarketingDashboard />} />
                 <Route path='/chief-marketing' element={<ChiefMarketingDashboard />} />
