@@ -33,7 +33,7 @@ import SalesAgentMeetings from '../pages/SalesAgentMeetings';
 import PhoneAgent_Meetings from '../pages/PhoneAgent_Meetings';
 import AddNewMeeting from '../components/addNewMeeting';
 import MeetingOutcomeForm from '../components/logMeetingOutcome';
-import ChangeDateOfMeeting from '../components/ChangeDateOfMeeting';
+import ChangeDateOfMeeting from '../components/changeDateOfMeeting';
 import SuccessfulRescheduleAlert from '../components/successfulRescheduleAlert';
 import RedlistAlert from '../components/redlistAlert';
 import ChiefOfOperations_Inventory_ListOfTasks from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
