@@ -2,7 +2,7 @@ import * as React from "react";
 
 import RedlistAlert from "../components/redlistAlert"; // Import the RedlistAlert component
 import "react-datepicker/dist/react-datepicker.css";
-import ChangeDateOfMeeting from "./ChangeDateOfMeeting";
+import ChangeDateOfMeeting from "./changeDateOfMeeting";
 
 interface MeetingOutcomeFormProps {
   onClose: () => void;
