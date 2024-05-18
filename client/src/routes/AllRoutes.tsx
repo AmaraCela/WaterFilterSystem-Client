@@ -68,7 +68,7 @@ const AllRoutes = () => {
                 <Route path='/add-reference' element={<SalesAgentAddReferences />} />
                 <Route path='/redlist' element={<PhoneAgent_Redlist />} />
                 <Route path='/home' element={<PhoneAgent_HomePage />} />
-                <Route path='/allmeetings' element={<PhoneAgentMeetings />} />
+                <Route path='/allmeetnings' element={<PhoneAgentMeetings />} />
                 <Route path='/viewAllMeetings' element={<PhoneAgentMeetings />} />
                 <Route path='/notifications' element={<Notifications />} />
                 <Route path='/inbox' element={<Inbox />} />
