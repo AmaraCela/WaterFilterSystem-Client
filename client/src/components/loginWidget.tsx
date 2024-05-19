@@ -37,6 +37,8 @@ const LoginWidget = () => {
           
           console.log("Logged in ", id);
           localStorage.setItem("session_user_id", id);
+
+          window.location.href = "/";
         });
       }
     });

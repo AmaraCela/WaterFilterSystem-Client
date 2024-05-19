@@ -307,5 +307,5 @@ export function retrieveAllScheduleFromServer() {
 
 export function logout() {
     localStorage.removeItem("session_user_id");
-    window.location.href = "/login";
+    window.location.href = "/";
 }

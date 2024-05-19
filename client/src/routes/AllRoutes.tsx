@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ChiefMarketingDashboard from '../pages/ChiefMarketingDashboard';
 import LoginWidget from '../components/loginWidget';
@@ -51,19 +52,61 @@ import PhoneAgent_ReservedCalls from '../pages/PhoneAgent_ReservedCalls';
 import Notifications from '../components/notifications';
 import HistoryCalls from '../components/HistoryCalls';
 import SalesAgentSchedules from '../pages/SalesAgentSchedules';
+import { getLoggedInUser } from '../serverUtils/serverUtils';
+import { UserRole } from '../serverUtils/UserRole';
+
 const AllRoutes = () => {
+    let [isPhoneAgent, setIsPhoneAgent] = useState(false);
+    let [isSalesAgent, setIsSalesAgent] = useState(false);
+    let [isMarketingManager, setIsMarketingManager] = useState(false);
+    let [isChiefOfOperations, setIsChiefOfOperations] = useState(false);
+    let [notLoggedIn, setNotLoggedIn] = useState(true);
+
+    useEffect(() => {
+        getLoggedInUser().then((user: any) => {
+            if (user) {
+                switch (user.role) {
+                    case UserRole[UserRole.PHONE_OPERATOR]:
+                        setIsPhoneAgent(true);
+                        setNotLoggedIn(false);
+                        break;
+                    case UserRole[UserRole.SALES_AGENT]:
+                        setIsSalesAgent(true);
+                        setNotLoggedIn(false);
+                        break;
+                    case UserRole[UserRole.MARKETING_MANAGER]:
+                        setIsMarketingManager(true);
+                        setNotLoggedIn(false);
+                        break;
+                    case UserRole[UserRole.CHIEF_OF_OPERATIONS]:
+                        setIsChiefOfOperations(true);
+                        setNotLoggedIn(false);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    }, []);
+
     return (
         <Router>
             <Routes>
-                <Route path='/reservedCalls' element={< PhoneAgent_ReservedCalls />}/>
-                <Route path='/' element={< SalesAgentMeetings />}/>
-                <Route path='/home' element={< PhoneAgent_HomePage />}/>
+                {/* Login */}
+                {notLoggedIn && <Route path='/' element={<LoginWidget />} />}
+                
+                {/* Home pages */}
+                {isSalesAgent && <Route path='/' element={< SalesAgentMeetings />}/>}
+                {isPhoneAgent && <Route path='/' element={< PhoneAgent_HomePage />}/>}
+            </Routes>
+
+            {/* User specific pages */}
+            {isPhoneAgent && <Routes><Route path='/reservedCalls' element={< PhoneAgent_ReservedCalls />}/>
                 <Route path='/latestReferencesPhoneAgent' element={<PhoneAgent_Refs />} />
                 <Route path='/viewAllMeetings' element={<PhoneAgent_Meetings />} />
                 <Route path='/redlistPhoneAgent' element={<PhoneAgent_Redlist />} />
-                <Route path='/login' element={<LoginWidget />} />
                 <Route path='/schedules' element={<SalesAgentSchedules />} />
-            </Routes>
+            </Routes>}
         </Router>
     )
 }
