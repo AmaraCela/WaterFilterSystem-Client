@@ -27,7 +27,7 @@ import PageNumber from '../components/pageNo';
 import MyComponent from '../components/AddSale';
 import ChiefOperationsDashboard_SalesToApprove from '../pages/ChiefOfOperations_SalesToApprove';
 import SalesAgentReferences from '../pages/SalesAgentReferences';
-import SalesAgentAddReferences from '../pages/SalesAgentAddSale';
+import SalesAgentAddReferences from '../pages/SalesAgentReferences';
 import ChiefOperationsDashboard_AgentCommissions from '../pages/ChiefOfOperationsDashboard_AgentCommissions';
 import ChiefOperations_Inventory from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
 import PhoneAgent_HomePage from '../pages/PhoneAgent_HomePage';
@@ -56,6 +56,8 @@ import Collections from '../pages/Collections';
 import ChiefMarketingBR from '../pages/ChiefMarketing_BuyersAndReferences';
 import ClientDisplay from '../components/Client';
 import BuyerInfo from '../components/BuyerInfo';
+import SalesAgentMeetingSchedule from "../pages/SalesAgentMeetingSchedule";
+
 
 const AllRoutes = () => {
     return (
@@ -68,13 +70,19 @@ const AllRoutes = () => {
                 <Route path='/schedules' element={<Schedules />} />
                 <Route path='/statistics' element={<Statistics />} />
                 <Route path='/redlist' element={<RedList />} />
-                <Route path='/buyers-references' element={<BuyersAndReferences />} />
-                <Route path='/sales-debts' element={<SalesDebts />} />
+                <Route path='/buyersReferences' element={<BuyersAndReferences />} />
+                <Route path='/salesdebts' element={<SalesDebts />} />
                 <Route path='/commissions' element={<ChiefOperationsDashboard_AgentCommissions />} />
                 <Route path='/inventory' element={<ChiefOperations_Inventory />} />
                 <Route path='/history' element={<HistoryUpload />} />
                 <Route path='/calls' element={<PhoneCallsPage />} />
+                <Route path='/collections' element={<Collections />} />
                 <Route path='/add-reference' element={<AddReferenceForm />} />
+                <Route path='/agentMeetings' element={<SalesAgentMeetings />} />
+                <Route path='/mysales' element={<MySales />} />
+                <Route path='/agentReferences' element={<SalesAgentAddReferences />} />
+                <Route path='/reviewMeetings' element={<ReviewMeetings />} />
+
                 {/* <Route path='/page-number' element={<PageNumber />} /> */}
                 <Route path='/add-sale' element={<MyComponent />} />
                 <Route path='/reference-template' element={<RefTemplate />} />
@@ -89,13 +97,13 @@ const AllRoutes = () => {
                 <Route path='/successful-reschedule-alert' element={<SuccessfulRescheduleAlert />} />
                 {/* <Route path='/redlist-alert' element={<RedlistAlert />} /> */}
                 <Route path='/ref-table-head' element={<RefTableHead />} />
-                <Route path='/sales-agent/sales' element={<SalesAgentAddSale />} />
+                <Route path='/agentaddsale' element={<SalesAgentAddSale />} />
                 <Route path='/chief-operations/dashboard' element={<ChiefOperationsDashboard_SalesToApprove />} />
-                <Route path='/chief-operations/sales-to-approve' element={<ChiefOperationsDashboard_SalesToApprove />} />
+                <Route path='/sales-to-approve' element={<ChiefOperationsDashboard_SalesToApprove />} />
                 {/* <Route path='/chief-operations/inventory' element={<ChiefOperations_Inventory_ListOfTasks />} /> */}
                 <Route path='/chief-operations/inventory-list' element={<ChiefOfOperations_Inventory_ListOfTasks />} />
                 <Route path='/chief-operations' element={<ChiefOperationsDashboard_SalesToApprove />} />
-                <Route path='/inbox' element={<Inbox />} />
+                {/* <Route path='/inbox' element={<Inbox />} /> */}
                 {/* Add other common routes here */}
             </Routes>
             <Routes>
