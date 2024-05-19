@@ -3,7 +3,8 @@ import { Link } from "react-router-dom"; // Import Link from React Router
 import Notifications from "./notifications";
 import Inbox from "./inbox";
 import HistoryCalls from "./HistoryCalls";
-import { logout, retrievePhoneOperatorFromServer } from "../serverUtils/serverUtils";
+import { getLoggedInUser, getLoggedUserId, logout, retrievePhoneOperatorFromServer } from "../serverUtils/serverUtils";
+import { UserRole } from "../serverUtils/UserRole";
 
 function PhoneAgentDashboard() {
     const [greenText, setGreenText] = useState("");

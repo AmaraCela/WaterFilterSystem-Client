@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ChiefMarketingDashboard from '../pages/ChiefMarketingDashboard';
 import LoginWidget from '../components/loginWidget';
@@ -59,61 +60,61 @@ import BuyerInfo from '../components/BuyerInfo';
 import SalesAgentMeetingSchedule from "../pages/SalesAgentMeetingSchedule";
 
 
+import { getLoggedInUser } from '../serverUtils/serverUtils';
+import { UserRole } from '../serverUtils/UserRole';
+
 const AllRoutes = () => {
+    let [isPhoneAgent, setIsPhoneAgent] = useState(false);
+    let [isSalesAgent, setIsSalesAgent] = useState(false);
+    let [isMarketingManager, setIsMarketingManager] = useState(false);
+    let [isChiefOfOperations, setIsChiefOfOperations] = useState(false);
+    let [notLoggedIn, setNotLoggedIn] = useState(true);
+
+    useEffect(() => {
+        getLoggedInUser().then((user: any) => {
+            if (user) {
+                switch (user.role) {
+                    case UserRole[UserRole.PHONE_OPERATOR]:
+                        setIsPhoneAgent(true);
+                        setNotLoggedIn(false);
+                        break;
+                    case UserRole[UserRole.SALES_AGENT]:
+                        setIsSalesAgent(true);
+                        setNotLoggedIn(false);
+                        break;
+                    case UserRole[UserRole.MARKETING_MANAGER]:
+                        setIsMarketingManager(true);
+                        setNotLoggedIn(false);
+                        break;
+                    case UserRole[UserRole.CHIEF_OF_OPERATIONS]:
+                        setIsChiefOfOperations(true);
+                        setNotLoggedIn(false);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    }, []);
+
     return (
         <Router>
             <Routes>
-                {/* <Route path='/' element={< ChangeDateOfMeeting />}/> */}
-                <Route path='/login' element={<LoginWidget />} />
-                <Route path='/dashboard' element={<DashboardSide highlighted={'none'} />} />
-                <Route path='/calls' element={<PhoneCallsPage />} />
-                <Route path='/schedules' element={<Schedules />} />
-                <Route path='/statistics' element={<Statistics />} />
-                <Route path='/redlist' element={<RedList />} />
-                <Route path='/buyersReferences' element={<BuyersAndReferences />} />
-                <Route path='/salesdebts' element={<SalesDebts />} />
-                <Route path='/commissions' element={<ChiefOperationsDashboard_AgentCommissions />} />
-                <Route path='/inventory' element={<ChiefOperations_Inventory />} />
-                <Route path='/history' element={<HistoryUpload />} />
-                <Route path='/calls' element={<PhoneCallsPage />} />
-                <Route path='/collections' element={<Collections />} />
-                <Route path='/add-reference' element={<AddReferenceForm />} />
-                <Route path='/agentMeetings' element={<SalesAgentMeetings />} />
-                <Route path='/mysales' element={<MySales />} />
-                <Route path='/agentReferences' element={<SalesAgentAddReferences />} />
-                <Route path='/reviewMeetings' element={<ReviewMeetings />} />
-
-                {/* <Route path='/page-number' element={<PageNumber />} /> */}
-                <Route path='/add-sale' element={<MyComponent />} />
-                <Route path='/reference-template' element={<RefTemplate />} />
-                <Route path='/buy-template' element={<BuyTemplate />} />
-                <Route path='/sales-debts-table' element={<SalesAndDebtsTable />} />
-                <Route path='/reference-table' element={<ReferenceTable />} />
-                <Route path='/phone-agent-dashboard' element={<PhoneAgentDashboard />} />
-                <Route path='/add-to-redlist-manually' element={<ManualRedlistAdd />} />
-                <Route path='/redlist-table' element={<RedlistTable />} />
-                <Route path='/completed-call-alert' element={<CompletedCall />} />
-                {/* <Route path='/meeting-outcome' element={<MeetingOutcomeForm />} /> */}
-                <Route path='/successful-reschedule-alert' element={<SuccessfulRescheduleAlert />} />
-                {/* <Route path='/redlist-alert' element={<RedlistAlert />} /> */}
-                <Route path='/ref-table-head' element={<RefTableHead />} />
-                <Route path='/agentaddsale' element={<SalesAgentAddSale />} />
-                <Route path='/chief-operations/dashboard' element={<ChiefOperationsDashboard_SalesToApprove />} />
-                <Route path='/sales-to-approve' element={<ChiefOperationsDashboard_SalesToApprove />} />
-                {/* <Route path='/chief-operations/inventory' element={<ChiefOperations_Inventory_ListOfTasks />} /> */}
-                <Route path='/chief-operations/inventory-list' element={<ChiefOfOperations_Inventory_ListOfTasks />} />
-                <Route path='/chief-operations' element={<ChiefOperationsDashboard_SalesToApprove />} />
-                {/* <Route path='/inbox' element={<Inbox />} /> */}
-                {/* Add other common routes here */}
+                {/* Login */}
+                {notLoggedIn && <Route path='/' element={<LoginWidget />} />}
+                
+                {/* Home pages */}
+                {isSalesAgent && <Route path='/' element={< SalesAgentMeetings />}/>}
+                {isPhoneAgent && <Route path='/' element={< PhoneAgent_HomePage />}/>}
             </Routes>
-            <Routes>
-                <Route path='/home' element={< PhoneAgent_HomePage />}/>
+
+            {/* User specific pages */}
+            {isPhoneAgent && <Routes><Route path='/reservedCalls' element={< PhoneAgent_ReservedCalls />}/>
                 <Route path='/latestReferencesPhoneAgent' element={<PhoneAgent_Refs />} />
                 <Route path='/viewAllMeetings' element={<PhoneAgent_Meetings />} />
                 <Route path='/redlistPhoneAgent' element={<PhoneAgent_Redlist />} />
-                <Route path='/login' element={<LoginWidget />} />
                 <Route path='/schedules' element={<SalesAgentSchedules />} />
-            </Routes>
+            </Routes>}
         </Router>
     )
 }
