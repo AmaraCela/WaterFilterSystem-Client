@@ -1,7 +1,4 @@
-import "../styles/chiefMarketingDashboard.css";
-import DashboardSide from "../components/DashboardSide";
-import DashboardSidePhoneAgent from "../components/DashboardSide_PhoneAgent";
-import PhoneCall from "../components/pa-phoneCall";
+import "../styles/chiefMarketingDashboard.css"; 
 import DashboardSideSalesAgent from  "../components/DashboardSide_SalesAgent";
 import AgentScheduleComponent from "../components/AgentSchedules";
 import { logout } from "../serverUtils/serverUtils";

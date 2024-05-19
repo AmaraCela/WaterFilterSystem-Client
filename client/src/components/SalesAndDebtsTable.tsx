@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getSales } from "../store/sales/saleThunks";
 import { getDebts } from "../store/debts/debtsThunk";
+import '../styles/scrollbarStyling.css'; 
 
 function SalesAndDebtsTable() {
   const dispatch = useAppDispatch();

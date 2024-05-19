@@ -27,8 +27,8 @@ function Inventory_Note() {
   <div className="flex flex-col pl-2.5 mt-3.5 mr-11 w-full text-lg text-center text-white whitespace-nowrap">
     <input type="text" style={{ width: '350px' , color:'gray' }} className="shrink-0 mr-0 -ml-1 rounded-xl border border-solid bg-neutral-100 border-stone-500 h-[170px]" />
     <button>
-         <div style={{ width: '350px' }} className="items-center px-16 pt-4 pb-3.5 mt-4 rounded-xl bg-blue-950">
-      Send
+         <div style={{ width: '350px' }} className="bg-blue-950 hover:bg-blue-500 items-center px-16 pt-4 pb-3.5 mt-4 rounded-xl">
+      SEND
         </div>
     </button>
    

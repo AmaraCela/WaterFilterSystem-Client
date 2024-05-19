@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
-import DashboardSideSalesAgent from "../components/DashboardSide_SalesAgent";
 import TopIcons from "../components/TopIcons";
 import { RootState, useAppDispatch } from "../store/store";
 import { useEffect } from "react";
 import { getSales } from "../store/sales/saleThunks";
+import DashboardSide_ChiefOfOperations from "../components/DashboardSide_ChiefOfOperations";
 const masterCard = require("../assets/image 10.png");
 
 const MySales = () => {
@@ -18,13 +18,17 @@ const MySales = () => {
 
     return (
         <div className="flex relative dashboard h-screen">
-            <DashboardSideSalesAgent />
-            <div className="w-3/4 main-content">
+            <div className="bg-opacity-10">
+            <DashboardSide_ChiefOfOperations/>
+            </div>
+                <div className="w-3/4 main-content h-[100vh]">
+                <div className="flex flex-row justify-end">
                 <TopIcons />
-                <p className="main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-2">
+                </div>
+                <p className=" mt-10  main-font text-[#3D5AA1] font-bold text-2xl ml-12 mt-2">
                     My Sales
                 </p>
-                <div className="w-[90%] overflow-y-scroll bg-[#5272e90f] border border-[#A49D9D] rounded-xl h-[70vh] ml-12 mt-4 px-6 py-4">
+                <div className="w-[90%] overflow-y-scroll bg-[#5272e90f] border border-[#A49D9D] rounded-xl h-[70vh] ml-12 mt-14 px-6 py-4">
                     {sales.map((sale) => (
                         <div key={sale.sale_id} className="flex items-center">
                             <input type="checkbox" className="mr-4 size-8 border-2" />

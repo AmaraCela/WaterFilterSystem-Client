@@ -5,6 +5,7 @@ import { RootState, useAppDispatch } from "../store/store";
 import ScheduleSlot from "./ScheduleSlot";
 import { Meeting } from "../types/types";
 import { getLoggedUserId, retrieveAllScheduleFromServer } from "../serverUtils/serverUtils";
+import '../styles/scrollbarStyling.css'; 
 
 const MeetingSchedule = ({showCompact}: any) => {
     const meetings = useSelector((state: RootState) => state.meeting.meetings);

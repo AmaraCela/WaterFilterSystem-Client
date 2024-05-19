@@ -1,0 +1,80 @@
+/* Custom select styles */
+.custom-select {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+  
+  /* Hide the default arrow */
+  .custom-select select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: transparent;
+    border: 1px solid #d1d1d1;
+    padding: 10px 40px 10px 15px; /* Adjust padding as needed */
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* Arrow icon */
+  .custom-select::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #666; /* Change the color of the arrow */
+  }
+  
+  /* Dropdown options */
+  .custom-select select option {
+    background-color: #fff;
+    color: #333;
+  }
+  
+  /* Hover effect */
+  .custom-select select:hover {
+    border-color: #999;
+  }
+  
+  /* Focus effect */
+  .custom-select select:focus {
+    outline: none;
+    border-color: #666; /* Change the color on focus */
+  }
+  
+  /* Disabled state */
+  .custom-select select:disabled {
+    opacity: 0.5;
+  }
+  
+  /* Dropdown container */
+  .dropdown-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 999;
+    background-color: #fff;
+    border: 1px solid #d1d1d1;
+    border-top: none;
+    width: calc(100% - 2px);
+    max-height: 200px; /* Adjust max-height as needed */
+    overflow-y: auto;
+  }
+  
+  /* Dropdown option */
+  .dropdown-container option {
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  
+  /* Hover effect on options */
+  .dropdown-container option:hover {
+    background-color: #f5f5f5;
+  }
+  

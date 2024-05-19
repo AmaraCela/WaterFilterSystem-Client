@@ -1,6 +1,5 @@
 import "../styles/chiefMarketingDashboard.css";
 import DashboardSide from "../components/DashboardSide";
-import DashboardSidePhoneAgent from "../components/DashboardSide_PhoneAgent";
 import PhoneCall from "../components/pa-phoneCall";
 import DashboardSideSalesAgent from  "../components/DashboardSide_SalesAgent";
 const bell = require("../assets/bell.png");
@@ -9,9 +8,11 @@ const exit = require("../assets/exit.png");
 
 const SalesAgentTemplate = () => {
     return (
-        // <div className="flex justify-center items-center h-screen">
-            <div className="dashboard w-3/4 h-max rounded-3xl flex flex-row">
+        <div className="flex justify-center items-center h-screen">
+            <div className="dashboard w-3/4 h-max flex flex-row">
+                <div className="bg-white">
                 <DashboardSideSalesAgent />
+                </div>
                 <div className="w-2/3 main-content">
                     <div className="flex flex-row pt-4 pr-8 items-end justify-end">
                         <img src={bell} alt="" className="h-6" />
@@ -22,7 +23,7 @@ const SalesAgentTemplate = () => {
                 
             </div>
         </div>
-        // </div>
+     </div>
 
     );
 }

@@ -52,11 +52,8 @@ const ChiefOfOperations_Inventory_ListOfTasks = () => {
                         <Inventory_Note/>
                      </div>
                 </div>
-               
-
             </div>
-
-
+        </div>
     );
 }
 
