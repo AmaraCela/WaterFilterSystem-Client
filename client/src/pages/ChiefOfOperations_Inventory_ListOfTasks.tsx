@@ -1,9 +1,6 @@
 import "../styles/chiefMarketingDashboard.css";
 import DashboardSide from "../components/DashboardSide_ChiefOfOperations";
-import CommisionTable from '../components/commissionTable';
-import SalesTable from "../components/tableOfSales";
 import '../styles/chiefofoperations.css'
-import SalesAndDebtsTable from "../components/SalesAndDebtsTable";
 import InventoryTasks_Table from "../components/InventoryTasks_Table";
 import Inventory_Note from "../components/Inventory_Note";
 const bell = require("../assets/bell.png");
@@ -53,7 +50,6 @@ const ChiefOfOperations_Inventory_ListOfTasks = () => {
                      </div>
                 </div>
             </div>
-        </div>
     );
 }
 
