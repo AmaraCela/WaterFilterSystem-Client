@@ -9,12 +9,9 @@ import DashboardSide from '../components/DashboardSide';
 import RefTemplate from '../components/referenceTemplate'; 
 import BuyTemplate from '../components/buyTemplate';
 import PhoneCall from '../components/pa-phoneCall';
-import DashboardSide2 from '../components/DashboardSide_PhoneAgent';
-import PhoneAgentTemplate from '../pages/PhoneAgentDashboard';
 import DashboardSideSalesAgent from '../components/DashboardSide_SalesAgent';
 import SalesAgentTemplate from '../pages/SalesAgentMeetingSchedule';
 import DashboardSide_ChiefOfOperations from '../components/DashboardSide_ChiefOfOperations';
-import DashboardSidePhoneAgent from '../components/DashboardSide_PhoneAgent';
 import ChiefOperationsDashboard_AgentCommissions from '../pages/ChiefOfOperationsDashboard_AgentCommissions';
 import SalesTable from '../components/tableOfSales';
 import CommissionTable from '../components/commissionTable'; 
@@ -51,18 +48,39 @@ import PhoneAgent_ReservedCalls from '../pages/PhoneAgent_ReservedCalls';
 import Notifications from '../components/notifications';
 import HistoryCalls from '../components/HistoryCalls';
 import SalesAgentSchedules from '../pages/SalesAgentSchedules';
+import SalesAgentAddReferences from '../pages/SalesAgentReferences';
+import MySales from '../pages/MySales';
 const AllRoutes = () => {
     return (
         <Router>
             <Routes>
+                {/* Phone Agent */}
                 <Route path='/reservedCalls' element={< PhoneAgent_ReservedCalls />}/>
-                <Route path='/' element={< SalesAgentMeetings />}/>
                 <Route path='/home' element={< PhoneAgent_HomePage />}/>
                 <Route path='/latestReferencesPhoneAgent' element={<PhoneAgent_Refs />} />
                 <Route path='/viewAllMeetings' element={<PhoneAgent_Meetings />} />
                 <Route path='/redlistPhoneAgent' element={<PhoneAgent_Redlist />} />
                 <Route path='/login' element={<LoginWidget />} />
+
+                {/* Sales Agent */}
+                <Route path='/agentmeetings' element={< SalesAgentMeetings />}/>
                 <Route path='/schedules' element={<SalesAgentSchedules />} />
+                <Route path='/template' element={<SalesAgentTemplate />} />
+                {/* fix page, it should stay absolute */}
+                <Route path='/workschedule' element={<SalesAgentSchedules />} />
+                {/* fix it, eshte skandal */}
+                <Route path='/agentreferences' element={<SalesAgentAddReferences />} />
+
+
+                {/* Chief of Operations */}
+                <Route path='/approvesales' element={<ChiefOperationsDashboard_SalesToApprove />} />
+                <Route path='/commissions' element={<ChiefOperationsDashboard_AgentCommissions />} />
+                <Route path='/salesdebts' element={<ChiefOperationsDashboard_ListOfSalesAndDebts />} />
+                <Route path='/tasks' element={<ChiefOfOperations_Inventory_ListOfTasks />} />
+                <Route path='/assignTask' element={<ChiefOfOperations_Inventory_assignNewTask />} />
+                {/* missing inventory */}
+ 
+                
             </Routes>
         </Router>
     )

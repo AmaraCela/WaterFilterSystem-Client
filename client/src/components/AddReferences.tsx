@@ -4,7 +4,7 @@ import { RootState, useAppDispatch } from "../store/store";
 import { useSelector } from "react-redux";
 import { addReferences, allClients } from "../store/client/clientThunks";
 import { resetReferences } from "../store/client/clientSlice";
-
+import '../styles/ddstyling.css'; 
 interface ReferenceFormProps {
   referenceNumber: number;
   information: ReferenceInformation[];
@@ -158,14 +158,14 @@ const ReferenceForm: React.FC<ReferenceFormProps> = ({
 
   return (
     <div
-      className={`flex flex-col px-5 py-6 rounded-lg bg-indigo-50 max-w-[500px] ${isVisible ? "" : "hidden"
+      className={`flex flex-col px-5 py-6 rounded-lg w-[250vh] max-w-[900px] ${isVisible ? "" : "hidden"
         }`}
     >
       <h2 className="text-2xl font-bold leading-6 text-indigo-800">
         Reference {referenceNumber}
       </h2>
       <div className="flex flex-col gap-5 mt-3.5">
-        <div className="flex flex-col justify-center px-3 py-1.5 bg-white rounded-lg shadow-md">
+        <div className="flex flex-col justify-center px-3 py-1.5 bg-white   shadow-md">
           <label
             htmlFor={`originClient-${referenceNumber}`}
             className="text-xs leading-4 text-zinc-600"
@@ -353,8 +353,8 @@ const MyComponent: React.FC = () => {
         <div className="flex gap-4 self-start max-md:flex-wrap max-md:mt-10">
           <div className="flex flex-col text-gray-600">
             <div className="flex flex-col justify-center text-base leading-6 fill-white">
-              <div className="flex gap-5 justify-between px-3.5 py-3 rounded-lg border border-solid border-neutral-400">
-                <select value={numberOfReferences} onChange={(e) => handleNumberOfReferencesChange(e)}>
+              <div className="flex gap-5 justify-between px-3.5 py-3 rounded-lg  ">
+                <select className="custom-select" value={numberOfReferences} onChange={(e) => handleNumberOfReferencesChange(e)}>
                   {[...Array(10)].map((_, index) => (
                     <option key={index + 1} value={index + 1}>
                       {index + 1}
@@ -401,7 +401,7 @@ const MyComponent: React.FC = () => {
       </div>
       <button
         type="submit"
-        className="justify-center items-start self-stretch mt-3 mr-0 max-w-[344px] h-10 text-xl font-bold text-center text-white bg-indigo-500 rounded-xl"
+        className="justify-center ml-3 items-start self-stretch mt-3 mr-0 max-w-[860px] h-10 text-xl font-bold text-center text-white bg-indigo-500 rounded-xl hover:bg-green-500"
         onClick={handleSubmit}
       >
         Submit All
@@ -410,7 +410,7 @@ const MyComponent: React.FC = () => {
         <div className="w-1/3 h-1/3 bg-white border-1 border-black rounded-md flex justify-evenly flex-col items-center">
           {addReferencesSuccessful && <p className="text-center p-2">{addReferencesSuccessful}</p>}
           {phoneNoErrors && phoneNoErrors.length > 0 && <p className="text-center p-2 text-[#ff0000e0]" >An error has occurred. Check the references for more details.</p>}
-          <button className="rounded-md bg-[#64aa64] px-4 py-2" onClick={() => {
+          <button className="rounded-md bg-[#64aa64] px-4 py-2 " onClick={() => {
             addReferencesSuccessful && dispatch(resetReferences());
             setSubmitClicked(false);
           }}>Okay</button>
