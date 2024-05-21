@@ -212,25 +212,25 @@ const MeetingSchedulePhoneOp = ({ showCompact }: any) => {
     };
 
     
-
     const generateTimeslots = (dates: any, meetingsToDisplay: any, hour: number, min: number) => {
         return dates.map((date: any) => {
             const meeting = meetingsToDisplay.find((meet: any) => {
                 const meetDate = new Date(meet.time);
-                const lowerComparisonDate = new Date(meet.time);
-                lowerComparisonDate.setHours(hour);
-                lowerComparisonDate.setMinutes(min);
-                const upperComparisonDate = new Date(meet.time);
-                upperComparisonDate.setHours(hour);
-                upperComparisonDate.setMinutes(min + 30);
                 return meetDate.getDate() === date.getDate() &&
                        meetDate.getMonth() === date.getMonth() &&
                        meetDate.getFullYear() === date.getFullYear() &&
-                       meetDate >= lowerComparisonDate &&
-                       meetDate <= upperComparisonDate;
-            })
-            return meeting !== undefined ? <td className="w-[14.2%] h-full border-t border-[#a5a5a5]" rowSpan={3}> <ScheduleSlot height={'h-3/4'} name={meeting.Client.name ?? ''}
-            surname={meeting.Client.surname ?? ''} startHour={0} startMin={0} /* todo fix this */ duration={2}></ScheduleSlot></td> : <td className="w-[14.2%] h-full border-t border-[#a5a5a5]"></td>
+                       meetDate.getHours() === hour &&
+                       meetDate.getMinutes() === min;
+            });
+
+            if (meeting !== undefined) {
+                const dateTime = new Date(meeting.time);
+                const meetingHour = dateTime.getHours();
+                const meetingMin = dateTime.getMinutes();
+                return {date: date.getDate(), hour: hour, min: min, slot: <td className="w-[14.2%] h-full border-t border-[#a5a5a5] border-blue-900 border-opacity-25" rowSpan={3}>
+                <ScheduleSlot height={'h-full'} name={meeting.Client.name ?? ''} surname={meeting.Client.surname ?? ''} startHour={meetingHour} startMin={meetingMin}></ScheduleSlot></td>};
+            }
+            return {date: date.getDate(), hour: hour, min: min, slot: <td className="montserrat p-3 w-[14.2%] h-full border-t border-[#a5a5a5] rounded-lg border-blue-900 border-opacity-25"></td>};
         });
     };
 
@@ -397,15 +397,41 @@ const MeetingSchedulePhoneOp = ({ showCompact }: any) => {
             </tr>
         </thead>
         <tbody className="mt-4">
-            {timeSlots.map((slot) => (
-                <tr className="h-4" key={`${slot.hour}:${slot.min}`}>
+            {timeSlots.map((slot) => {
+                let meetingsSlots = generateTimeslots(dates, meetingsToDisplay, slot.hour, slot.min).filter((m: any) => m !== null);
+                for (let meeting of meetingsToDisplay) {
+                    const dateTime = new Date(meeting.time);
+                    const meetingHour = dateTime.getHours();
+                    const meetingMin = dateTime.getMinutes();
+
+                    meetingsSlots = meetingsSlots.filter((m: any) => {
+                        if (m.date != dateTime.getDate()) {
+                            return true;
+                        }
+                        const startMeeting = (meetingHour * 60 + meetingMin);
+                        const endMeeting = startMeeting + 90;
+                        const startSlot = (m.hour * 60 + m.min);
+
+                        if (startSlot > startMeeting && startSlot < endMeeting) {
+                            return false;
+                        }
+
+                        return true;
+                    });
+                }
+
+                meetingsSlots = meetingsSlots.map((m: any) => m.slot);
+
+                return <tr className="h-4" key={`${slot.hour}:${slot.min}`}>
                     <td className="  montserrat font-light text-[#B1B1B1]">
                         <p className="w-full text-center">{slot.label}</p>
                     </td>
                     {showCompact ? busySlots?.flatMap((slots: BusySlot[]) => slots.filter((s: BusySlot) => s.startingHour === slot.hour && s.startingMin === slot.min)).map((s: BusySlot) => s.slot)
-                    : generateTimeslots(dates, meetingsToDisplay, slot.hour, slot.min)}
+                    : meetingsSlots}
                 </tr>
-            ))}
+
+{/* <td className="w-[14.2%] h-full border-t border-[#a5a5a5]"></td> */}
+        })}
         </tbody>
         </table>
     );

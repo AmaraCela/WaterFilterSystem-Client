@@ -72,7 +72,7 @@ const MeetingSchedule = ({showCompact}: any) => {
                 if (!currentSlot) {
                     currentSlot = { startingHour: meetingHour, startingMin: meetingMin, rowSpan: 2, slot: (
                         <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}>
-                            <ScheduleSlot height={'h-3/4'} name={'Slot unavailable'} surname={''} startHour={meetingHour} startMin={meetingMin} duration={90}/>
+                            <ScheduleSlot height={'h-3/4'} name={'Slot unavailable'} surname={''} startHour={meetingHour} startMin={meetingMin}/>
                         </td>
                     )};
                     busySlots[meetingHour - 9] = currentSlot;
@@ -82,13 +82,13 @@ const MeetingSchedule = ({showCompact}: any) => {
                     // todo fix ending time
                     currentSlot.slot = (
                         <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={currentSlot.rowSpan}>
-                            <ScheduleSlot height={'h-3/4'} name={'Slot unavailable'} surname={''} startHour={currentSlot.startingHour} startMin={currentSlot.startingMin} duration={90 + (currentSlot.rowSpan-2)*60}/>
+                            <ScheduleSlot height={'h-3/4'} name={'Slot unavailable'} surname={''} startHour={currentSlot.startingHour} startMin={currentSlot.startingMin}/>
                         </td>
                     );
                 } else {
                     currentSlot = { startingHour: meetingHour, startingMin: meetingMin, rowSpan: 2, slot: (
                         <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}>
-                            <ScheduleSlot height={'h-3/4'} name={'Slot unavailable'} surname={''} startHour={meetingHour} startMin={meetingMin} duration={90}/>
+                            <ScheduleSlot height={'h-3/4'} name={'Slot unavailable'} surname={''} startHour={meetingHour} startMin={meetingMin}/>
                         </td>
                     ) };
                     busySlots[meetingHour - 9] = currentSlot;
@@ -135,7 +135,7 @@ const MeetingSchedule = ({showCompact}: any) => {
                        meetDate >= lowerComparisonDate &&
                        meetDate <= upperComparisonDate;
             })
-            return meeting !== undefined ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting.Client?.name ?? ''} surname={meeting.Client?.surname ?? ''} startHour={0} startMin={0} /* todo fix this */ duration={2}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
+            return meeting !== undefined ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting.Client?.name ?? ''} surname={meeting.Client?.surname ?? ''} startHour={0} startMin={0}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
         });
     };
 
