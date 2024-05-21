@@ -18,7 +18,7 @@ const Inbox = () => {
       </button>
 
       {showNotification && (
-        <div className="w-full h-full bg-gray-800 bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden fixed inset-0">
+        <div className="z-30 w-full h-full bg-gray-800 bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden fixed inset-0">
           <div className="w-full absolute z-10 right-0 h-full overflow-x-hidden transform translate-x-0 transition ease-in-out duration-700">
             <div className="2xl:w-4/12 bg-gray-50 h-screen overflow-y-auto p-8 absolute right-0">
               <div className="flex items-center justify-between">

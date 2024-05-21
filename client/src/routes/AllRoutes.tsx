@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import ChiefMarketingDashboard from '../pages/ChiefMarketingDashboard';
 import LoginWidget from '../components/loginWidget';
 import LoginPage from '../pages/Login';
@@ -68,7 +69,6 @@ const AllRoutes = () => {
                 <Route path='/template' element={<SalesAgentTemplate />} />
                 {/* fix page, it should stay absolute */}
                 <Route path='/workschedule' element={<SalesAgentSchedules />} />
-                {/* fix it, eshte skandal */}
                 <Route path='/agentreferences' element={<SalesAgentAddReferences />} />
 
 
@@ -80,7 +80,6 @@ const AllRoutes = () => {
                 <Route path='/assignTask' element={<ChiefOfOperations_Inventory_assignNewTask />} />
                 {/* missing inventory */}
  
-                
             </Routes>
         </Router>
     )

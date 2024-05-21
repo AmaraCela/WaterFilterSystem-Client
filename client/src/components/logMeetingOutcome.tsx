@@ -2,6 +2,7 @@ import * as React from "react";
 import ChangeDateOfMeeting from "./changeDateOfMeeting";
 import RedlistAlert from "../components/redlistAlert"; // Import the RedlistAlert component
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 
 interface MeetingOutcomeFormProps {
   onClose: () => void;
@@ -13,6 +14,8 @@ function MeetingOutcomeForm({ onClose }: MeetingOutcomeFormProps) {
   const [saveClicked, setSaveClicked] = React.useState<boolean>(false);
   const [showChangeDateForm, setShowChangeDateForm] = React.useState<boolean>(false);
   const [showRedListAlert, setShowRedListAlert] = React.useState<boolean>(false);
+  const [showMeeting, setShowMeeting] = React.useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleCheckboxChange = (outcome: string) => {
     setSelectedOutcome(outcome);
@@ -31,7 +34,16 @@ function MeetingOutcomeForm({ onClose }: MeetingOutcomeFormProps) {
 
     if (selectedOutcome === "scheduled" || selectedOutcome === "noAnswer") {
       setShowChangeDateForm(true);
-    } else if (selectedOutcome === "excessiveArgument") {
+    }
+    if (selectedOutcome === "successful") {
+      setTimeout(() => {
+        setShowRedListAlert(false);
+        setShowMeeting(true);
+        navigate("/viewAllMeetings"); // Redirect to Meeting.tsx
+      }, 0);
+      onClose();
+    }
+     else if (selectedOutcome === "excessiveArgument") {
       // Delay showing the Redlist alert until after the form is closed
       setTimeout(() => {
         setShowRedListAlert(true);

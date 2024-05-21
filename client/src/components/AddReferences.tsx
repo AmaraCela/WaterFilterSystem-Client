@@ -413,7 +413,7 @@ const MyComponent: React.FC = () => {
           <button className="rounded-md bg-[#64aa64] px-4 py-2 " onClick={() => {
             addReferencesSuccessful && dispatch(resetReferences());
             setSubmitClicked(false);
-          }}>Okay</button>
+          }}> OK</button>
         </div>
       </div>}
     </div>
