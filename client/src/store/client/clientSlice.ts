@@ -1,27 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addReferences, allClients, editClient, getClient, getReferences, redListClients } from "./clientThunks";
+import { addReferences, addToRedlist, allClients, editClient, getClient, getLatestReferences, getReferences, redListClients } from "./clientThunks";
 import { Client } from "../../types/types";
 
 interface ClientState {
     clients: Client[],
     redlistClients: Client[],
     references: Client[],
+    latestReferences: Client[],
     clientToEdit: Client | null,
     referencesSuccesful: string | null,
     referenceError: string | null,
     phoneNoErrors: { data: string, reference: number }[],
+    addRedlistSuccessful: boolean,
 }
 
 const initialState: ClientState = {
     clients: [],
     redlistClients: [],
     references: [],
+    latestReferences: [],
     clientToEdit: null,
     referencesSuccesful: null,
     referenceError: null,
     phoneNoErrors: [],
+    addRedlistSuccessful: false,
 }
-
 
 const clientSlice = createSlice({
     name: 'client',
@@ -30,7 +33,11 @@ const clientSlice = createSlice({
         resetReferences: (state: ClientState) => {
             state.referencesSuccesful = null;
             state.phoneNoErrors = [];
+            state.clientToEdit = null;
 
+        },
+        resetAddRedlist: (state: ClientState) => {
+            state.addRedlistSuccessful = false;
         }
     },
     extraReducers: builder => {
@@ -44,6 +51,10 @@ const clientSlice = createSlice({
             state.clientToEdit = action.payload;
         }).addCase(editClient.fulfilled, (state: ClientState, action: any) => {
             state.clientToEdit = action.payload;
+        }).addCase(editClient.rejected, () => {
+            console.log('REJECTED');
+        }).addCase(editClient.pending, (state: ClientState) => {
+            state.clientToEdit = null;
         }).addCase(addReferences.pending, (state: ClientState) => {
             state.referencesSuccesful = null;
             state.phoneNoErrors = [];
@@ -64,11 +75,23 @@ const clientSlice = createSlice({
 
         }).addCase(getReferences.fulfilled, (state: ClientState, action: any) => {
             state.references = action.payload;
+            state.addRedlistSuccessful = false;
         }).addCase(getReferences.pending, (state: ClientState) => {
             state.references = [];
+        }).addCase(addToRedlist.fulfilled, (state: ClientState) => {
+            console.log('here');
+            state.addRedlistSuccessful = true;
+        }).addCase(addToRedlist.pending, (state: ClientState) => {
+            state.addRedlistSuccessful = false;
+        }).addCase(addToRedlist.rejected, (state: ClientState) => {
+            state.addRedlistSuccessful = false;
+        }).addCase(getLatestReferences.pending, (state: ClientState) => {
+            state.latestReferences = [];
+        }).addCase(getLatestReferences.fulfilled, (state: ClientState, action: any) => {
+            state.latestReferences = action.payload;
         })
     }
 })
 
-export const { resetReferences } = clientSlice.actions;
+export const { resetReferences, resetAddRedlist } = clientSlice.actions;
 export default clientSlice.reducer;

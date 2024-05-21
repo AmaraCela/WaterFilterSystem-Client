@@ -58,3 +58,38 @@ export const addCalls = createAsyncThunk(
         }
     }
 )
+
+export const getReservedCalls = createAsyncThunk(
+    'getReservedCalls',
+    async (id: number, { rejectWithValue }) => {
+        try {
+            const response = await createAPI(`calls/${id}/reserved`, { method: 'GET' })(null);
+            const reservedCalls = await response.json();
+            return response.ok ? reservedCalls : rejectWithValue("Could not retrieve reserved calls");
+        }
+        catch (error) {
+            return rejectWithValue(error);
+        }
+    }
+)
+
+export const addCall = createAsyncThunk(
+    'addCall',
+    async (inputs: {
+        scheduledTime: Date | null;
+        clientId: number;
+        phoneOperatorId: number;
+    }, { rejectWithValue }) => {
+        console.log(inputs);
+        try {
+            const response = await createAPI('calls', {method: 'POST'})(inputs);
+            const data = await response.json();
+            console.log(data);
+            return response.ok ? true: rejectWithValue(data);
+        }
+        catch (error) {
+            console.log(error);
+            return rejectWithValue(error);
+        }
+    }
+)

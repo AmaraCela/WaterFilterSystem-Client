@@ -86,7 +86,7 @@ function ReservedTable() {
                     </div>
                     );
 
-                    if (i == 0) {
+                    if (i === 0) {
                         setTableRows([headRow, newRow]);
                     }
                     else {

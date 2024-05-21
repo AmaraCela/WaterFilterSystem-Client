@@ -1,7 +1,5 @@
 import * as React from "react";
 import PhoneAgentDashboard from "../components/phoneAgent-Dashboard";
-import HomeWidget from "../components/phoneAgent-HomeWidget";
-import ReferenceTable from "../components/referenceTable_PhoneAgent";
 import ReservedTable from "../components/reservedCalls_Table";
 const backgroundLight = require('../assets/backgroundLight.png').default;
 

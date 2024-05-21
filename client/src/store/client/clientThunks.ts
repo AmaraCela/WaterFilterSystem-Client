@@ -55,13 +55,17 @@ export const getClient = createAsyncThunk(
 export const editClient = createAsyncThunk(
     'editClient',
     async (client: Client, { rejectWithValue }) => {
-        console.log('Editing client');
+        if (!client.referredBy) delete (client.referredBy);
+        if (!client.assignedOperator) delete (client.assignedOperator);
+        if (!client.referredInSale) delete (client.referredInSale);
         try {
             let response = await createAPI(`clients/${client.id}`, { method: 'PUT' })(client);
             let data = await response.json();
+            console.log(data);
             return response.ok ? data : rejectWithValue("Error occured");
         }
         catch (error) {
+            console.log(error);
             return rejectWithValue(error);
         }
     }
@@ -111,12 +115,40 @@ export const addReferences = createAsyncThunk(
 
 export const getReferences = createAsyncThunk(
     'getReferences',
-    async(_, { rejectWithValue }) => {
-        console.log('Getting references');
+    async (_, { rejectWithValue }) => {
         try {
             const response = await createAPI('clients?type=References', {})(null);
             const data = await response.json();
             return response.ok ? data : rejectWithValue('Could not retrieve references');
+        }
+        catch (error) {
+            return rejectWithValue(error);
+        }
+    }
+);
+
+export const getLatestReferences = createAsyncThunk(
+    'getLatestReferences',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await createAPI('clients?type=LatestReferences', {})(null);
+            const data = await response.json();
+            return response.ok ? data : rejectWithValue('Could not retrieve references');
+        }
+        catch (error) {
+            return rejectWithValue(error);
+        }
+    }
+)
+
+export const addToRedlist = createAsyncThunk(
+    'addToRedlist',
+    async (id: number, { rejectWithValue }) => {
+        try {
+            const response = await createAPI(`clients/${id}/redlistaddition`, { method: 'POST' })(null);
+            const data = await response.json();
+            console.log(data);
+            return response.ok ? true : rejectWithValue(data);
         }
         catch (error) {
             return rejectWithValue(error);
