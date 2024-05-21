@@ -1,24 +1,27 @@
 import * as React from "react";
 import MeetingOutcomeForm from "./logMeetingOutcome"; // Import your other custom component here
-function CompletedCall() {
+import { Client } from "../types/types";
+
+function CompletedCall({selected, setSelectedRow} : {selected: Client | null, setSelectedRow: any}) {
   const [showMeetingOutcomeForm, setShowMeetingOutcomeForm] = React.useState(false);
-  const [showCompletedCall, setShowCompletedCall] = React.useState(true);
+  // const [showCompletedCall, setShowCompletedCall] = React.useState(true);
 
   const handleLogOutcomesClick = () => {
     // Logic to handle click on "Log Outcomes" button
     setShowMeetingOutcomeForm(true);
-    setShowCompletedCall(false);
+    // setShowCompletedCall(false);
   };
 
   const handleCancelClick = () => {
     // Logic to handle click on "Cancel" button
+    setSelectedRow(null);
     setShowMeetingOutcomeForm(false);
-    setShowCompletedCall(false);
+    // setShowCompletedCall(false);
   };
 
   return (
     <>
-      {showCompletedCall && (
+      {(
         <div className="flex flex-col rounded-md border border-solid max-w-[332px]" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', boxShadow: '10px 4px 6px rgba(1, 1, 1, 0.1), 0 6px 12px rgba(0, 0, 0, 0.1)'
       }}>
         <div className="flex flex-col justify-center p-4 w-full text-blue-800 bg-blue-50">
@@ -31,7 +34,7 @@ function CompletedCall() {
                   alt=""
                 /> 
                 <div className="flex flex-col flex-1">
-                  <div className="text-lg font-bold">Is call with referral Jacob Jones (Manager) completed?</div>
+                  <div className="text-lg font-bold">Is call with referral {(selected?.name && selected?.surname) ? selected?.name && selected?.surname : selected?.phoneNo} completed?</div>
                   <div className="mt-2 text-sm font-medium">
                     After a call completes, you should log the outcome of the call. The phone number becomes invisible.
                   </div>
@@ -53,7 +56,7 @@ function CompletedCall() {
           </div>
         </div>
       )}
-    {showMeetingOutcomeForm && <MeetingOutcomeForm onClose={() => {}} />}
+    {showMeetingOutcomeForm && <MeetingOutcomeForm reference = {selected} onClose={() => {setSelectedRow(null); setShowMeetingOutcomeForm(false);}} />}
     </>
   );
 }

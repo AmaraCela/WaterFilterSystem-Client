@@ -70,6 +70,7 @@ export function retrieveCallsFromServer() {
         else {
             return response.json().then(data => {
                 console.log("User data retrieved successfully", data);
+
                 return data.calls;
             });
         }

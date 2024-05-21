@@ -6,9 +6,9 @@ import LoginWidget from '../components/loginWidget';
 import LoginPage from '../pages/Login';
 import AddReferenceForm from '../components/com-formToAddReference';
 import HistoryUpload from '../components/com-historyUpload';
-import PhoneCallsPage from '../pages/com-PhoneCalls'; 
-import DashboardSide from '../components/DashboardSide'; 
-import RefTemplate from '../components/referenceTemplate'; 
+import PhoneCallsPage from '../pages/com-PhoneCalls';
+import DashboardSide from '../components/DashboardSide';
+import RefTemplate from '../components/referenceTemplate';
 import BuyTemplate from '../components/buyTemplate';
 import PhoneCall from '../components/pa-phoneCall';
 import DashboardSideSalesAgent from '../components/DashboardSide_SalesAgent';
@@ -16,13 +16,14 @@ import SalesAgentTemplate from '../pages/SalesAgentMeetingSchedule';
 import DashboardSide_ChiefOfOperations from '../components/DashboardSide_ChiefOfOperations';
 import ChiefOperationsDashboard_AgentCommissions from '../pages/ChiefOfOperationsDashboard_AgentCommissions';
 import SalesTable from '../components/tableOfSales';
-import CommissionTable from '../components/commissionTable'; 
+import CommissionTable from '../components/commissionTable';
+import Collections from '../pages/Collections';
 import ChiefOperationsDashboard_ListOfSalesAndDebts from '../pages/ChiefOfOperations_ListOfSalesAndDebts';
 import TableRow from '../components/SalesAndDebts-row';
 import MyComponent from '../components/SalesAndDebtsTable';
 import Insights from '../components/insightsOfAgents';
 import ChiefOperations_Inventory from '../pages/ChiefOfOperations_Inventory_ListOfTasks';
-import Note from '../components/Inventory_Note'; 
+import Note from '../components/Inventory_Note';
 import NewTask from '../components/Inventory-assignNewTask'
 import ChiefOfOperations_Inventory_assignNewTask from '../pages/ChiefOfOperations_Inventory_assignNewTask';
 import ChiefOperationsDashboard_SalesToApprove from '../pages/ChiefOfOperations_SalesToApprove';
@@ -52,6 +53,7 @@ import HistoryCalls from '../components/HistoryCalls';
 import SalesAgentSchedules from '../pages/SalesAgentSchedules';
 import SalesAgentAddReferences from '../pages/SalesAgentReferences';
 import MySales from '../pages/MySales';
+import Redlist from "../pages/RedList";
 
 
 import { getLoggedInUser } from '../serverUtils/serverUtils';
@@ -95,15 +97,15 @@ const AllRoutes = () => {
         <Router>
             <Routes>
                 {/* Phone Agent */}
-                <Route path='/reservedCalls' element={< PhoneAgent_ReservedCalls />}/>
-                <Route path='/home' element={< PhoneAgent_HomePage />}/>
+                <Route path='/reservedCalls' element={< PhoneAgent_ReservedCalls />} />
+                <Route path='/home' element={< PhoneAgent_HomePage />} />
                 <Route path='/latestReferencesPhoneAgent' element={<PhoneAgent_Refs />} />
                 <Route path='/viewAllMeetings' element={<PhoneAgent_Meetings />} />
                 <Route path='/redlistPhoneAgent' element={<PhoneAgent_Redlist />} />
                 <Route path='/login' element={<LoginWidget />} />
 
                 {/* Sales Agent */}
-                <Route path='/agentmeetings' element={< SalesAgentMeetings />}/>
+                <Route path='/agentmeetings' element={< SalesAgentMeetings />} />
                 <Route path='/schedules' element={<SalesAgentSchedules />} />
                 <Route path='/template' element={<SalesAgentTemplate />} />
                 {/* fix page, it should stay absolute */}
@@ -119,8 +121,10 @@ const AllRoutes = () => {
                 <Route path='/tasks' element={<ChiefOfOperations_Inventory_ListOfTasks />} />
                 <Route path='/assignTask' element={<ChiefOfOperations_Inventory_assignNewTask />} />
                 {/* missing inventory */}
- 
-                
+
+                <Route path='/collections' element={<Collections />} />
+                <Route path='redlist' element={<Redlist />} />
+
             </Routes>
         </Router>
     )

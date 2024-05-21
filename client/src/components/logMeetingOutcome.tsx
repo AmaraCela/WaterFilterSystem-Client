@@ -2,17 +2,45 @@ import * as React from "react";
 import ChangeDateOfMeeting from "./changeDateOfMeeting";
 import RedlistAlert from "../components/redlistAlert"; // Import the RedlistAlert component
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
+import { RootState, useAppDispatch } from "../store/store";
+import { addToRedlist, getLatestReferences, getReferences } from "../store/client/clientThunks";
+import { Client } from "../types/types";
+import { useSelector } from "react-redux";
+import { resetAddRedlist } from "../store/client/clientSlice";
 
 interface MeetingOutcomeFormProps {
   onClose: () => void;
+  reference: Client | null
 }
 
-function MeetingOutcomeForm({ onClose }: MeetingOutcomeFormProps) {
+function MeetingOutcomeForm({ onClose, reference }: MeetingOutcomeFormProps) {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const references = useSelector((state: RootState) => state.client.latestReferences);
   const [selectedOutcome, setSelectedOutcome] = React.useState<string>("");
   const [cancelClicked, setCancelClicked] = React.useState<boolean>(false);
   const [saveClicked, setSaveClicked] = React.useState<boolean>(false);
   const [showChangeDateForm, setShowChangeDateForm] = React.useState<boolean>(false);
   const [showRedListAlert, setShowRedListAlert] = React.useState<boolean>(false);
+  const addRedlistSuccessful = useSelector((state: RootState) => state.client.addRedlistSuccessful);
+
+  React.useEffect(() => {
+    dispatch(resetAddRedlist());
+    return () => {
+      dispatch(resetAddRedlist());
+      dispatch(getLatestReferences())
+    };
+  }, []);
+
+  React.useEffect(() => {
+    addRedlistSuccessful && dispatch(getLatestReferences());
+  }, [addRedlistSuccessful]);
+
+
+  React.useEffect(() => {
+    addRedlistSuccessful && onClose();
+  }, [references])
 
   const handleCheckboxChange = (outcome: string) => {
     setSelectedOutcome(outcome);
@@ -37,7 +65,7 @@ function MeetingOutcomeForm({ onClose }: MeetingOutcomeFormProps) {
         setShowRedListAlert(true);
       }, 0);
     } else {
-      onClose();
+      navigate("/viewAllMeetings")
     }
   };
 
@@ -48,14 +76,15 @@ function MeetingOutcomeForm({ onClose }: MeetingOutcomeFormProps) {
   };
 
   const handleCloseFormRL = () => {
-    onClose();
+    dispatch(addToRedlist(reference?.id ?? -1));
+    dispatch(resetAddRedlist());
     // Close the Redlist alert after the form is closed
     setShowRedListAlert(true);
   };
 
   return (
     <>
-      {!showChangeDateForm ? (
+      {(
         <div className="flex flex-col px-16 py-11 font-bold text-indigo-800 bg-white rounded-3xl border border-indigo-800 border-solid max-w-[458px]" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', boxShadow: '10px 4px 6px rgba(1, 1, 1, 0.1), 0 6px 12px rgba(0, 0, 0, 0.1)' }}>
           <div className="self-center text-3xl">This call...</div>
           <div className="flex gap-2.5 mt-16 text-2xl">
@@ -107,10 +136,9 @@ function MeetingOutcomeForm({ onClose }: MeetingOutcomeFormProps) {
             </button>
           </div>
         </div>
-      ) : (
-        <ChangeDateOfMeeting onClose={handleCloseForm} />
       )}
-      {showRedListAlert && <RedlistAlert  title="Redlist alert" message="Your call got moved to the Redlist Section." onClose={handleCloseFormRL} />} {/* Render the RedlistAlert conditionally */}
+      {showChangeDateForm && <ChangeDateOfMeeting onClose={handleCloseForm} reference={reference} />}
+      {showRedListAlert && <RedlistAlert title="Redlist alert" message="Your call will be moved to the Redlist Section." onClose={handleCloseFormRL} />} {/* Render the RedlistAlert conditionally */}
     </>
   );
 }

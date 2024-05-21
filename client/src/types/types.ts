@@ -12,7 +12,7 @@ export interface Client {
     lastCallDate?: string;
     referrals: number[];
     referredBy?: number;
-    assignedOperator: number;
+    assignedOperator?: number;
     referredInSale?: number;
 }
 
