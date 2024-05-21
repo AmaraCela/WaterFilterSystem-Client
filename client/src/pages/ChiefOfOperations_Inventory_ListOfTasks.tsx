@@ -12,35 +12,47 @@ const exit = require("../assets/exit.png");
 
 const ChiefOfOperations_Inventory_ListOfTasks = () => {
     return (
-        <div className="dashboard flex flex-row w-screen h-screen bg-white">
-            <div className="sticky top-0 h-full bg-white">
-                <DashboardSide />
-            </div>
-            <div className="main-content flex flex-col w-full h-screen pl-8 pr-8">
-                <div className="flex flex-row pt-4 justify-end items-center">
-                    <img src={bell} alt="Bell" className="h-6" />
-                    <img src={message} alt="Message" className="h-6 ml-7" />
-                    <img src={exit} alt="Exit" className="h-6 ml-7" />
-                </div>
-                <p className="main-font text-[#3D5AA1] font-bold text-4xl mt-8">
-                    Inventory
-                </p>
-                <div className="flex flex-row justify-start mt-10">
-                <button className="bg-blue-950 hover:bg-blue-500 text-white font-bold py-4 px-8 rounded-lg">
-                    + NEW TASK
-                </button>
-                </div>
-                
-                <div className="flex flex-row mt-8 pt-8">
-                    {/* add a scrollbar */}
-
-                    <div className="w-[100vh] h-[70vh]">
-                    <InventoryTasks_Table />
+            <div className="dashboard w-3/4 h-max rounded-3xl flex flex-row">
+                <div>
+                    <div className="mr-20">
+                    <div className="mr-20">
+                    <div className="mr-20">
+                    <div className="mr-20">
+                    <div className="mr-20">
+                    <div className="mr-20"> 
+                    <DashboardSide/>
+                    
                     </div>
-                    <Inventory_Note />
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+                </div>
+                <div className="w-1/2 ">
+                    <div className="flex flex-row pt-4 pr-8 items-end justify-end">
+                        <img src={bell} alt="" className="h-6" />
+                        <img src={message} alt="" className="h-6 ml-7"/>
+                        <img src={exit} alt="" className="h-6 ml-7"/>
+                    </div>
+                    <p className="main-font text-[#3D5AA1] font-bold text-4xl ml-12 mt-8">
+                        Inventory
+                    </p>
+
+                    <button >
+                    <div style= {{ width: '300px', marginLeft: '25px', backgroundColor: 'rgba(11, 28, 90, 0.5)', color: 'white' }} className="items-center px-16 pt-4 pb-3.5 mt-4 rounded-xl  h-[60px]">
+                    <p>+ Assign a new task</p>
+                    </div>
+
+                    </button>
+                    
+                    <div className="flex gap-20"  >
+                        <InventoryTasks_Table/>
+                        <Inventory_Note/>
+                     </div>
                 </div>
             </div>
-        </div>
     );
 }
 

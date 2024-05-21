@@ -8,10 +8,9 @@ import '../styles/scrollbarStyling.css';
 
 function SalesAndDebtsTable() {
   const dispatch = useAppDispatch();
+
   const debts = useSelector((state: RootState) => state.debt.debts);
   const sales = useSelector((state: RootState) => state.sale.sales);
-  console.log(debts);
-  console.log(sales);
 
   useEffect(() => {
     dispatch(getDebts());
@@ -52,6 +51,38 @@ function SalesAndDebtsTable() {
       </table>
     </div>
   );
+  // return (
+  //   <table style={{ padding: '30px' }}>
+  //     <thead>
+  //       <tr className="bg-gray-800" style={{ backgroundColor: "#DCDFE3", fontFamily: "Poppins, sans-serif", fontSize: 20, color: "#666E7D" }}>
+  //         <th>Date</th>
+  //         <th>ID</th>
+  //         <th>Amount</th>
+  //         <th>Payment Type</th>
+  //       </tr>
+  //     </thead>
+  //     <tbody>
+  //       {debts.map((debt) => (
+  //         <TableRow
+  //           key={debt.sale}
+  //           date={debt.nextPayment}
+  //           id={debt.sale.toString()}
+  //           amount={debt.amountToCollect.toString()}
+  //           frequency={'Monthly'}
+  //         />
+  //       ))}
+  //       {sales.map((sale) => (
+  //         <TableRow
+  //           key={sale.sale_id}
+  //           date={sale.time ?? ''}
+  //           id={sale.sale_id?.toString() ?? '1'}
+  //           amount={sale.price.toString()}
+  //           frequency={'One-time'}
+  //         />
+  //       ))}
+  //     </tbody>
+  //   </table>
+  // );
 }
 
 export default SalesAndDebtsTable;

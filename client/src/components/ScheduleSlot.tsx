@@ -1,18 +1,13 @@
 const clockimg = require("../assets/Vector.png");
-const ScheduleSlot = ({height, name, surname, startHour, startMin, duration}: {height: string, name: string, surname: string, startHour: number, startMin: number, duration: number}) => {
-    // const diff = Math.ceil(duration/60) - 2;
-    // startHour -= diff;
-    // if (startHour === 7) {
-    //     console.log("DUR = ", duration)
-    // }
+const ScheduleSlot = ({height, name, surname, startHour, startMin}: {height: string, name: string, surname: string, startHour: number, startMin: number}) => {
     const timeStart = `${startHour.toString().padStart(2, '0')}:${startMin.toString().padStart(2, '0')}`;
-    let endHour = startHour;
-    let endMin = startMin + duration;
-    while (endMin >= 60) {
-        endHour++;
-        endMin -= 60;
+    let endHour = startHour + 1;
+    let endMin = startMin + 30;
+    if (endMin == 60) {
+        endMin = 0;
+        endHour += 1;
     }
-
+    
     const timeEnd = `${endHour.toString().padStart(2, '0')}:${endMin.toString().padStart(2, '0')}`;
 
     return (

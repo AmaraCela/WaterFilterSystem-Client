@@ -22,7 +22,7 @@ const Statistics = () => {
 
   const dispatch = useAppDispatch();
   const [currentYear, setCurrrentYear] = useState(new Date().getFullYear());
-  const calls = useSelector((state: RootState) => state.call.calls);
+  const calls = useSelector((state: RootState) => state.statistic.calls);
   const [Data, setData] = useState<DataItem[]>([]);
   const months = ["Jan", "Feb", "Mar","Apr", "May", "Jun"];
   const [calculated, setCalculated] = useState(false);
@@ -58,7 +58,6 @@ const Statistics = () => {
     }
   }, [calls]);
   
-
 
   const [barChartData, setBarChartData] = useState({
     labels: Data.map((data) => data.month),

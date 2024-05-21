@@ -10,6 +10,8 @@ import '../styles/scrollbarStyling.css';
 interface BusySlot {
     startingHour: number;
     startingMin: number;
+    endingHour: number;
+    endingMin: number;
     rowSpan: number;
     slot: JSX.Element;
 }
@@ -25,18 +27,16 @@ const MeetingSchedulePhoneOp = ({ showCompact }: any) => {
     const [hoveredSlot, setHoveredSlot] = useState<string | null>(null); // State to manage hovered slot
 
     useEffect(() => {
-        const today = new Date();
-        const sunday = new Date(today);
-        sunday.setDate(today.getDate() - today.getDay()); // Get Sunday of the current week
+        let newDates = [];
+        let today = new Date();
+        newDates.push(today);
 
-        const newDates = [];
-        for (let i = 0; i < 7; i++) {
-            const nextDate = new Date(sunday);
-            nextDate.setDate(sunday.getDate() + i);
+        for (let i = 1; i < 6; i++) {
+            let nextDate = new Date();
+            nextDate.setDate(today.getDate() + i);
             newDates.push(nextDate);
         }
         setDates(newDates);
-    
         const user_id = getLoggedUserId();
     
         if (!showCompact) {
@@ -63,76 +63,174 @@ const MeetingSchedulePhoneOp = ({ showCompact }: any) => {
 
     const generateBusySlots = (dates: any, meetingsToDisplay: any): BusySlot[][] => {
         return dates.map((date: any) => {
+            let meetings = meetingsToDisplay.filter((meet: any) => {
+                let meetDate = new Date(meet.time);
+                return meetDate.getDate() === date.getDate() && meetDate.getMonth() === date.getMonth() && meetDate.getFullYear() === date.getFullYear();
+            });
+
+            meetings = meetings.sort((a: any, b: any) => {
+                let aDate = new Date(a.time);
+                let bDate = new Date(b.time);
+                return aDate.getHours() - bDate.getHours();
+            });
+
             const busySlots: BusySlot[] = [];
-            for (let i = 8; i <= 21; i += 1.5) {
-                const hour = Math.floor(i);
-                const minute = (i - hour) * 60;
-                let slotStyle = "montserrat p-3 w-[14.2%] h-full border-t border-[#a5a5a5] rounded-lg border-blue-900 border-opacity-25";
-                let isBusy = false;
+            let currentSlot: BusySlot | null = null;
 
-                // Check if it's Monday and the slot is at 8:00 AM
-                if (date.getDay() === 1 && hour === 8 && minute === 0) {
-                    isBusy = true;
-                }
-                if (date.getDay() === 2 && hour === 9 && minute === 30) {
-                    isBusy = true;
-                }
-                if (date.getDay() === 4 && hour === 11 && minute === 0) {
-                    isBusy = true;
-                }
-                if (date.getDay() === 5 && hour === 14 && minute === 0) {
-                    isBusy = true;
-                }
-                if (date.getDay() === 5 && hour === 18 && minute === 30) {
-                    isBusy = true;
-                }
-                if (date.getDay() === 6 && hour === 17 && minute === 0) {
-                    isBusy = true;
-                }
-                if(isBusy){
-                    slotStyle += " bg-blue-500 bg-opacity-25";
+            for (let meeting of meetings) {
+                const dateTime = new Date(meeting.time);
+                const meetingHour = dateTime.getHours();
+                const meetingMin = dateTime.getMinutes();
+
+                let meetingEndHour;
+                let meetingEndMinutes;
+
+                meetingEndHour = meetingHour;
+                meetingEndMinutes = meetingMin + 30;
+                if (meetingEndMinutes == 60) {
+                    meetingEndHour += 1;
+                    meetingEndMinutes = 0;
                 }
 
+                if (!currentSlot) {
+                    const diff = ((meetingEndHour - 8) * 60 + meetingEndMinutes) - ((meetingHour - 8) * 60 + meetingMin);
+                    currentSlot = {
+                        startingHour: meetingHour,
+                        startingMin: meetingMin,
+                        endingHour: meetingEndHour,
+                        endingMin: meetingEndMinutes,
+                        rowSpan: diff / 30,
+                        slot: (
+                            <td
+                                className="montserrat p-3 w-[14.2%] h-full border-t border-[#a5a5a5] rounded-lg border-blue-900 border-opacity-25 bg-blue-500 bg-opacity-25"
+                                // onMouseEnter={() => handleSlotHover(meetingHour, meetingMin)}
+                                // onMouseLeave={handleSlotLeave}
+                                rowSpan={diff/30}
+                            >
+                                {`${meetingHour.toString().padStart(2, '0')}:${meetingMin.toString().padStart(2, '0')} - ${meetingEndHour.toString().padStart(2, '0')}:${meetingEndMinutes.toString().padStart(2, '0')}`}
+                                {/* {hoveredSlot === `${meetingHour}:${meetingMin}` && <span className="">Unavailable</span>} */}
+                            </td>
+                        )
+                    };
+
+                    busySlots[2 * (meetingHour - 8) + (meetingMin === 30 ? 1 : 0)] = currentSlot;
+                }
+                else if (meetingHour * 60 + meetingMin <= currentSlot.endingHour * 60 + currentSlot.endingMin) {
+                    const diff = (meetingEndHour * 60 + meetingEndMinutes) - (currentSlot.endingHour * 60 + currentSlot.endingMin);
+                    currentSlot.rowSpan += diff / 30;
+
+                    currentSlot.endingHour = meetingEndHour;
+                    currentSlot.endingMin = meetingEndMinutes;
+                    currentSlot.slot = (
+                        <td
+                            className="montserrat p-3 w-[14.2%] h-full border-t border-[#a5a5a5] rounded-lg border-blue-900 border-opacity-25 bg-blue-500 bg-opacity-25"
+                            // onMouseEnter={() => handleSlotHover(meetingHour, meetingMin)}
+                            // onMouseLeave={handleSlotLeave}
+                            rowSpan={currentSlot.rowSpan}
+                        >
+                            {`${currentSlot.startingHour.toString().padStart(2, '0')}:${currentSlot.startingMin.toString().padStart(2, '0')} - ${currentSlot.endingHour.toString().padStart(2, '0')}:${currentSlot.endingMin.toString().padStart(2, '0')}`}
+                            {/* {hoveredSlot === `${meetingHour}:${meetingMin}` && <span className="">Unavailable</span>} */}
+                        </td>
+                    );
+                }
+                else {
+                    const diff = ((meetingEndHour - 8) * 60 + meetingEndMinutes) - ((meetingHour - 8) * 60 + meetingMin);
+
+                    currentSlot = {
+                        startingHour: meetingHour,
+                        startingMin: meetingMin,
+                        endingHour: meetingEndHour,
+                        endingMin: meetingEndMinutes,
+                        rowSpan: diff / 30,
+                        slot: (
+                            <td
+                                className="montserrat p-3 w-[14.2%] h-full border-t border-[#a5a5a5] rounded-lg border-blue-900 border-opacity-25 bg-blue-500 bg-opacity-25"
+                                onMouseEnter={() => handleSlotHover(meetingHour, meetingMin)}
+                                onMouseLeave={handleSlotLeave}
+                                rowSpan={diff/30}
+                            >
+                                {`${currentSlot.startingHour.toString().padStart(2, '0')}:${currentSlot.startingMin.toString().padStart(2, '0')} - ${currentSlot.endingHour.toString().padStart(2, '0')}:${currentSlot.endingMin.toString().padStart(2, '0')}`}
+                                {/* {hoveredSlot === `${meetingHour}:${meetingMin}` && <span className="">Unavailable</span>} */}
+                            </td>
+                        )
+                    };
+
+                    busySlots[2 * (meetingHour - 8) + (meetingMin === 30 ? 1 : 0)] = currentSlot;
+                }
+            }
+
+            let time = 8 * 60;
+            for (const slot of busySlots) {
+                if (slot === undefined) {
+                    continue;
+                }
+                
+                while (slot.startingHour * 60 + slot.startingMin > time) {
+                    const emptySlot: BusySlot = {
+                        startingHour: Math.floor(time / 60),
+                        startingMin: time % 60,
+                        endingHour: 0,//Math.floor((time + 30) / 60),
+                        endingMin: 0,
+                        rowSpan: 1,
+                        slot: (
+                            <td
+                                className="montserrat p-3 w-[14.2%] h-full border-t border-[#a5a5a5] rounded-lg border-blue-900 border-opacity-25"
+                                onMouseEnter={() => handleSlotHover(0, 0)}
+                                onMouseLeave={handleSlotLeave}
+                            >
+                            </td>
+                        )
+                    };
+
+                    busySlots.splice(Math.floor((time - 8*60)/30), 1, emptySlot);
+                    time += 30;
+                }
+                time += slot.rowSpan * 30;
+            }
+
+            while (time < 21 * 60) {
                 const emptySlot: BusySlot = {
-                    startingHour: hour,
-                    startingMin: minute,
+                    startingHour: Math.floor(time / 60),
+                    startingMin: time % 60,
+                    endingHour: 0, //Math.floor((time + 30) / 60),
+                    endingMin: 0, //(time + 30) % 60,
                     rowSpan: 1,
                     slot: (
                         <td
-                            className={slotStyle}
-                            onMouseEnter={() => handleSlotHover(hour, minute)}
+                            className="montserrat p-3 w-[14.2%] h-full border-t border-[#a5a5a5] rounded-lg border-blue-900 border-opacity-25"
+                            onMouseEnter={() => handleSlotHover(0, 0)}
                             onMouseLeave={handleSlotLeave}
                         >
-                            {isBusy && hoveredSlot === `${hour}:${minute}` && <span className="">Meeting scheduled.</span>}
                         </td>
                     )
                 };
-                busySlots.push(emptySlot);
+                busySlots.splice(Math.floor((time - 8*60)/30), 1, emptySlot);
+                time += 30;
             }
             return busySlots;
         });
     };
 
     
-
     const generateTimeslots = (dates: any, meetingsToDisplay: any, hour: number, min: number) => {
         return dates.map((date: any) => {
             const meeting = meetingsToDisplay.find((meet: any) => {
                 const meetDate = new Date(meet.time);
-                const lowerComparisonDate = new Date(meet.time);
-                lowerComparisonDate.setHours(hour);
-                lowerComparisonDate.setMinutes(min);
-                const upperComparisonDate = new Date(meet.time);
-                upperComparisonDate.setHours(hour);
-                upperComparisonDate.setMinutes(min + 30);
                 return meetDate.getDate() === date.getDate() &&
                        meetDate.getMonth() === date.getMonth() &&
                        meetDate.getFullYear() === date.getFullYear() &&
-                       meetDate >= lowerComparisonDate &&
-                       meetDate <= upperComparisonDate;
-            })
-            return meeting !== undefined ? <td className="w-[14.2%] h-full border-t border-[#a5a5a5]" rowSpan={1}> <ScheduleSlot height={'h-3/4'} name={meeting.Client.name ?? ''}
-            surname={meeting.Client.surname ?? ''} startHour={0} startMin={0} /* todo fix this */ duration={2}></ScheduleSlot></td> : <td className="w-[14.2%] h-full border-t border-[#a5a5a5]"></td>
+                       meetDate.getHours() === hour &&
+                       meetDate.getMinutes() === min;
+            });
+
+            if (meeting !== undefined) {
+                const dateTime = new Date(meeting.time);
+                const meetingHour = dateTime.getHours();
+                const meetingMin = dateTime.getMinutes();
+                return {date: date.getDate(), hour: hour, min: min, slot: <td className="w-[14.2%] h-full border-t border-[#a5a5a5] border-blue-900 border-opacity-25" rowSpan={3}>
+                <ScheduleSlot height={'h-full'} name={meeting.Client.name ?? ''} surname={meeting.Client.surname ?? ''} startHour={meetingHour} startMin={meetingMin}></ScheduleSlot></td>};
+            }
+            return {date: date.getDate(), hour: hour, min: min, slot: <td className="montserrat p-3 w-[14.2%] h-full border-t border-[#a5a5a5] rounded-lg border-blue-900 border-opacity-25"></td>};
         });
     };
 
@@ -141,27 +239,29 @@ const MeetingSchedulePhoneOp = ({ showCompact }: any) => {
         const inverted: {[day: number]: {[hour: number]: [any, any]}} = {};
 
         for (let day = now.getDate(); day < 7 + now.getDate(); day++) {
-            for (let hour = 8; hour <= 21; hour += 1.5) {
+            for (let hour = 8; hour <= 20; hour++) {
                 const date = new Date();
                 date.setDate(date.getDate() + day);
-                date.setHours(Math.floor(hour));
-                date.setMinutes((hour - Math.floor(hour)) * 60);
+                date.setHours(hour);
+                date.setMinutes(0);
                 date.setSeconds(0);
 
                 if (!inverted[day]) {
                     inverted[day] = {};
                 }
-                if (!inverted[day][Math.floor(hour)]) {
-                    inverted[day][Math.floor(hour)] = [true, true];
+                if (!inverted[day][hour]) {
+                    inverted[day][hour] = [0, 0]; // number of agents free at both time slots for the hour (HH:00 and HH:30)
                 }
             }
         }
 
         for (let schedule of schedules) {
             const date = new Date(schedule.day);
-
             const now = new Date();
-            if (date < now) {
+            now.setHours(0);
+            now.setMinutes(0);
+            now.setSeconds(0);
+            if (date.getDate() < now.getDate()) {
                 continue;
             }
 
@@ -178,95 +278,162 @@ const MeetingSchedulePhoneOp = ({ showCompact }: any) => {
             date.setMinutes(startMin);
             date.setSeconds(0);
 
-            for (let hour = startHour; hour <= endHour; hour += 1.5) {
+            for (let hour = startHour; hour <= endHour; hour++) {
                 if (hour === startHour) {
                     if (startMin === 0) {
-                        inverted[date.getDate()][Math.floor(hour)][0] = false;
+                        inverted[date.getDate()][hour][0]++;
                     }
-                    inverted[date.getDate()][Math.floor(hour)][1] = false;
+                    inverted[date.getDate()][hour][1]++;
                 }
                 else if (hour === endHour) {
-                    if (endMin === 30) {
-                        inverted[date.getDate()][Math.floor(hour)][0] = false;
+                    if (endMin === 30 && hour < 21) {
+                        inverted[date.getDate()][hour][0]++;
                     }
                 }
                 else {
-                    inverted[date.getDate()][Math.floor(hour)][0] = false;
-                    inverted[date.getDate()][Math.floor(hour)][1] = false;
+                    inverted[date.getDate()][hour][0]++;
+                    inverted[date.getDate()][hour][1]++;
                 }
             }
         }
 
         const invertedSlots = [];
-        for (let day = now.getDate(); day < 4 + now.getDate(); day++) {
-            for (let hour = 8; hour <= 21; hour += 1.5) {
-                if (inverted[day][Math.floor(hour)][0] === true) {
-                    invertedSlots.push({ time: new Date(now.getFullYear(), now.getMonth(), day, Math.floor(hour), 0, 0) });
-                }
-                if (inverted[day][Math.floor(hour)][1] === true) {
-                    invertedSlots.push({ time: new Date(now.getFullYear(), now.getMonth(), day, Math.floor(hour), 30, 0) });
+        for (let day = now.getDate(); day < 7 + now.getDate(); day++) {
+            for (let hour = 8; hour <= 20; hour++) {
+                invertedSlots.push([inverted[day][hour][0], { time: new Date(now.getFullYear(), now.getMonth(), day, hour, 0, 0)}]);
+                invertedSlots.push([inverted[day][hour][1], { time: new Date(now.getFullYear(), now.getMonth(), day, hour, 30, 0)}]);
+            }
+        }
+
+        // console.log("INVERTED SLOTS", invertedSlots);
+        return invertedSlots;
+    };
+
+    let busySlots: BusySlot[][] | null = null;
+    if (showCompact) {
+        const inverted = invertSchedules(schedules);
+        const totalMeetings: any = [];
+        const copyMeetings: any = meetingsToDisplay.map((m: any) => {
+            return {...m, meetingEnd: null}
+        });
+
+        for (let i = 0; i < inverted.length; i++) {
+            if (inverted[i][0] == 0) {
+                totalMeetings.push(inverted[i][1]);
+            }
+            else {
+                for (let j = 0; j < copyMeetings.length; j++) {
+                    if (copyMeetings[j] === null) {
+                        continue;
+                    }
+
+                    const meetingDate = new Date(copyMeetings[j].time);
+                    const invertedDate = new Date(inverted[i][1].time);
+                    let meetingStart = meetingDate.getHours() * 60 + meetingDate.getMinutes();
+                    if (copyMeetings[j].meetingEnd === null) {
+                        copyMeetings[j].meetingEnd = meetingStart + 90;
+                    }
+                    const meetingEnd = copyMeetings[j].meetingEnd; // meetingStart + 90;
+                    const slotStart = invertedDate.getHours() * 60 + invertedDate.getMinutes();
+
+                    if (meetingDate.getDate() === invertedDate.getDate() && 
+                        slotStart < meetingEnd &&
+                        slotStart >= meetingStart) {
+                        // if a meeting is matched to a free slot, decrement the number of free slots
+                        inverted[i][0]--;
+                        // if there are no more free slots, add the meeting to the totalMeetings array to display the slot as busy
+                        if (inverted[i][0] === 0) {
+                            totalMeetings.push(copyMeetings[j]);
+                        }
+                        // copyMeetings[j] = null;
+                        meetingStart += 30;
+                        if (meetingStart == meetingEnd) {
+                            copyMeetings[j] = null;
+                        }
+                        else {
+                            copyMeetings[j] = { ...copyMeetings[j], time: new Date(meetingDate.getTime() + 30 * 60000) };
+                        }
+                    }
                 }
             }
         }
 
-        console.log("INVERTED SLOTS", invertedSlots);
-        return invertedSlots;
-        };
-        let busySlots: BusySlot[][] | null = null;
-if (showCompact) {
-    const inverted = invertSchedules(schedules);
-    const totalMeetings = [];
-    for (let i = 0; i < inverted.length; i++) {
-        if (inverted[i]) {
-            totalMeetings.push(inverted[i]);
-        }
-    }
-    for (let i = 0; i < meetingsToDisplay.length; i++) {
-        totalMeetings.push(meetingsToDisplay[i]);
+        // console.log("TOTAL MEETINGS: ", totalMeetings);
+        busySlots = generateBusySlots(dates, totalMeetings);
+        // console.log("BUSY SLOT: ", busySlots);
+        // console.log("BUSY SLOTS: ", busySlots?.flatMap((slots: BusySlot[]) => slots.filter((s: BusySlot) => s.startingHour === 8 && s.startingMin === 0)).map((s: BusySlot) => s.slot))
     }
 
-    busySlots = generateBusySlots(dates, totalMeetings);
-}
+    const timeSlots = [];
+    let j = 0;
+    for (let i = 8; i < 21; i++) {
+        timeSlots.push({ hour: i, min: 0, label: j % 3 == 0 ? `${i}:00` : ''});
+        j++;
+        timeSlots.push({ hour: i, min: 30, label: j % 3 == 0 ? `${i}:30` : ''});
+        j++;
+    }
 
-const timeSlots = [    { hour: 8, min: 0, label: "08:00" },    { hour: 9, min: 30, label: "09:30" },    { hour: 11, min: 0, label: "11:00" },    { hour: 12, min: 30, label: "12:30" },    { hour: 14, min: 0, label: "14:00" },    { hour: 15, min: 30, label: "15:30" },    { hour: 17, min: 0, label: "17:00" },    { hour: 18, min: 30, label: "18:30" },    { hour: 20, min: 0, label: "20:00" },    { hour: 21, min: 30, label: "21:30" },];
-
-
-return (
-    
-    <table className="w-full h-full">
-    <thead>
-        <tr>
-            <th className=" montserrat font-light text-[#B1B1B1]">Week</th>
-            {dates.map((date) => (
-                date.getDate() === new Date().getDate() ? 
-                <th key={date.getDate()} className={`w-[14.2%] montserrat font-light text-[#5272E9]`}>
-                    {date.getDate()}<br />{days[date.getDay()]}
-                </th> :
-                <th key={date.getDate()} className={`w-[14.2%] montserrat font-light text-[#B1B1B1]`}>
-                    {date.getDate()}<br />{days[date.getDay()]}
-                </th>
-            ))}
-        </tr>
-        <tr className="flex justify-between gap-5">
-            <th className=" "></th>
-            <th className=" "></th>
-            <th className=" "></th>
-            <th className=" "></th>
-            <th className=" "></th>
-        </tr>
-    </thead>
-    <tbody className="mt-4">
-        {timeSlots.map((slot) => (
-            <tr className="h-12" key={`${slot.hour}:${slot.min}`}>
-                <td className="  montserrat font-light text-[#B1B1B1]">
-                    <p className="w-full text-center">{slot.label}</p>
-                </td>
-                {showCompact ? busySlots?.flatMap((slots: BusySlot[]) => slots.filter((s: BusySlot) => s.startingHour === slot.hour && s.startingMin === slot.min)).map((s: BusySlot) => s.slot)
-                : generateTimeslots(dates, meetingsToDisplay, slot.hour, slot.min)}
+    return (
+        <table className="w-full h-full">
+        <thead>
+            <tr>
+                <th className=" montserrat font-light text-[#B1B1B1]">Week</th>
+                {dates.map((date) => (
+                    date.getDate() === new Date().getDate() ? 
+                    <th key={date.getDate()} className={`w-[14.2%] montserrat font-light text-[#5272E9]`}>
+                        {date.getDate()}<br />{days[date.getDay()]}
+                    </th> :
+                    <th key={date.getDate()} className={`w-[14.2%] montserrat font-light text-[#B1B1B1]`}>
+                        {date.getDate()}<br />{days[date.getDay()]}
+                    </th>
+                ))}
             </tr>
-        ))}
-    </tbody>
-</table>
-);
+            <tr className="flex justify-between gap-5">
+                <th className=" "></th>
+                <th className=" "></th>
+                <th className=" "></th>
+                <th className=" "></th>
+                <th className=" "></th>
+            </tr>
+        </thead>
+        <tbody className="mt-4">
+            {timeSlots.map((slot) => {
+                let meetingsSlots = generateTimeslots(dates, meetingsToDisplay, slot.hour, slot.min).filter((m: any) => m !== null);
+                for (let meeting of meetingsToDisplay) {
+                    const dateTime = new Date(meeting.time);
+                    const meetingHour = dateTime.getHours();
+                    const meetingMin = dateTime.getMinutes();
+
+                    meetingsSlots = meetingsSlots.filter((m: any) => {
+                        if (m.date != dateTime.getDate()) {
+                            return true;
+                        }
+                        const startMeeting = (meetingHour * 60 + meetingMin);
+                        const endMeeting = startMeeting + 90;
+                        const startSlot = (m.hour * 60 + m.min);
+
+                        if (startSlot > startMeeting && startSlot < endMeeting) {
+                            return false;
+                        }
+
+                        return true;
+                    });
+                }
+
+                meetingsSlots = meetingsSlots.map((m: any) => m.slot);
+
+                return <tr className="h-4" key={`${slot.hour}:${slot.min}`}>
+                    <td className="  montserrat font-light text-[#B1B1B1]">
+                        <p className="w-full text-center">{slot.label}</p>
+                    </td>
+                    {showCompact ? busySlots?.flatMap((slots: BusySlot[]) => slots.filter((s: BusySlot) => s.startingHour === slot.hour && s.startingMin === slot.min)).map((s: BusySlot) => s.slot)
+                    : meetingsSlots}
+                </tr>
+
+{/* <td className="w-[14.2%] h-full border-t border-[#a5a5a5]"></td> */}
+        })}
+        </tbody>
+        </table>
+    );
 }
 export default MeetingSchedulePhoneOp; 

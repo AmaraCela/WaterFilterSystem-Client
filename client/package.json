@@ -14,6 +14,8 @@
     "@types/node": "^20.11.30",
     "@types/react-dom": "^18.2.22",
     "chart.js": "^4.4.2",
+    "html2pdf.js": "^0.10.1",
+    "puppeteer": "^22.8.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-datepicker": "^6.9.0",

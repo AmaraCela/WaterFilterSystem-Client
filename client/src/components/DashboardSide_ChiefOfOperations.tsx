@@ -42,7 +42,7 @@ const DashboardSide_ChiefOfOperations = () => {
                 <DashboardLink to={""} src={basket} text={"Sales and commissions"} highlighted={salesBold} />
                 {salesOpen && (
                     <div className="dashboard-section">
-                        <DashboardLink to={"/approvesales"} src={check} text={"     Sales to approve"} highlighted={false} />
+                        <DashboardLink to={"/sales-to-approve"} src={check} text={"     Sales to approve"} highlighted={false} />
                         <DashboardLink to={"/commissions"} src={card} text={"     Agent Commissions"} highlighted={false} />
                         <DashboardLink to={"/salesdebts"} src={notebook} text={"     List of Sales and Debts"} highlighted={false} />
                     </div>

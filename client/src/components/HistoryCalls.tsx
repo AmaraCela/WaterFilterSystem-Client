@@ -42,7 +42,7 @@ const HistoryCalls = ({ onClose, callHistory}: any) => {
                 </ul>
             </div>
             {/* Cancel button */}
-            <button className="mt-4 mx-auto px-4 py-2 bg-gray-200 text-gray-800 rounded-lg" onClick={onClose}>Cancel</button>
+            <button className="mt-4 mb-4  mx-auto px-4 py-2 bg-gray-200 text-gray-800 rounded-lg" onClick={onClose}>Cancel</button>
         </div>
     );
 };

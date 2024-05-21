@@ -7,12 +7,22 @@ const backgroundLight = require('../assets/backgroundLight.png').default;
 
 const PhoneAgent_Redlist = () => {
     return (
-        <div className="flex flex-col justify-center px-1 " style={{backgroundImage: `url(${backgroundLight})`}}>
-            <div className="flex flex-col pb-3  max-md:max-w-full">
+        <div className="flex flex-col justify-center px-1 bg-[#F2F8FD]" style={{backgroundImage: `url(${backgroundLight})`}}>
+            <div className="flex flex-col pb-3 max-md:max-w-full">
                 <PhoneAgentDashboard/>
+            </div>
+            <div className="flex flex-col space-around ml-20 mb-1">
+               
+                <p className="main-font text-[#3D5AA1] font-bold text-2xl ">
+                    Redlist
+                </p> 
+                
             </div> 
-            <div className="flex justify-center gap-10">                
+             
+            <div className="flex justify-center gap-10 bg-[#F2F8FD]">   
+                       
                  <RedlistTable/>
+
                  <ManualRedlistAdd/> 
             </div>
         </div>

@@ -19,7 +19,7 @@ const SalesAgentTemplate = () => {
                         <img src={message} alt="" className="h-6 ml-7"/>
                         <img src={exit} alt="" className="h-6 ml-7"/>
                     </div>
-                  
+        
                 
             </div>
         </div>

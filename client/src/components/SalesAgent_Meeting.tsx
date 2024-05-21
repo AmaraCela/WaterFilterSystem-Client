@@ -12,7 +12,7 @@ const MeetingSchedule = ({showCompact}: any) => {
     const dispatch = useAppDispatch();
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-    const [meetingsToDisplay, setMeetingsToDisplay] = useState<Meeting[]>([]);
+    const [meetingsToDisplay, setMeetingsToDisplay] = useState<any[]>([]);
     const [dates, setDates] = useState<Date[]>([]);
     const [schedules, setSchedules] = useState<any[]>([]);
 
@@ -46,6 +46,7 @@ const MeetingSchedule = ({showCompact}: any) => {
         });
     }, [meetings]);
 
+    // combines consecutive and overlapping slots into one for compact view
     const generateBusySlots = (dates: any, meetingsToDisplay: any) => {
         return dates.map((date: any) => {
             let meetings = meetingsToDisplay.filter((meet: any) => {
@@ -59,11 +60,7 @@ const MeetingSchedule = ({showCompact}: any) => {
             });
 
             const busySlots = [];
-            for (let i = 9; i <= 18; i++) {
-                let emptySlot = {startingHour: i, rowSpan: 2, slot: <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>};
-                busySlots.push(emptySlot);
-            }
-
+        
             let currentSlot: { startingHour: number; startingMin: number; rowSpan: number; slot: any } | null = null;
 
             for (let meeting of meetings) {
@@ -75,35 +72,53 @@ const MeetingSchedule = ({showCompact}: any) => {
                 if (!currentSlot) {
                     currentSlot = { startingHour: meetingHour, startingMin: meetingMin, rowSpan: 2, slot: (
                         <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}>
-                            <ScheduleSlot height={'h-3/4'} name={'Slot taken'} surname={''} startHour={meetingHour} startMin={meetingMin} duration={90}/>
+                            <ScheduleSlot height={'h-3/4'} name={'Slot unavailable'} surname={''} startHour={meetingHour} startMin={meetingMin}/>
                         </td>
                     )};
                     busySlots[meetingHour - 9] = currentSlot;
                 } else if (meetingHour <= currentSlot.startingHour + currentSlot.rowSpan) {
-                    const endHour = Math.max(
-                        currentSlot.startingHour + currentSlot.rowSpan,
-                        meetingEndHour
-                    );
-                    currentSlot.rowSpan = endHour - currentSlot.startingHour;
+                    const diffRowSpan = meetingEndHour - currentSlot.startingHour - currentSlot.rowSpan;
+                    currentSlot.rowSpan = meetingEndHour - currentSlot.startingHour;
                     // todo fix ending time
                     currentSlot.slot = (
                         <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={currentSlot.rowSpan}>
-                            <ScheduleSlot height={'h-3/4'} name={'Slot taken'} surname={''} startHour={currentSlot.startingHour} startMin={currentSlot.startingMin} duration={90 + (currentSlot.rowSpan-2)*60}/>
+                            <ScheduleSlot height={'h-3/4'} name={'Slot unavailable'} surname={''} startHour={currentSlot.startingHour} startMin={currentSlot.startingMin}/>
                         </td>
                     );
                 } else {
                     currentSlot = { startingHour: meetingHour, startingMin: meetingMin, rowSpan: 2, slot: (
                         <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}>
-                            <ScheduleSlot height={'h-3/4'} name={'Slot taken'} surname={''} startHour={meetingHour} startMin={meetingMin} duration={90}/>
+                            <ScheduleSlot height={'h-3/4'} name={'Slot unavailable'} surname={''} startHour={meetingHour} startMin={meetingMin}/>
                         </td>
                     ) };
                     busySlots[meetingHour - 9] = currentSlot;
+                }
+            }
+
+            let hour = 9;
+            for (const slot of busySlots) {
+                if (slot === undefined) {
+                    continue;
+                }
+
+                while (slot.startingHour > hour) {
+                    let emptySlot = {startingHour: hour, startingMin: 0, rowSpan: 1, slot: <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>};
+                    busySlots.splice(hour - 9, 1, emptySlot);
+                    hour++;
+                }
+                hour += slot.rowSpan;
+
+                while (hour <= 18) {
+                    let emptySlot = {startingHour: hour, startingMin: 0, rowSpan: 1, slot: <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>};
+                    busySlots.splice(hour - 9, 1, emptySlot);
+                    hour++;
                 }
             }
             return busySlots;
         });
     }
 
+    // generates slots for normal (single agent) viewing
     const generateTimeslots = (dates: any, meetingsToDisplay: any, hour: number) => {
         return dates.map((date: any) => {
             let meeting = meetingsToDisplay.find((meet: any) => {
@@ -120,10 +135,11 @@ const MeetingSchedule = ({showCompact}: any) => {
                        meetDate >= lowerComparisonDate &&
                        meetDate <= upperComparisonDate;
             })
-            return meeting !== undefined ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting.Client.name ?? ''} surname={meeting.Client.surname ?? ''} startHour={0} startMin={0} /* todo fix this */ duration={2}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
+            return meeting !== undefined ? <td className="w-[22%] h-full border-t border-[#a5a5a5]" rowSpan={2}> <ScheduleSlot height={'h-3/4'} name={meeting.Client?.name ?? ''} surname={meeting.Client?.surname ?? ''} startHour={0} startMin={0}></ScheduleSlot></td> : <td className="w-[22%] h-full border-t border-[#a5a5a5]"></td>
         });
     };
 
+    // creates fake "meetings" when an agent is not available at a time slot to display in the timetable
     const invertSchedules = (schedules: any) => {
         const now = new Date();
         const inverted: {[day: number]: {[hour: number]: [any, any]}} = {};
@@ -140,16 +156,15 @@ const MeetingSchedule = ({showCompact}: any) => {
                     inverted[day] = {};
                 }
                 if (!inverted[day][hour]) {
-                    inverted[day][hour] = [true, true];
+                    inverted[day][hour] = [0, 0]; // number of agents free at both time slots for the hour (HH:00 and HH:30)
                 }
             }
         }
 
         for (let schedule of schedules) {
             const date = new Date(schedule.day);
-            
             const now = new Date();
-            if (date < now) {
+            if (date.getDate() < now.getDate()) {
                 continue;
             }
 
@@ -166,21 +181,21 @@ const MeetingSchedule = ({showCompact}: any) => {
             date.setMinutes(startMin);
             date.setSeconds(0);
 
-            for (let hour = startHour; hour <= endHour; hour++) {
+            for (let hour = startHour; hour < endHour; hour++) {
                 if (hour === startHour) {
                     if (startMin === 0) {
-                        inverted[date.getDate()][hour][0] = false;
+                        inverted[date.getDate()][hour][0]++;
                     }
-                    inverted[date.getDate()][hour][1] = false;
+                    inverted[date.getDate()][hour][1]++;
                 }
-                else if (hour === endHour) {
+                else if (hour === endHour - 1) {
                     if (endMin === 30) {
-                        inverted[date.getDate()][hour][0] = false;
+                        inverted[date.getDate()][hour][0]++;
                     }
                 }
                 else {
-                    inverted[date.getDate()][hour][0] = false;
-                    inverted[date.getDate()][hour][1] = false;
+                    inverted[date.getDate()][hour][0]++;
+                    inverted[date.getDate()][hour][1]++;
                 }
             }
         }
@@ -188,16 +203,12 @@ const MeetingSchedule = ({showCompact}: any) => {
         const invertedSlots = [];
         for (let day = now.getDate(); day < 4 + now.getDate(); day++) {
             for (let hour = 9; hour <= 20; hour++) {
-                if (inverted[day][hour][0] === true) {
-                    invertedSlots.push({ time: new Date(now.getFullYear(), now.getMonth(), day, hour, 0, 0) });
-                }
-                if (inverted[day][hour][1] === true) {
-                    invertedSlots.push({ time: new Date(now.getFullYear(), now.getMonth(), day, hour, 30, 0) });
-                }
+                invertedSlots.push([inverted[day][hour][0], { time: new Date(now.getFullYear(), now.getMonth(), day, hour, 0, 0) }]);
+                invertedSlots.push([inverted[day][hour][1], { time: new Date(now.getFullYear(), now.getMonth(), day, hour, 30, 0) }]);
             }
         }
 
-        console.log("INVERTED SLOTS", invertedSlots);
+        // console.log("INVERTED SLOTS", inverted);
         return invertedSlots;
     };
 
@@ -205,13 +216,33 @@ const MeetingSchedule = ({showCompact}: any) => {
     if (showCompact) {
         const inverted = invertSchedules(schedules);
         const totalMeetings = [];
+        const copyMeetings = [...meetingsToDisplay];
+        
         for (let i = 0; i < inverted.length; i++) {
-            if (inverted[i]) {
-                totalMeetings.push(inverted[i]);
+            if (inverted[i][0] == 0) {
+                totalMeetings.push(inverted[i][1]);
             }
-        }
-        for (let i = 0; i < meetingsToDisplay.length; i++) {
-            totalMeetings.push(meetingsToDisplay[i]);
+            else {
+                for (let j = 0; j < copyMeetings.length; j++) {
+                    if (copyMeetings[j] === null) {
+                        continue;
+                    }
+
+                    const meetingDate = new Date(copyMeetings[j].time);
+                    const invertedDate = new Date(inverted[i][1].time);
+                    if (meetingDate.getDate() === invertedDate.getDate() && 
+                        meetingDate.getHours() === invertedDate.getHours() &&
+                        meetingDate.getMinutes() === invertedDate.getMinutes()) {
+                            // if a meeting is matched to a free slot, decrement the number of free slots
+                            inverted[i][0]--;
+                            // if there are no more free slots, add the meeting to the totalMeetings array to display the slot as busy
+                            if (inverted[i][0] === 0) {
+                                totalMeetings.push(copyMeetings[j]);
+                            }
+                            copyMeetings[j] = null;
+                    }
+                }
+            }
         }
 
         busySlots = generateBusySlots(dates, totalMeetings);
