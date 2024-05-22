@@ -15,7 +15,11 @@ const Notifications = () => {
         className=" "
       >
         <img src={bell} alt="" />
-      </button>
+      </button>    
+
+
+
+      
 
       {showNotification && (
         <div className="z-30 w-full h-full bg-gray-800 bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden fixed inset-0">
