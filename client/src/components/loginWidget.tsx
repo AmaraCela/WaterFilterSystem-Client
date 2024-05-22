@@ -1,17 +1,11 @@
 import React, { createContext, useContext } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import '../styles/waterBtn.scss';
-
-
-const UserContext = createContext(null);
-
 
 const LoginWidget = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ message: "", fields: { email: "", password: "" } });
-  const navigate = useNavigate(); // Use useNavigate hook to get the navigation function
 
   const handleSubmit = () => {
     const apiUrl = process.env.REACT_APP_API_ENDPOINT;
