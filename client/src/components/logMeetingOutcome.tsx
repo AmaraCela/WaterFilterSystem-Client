@@ -61,7 +61,7 @@ function MeetingOutcomeForm({ onClose, reference }: MeetingOutcomeFormProps) {
     if (selectedOutcome === "scheduled" || selectedOutcome === "noAnswer") {
       setShowChangeDateForm(true);
     }
-    if (selectedOutcome === "successful") {
+    else if (selectedOutcome === "successful") {
       setTimeout(() => {
         setShowRedListAlert(false);
         setShowMeeting(true);
@@ -69,7 +69,7 @@ function MeetingOutcomeForm({ onClose, reference }: MeetingOutcomeFormProps) {
       }, 0);
       onClose();
     }
-     else if (selectedOutcome === "excessiveArgument") {
+    else if (selectedOutcome === "excessiveArgument") {
       // Delay showing the Redlist alert until after the form is closed
       setTimeout(() => {
         setShowRedListAlert(true);

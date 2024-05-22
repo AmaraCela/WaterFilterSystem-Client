@@ -56,6 +56,7 @@ import Redlist from "../pages/RedList";
 import { getLoggedInUser } from '../serverUtils/serverUtils';
 import { UserRole } from '../serverUtils/UserRole';
 import { useState, useEffect } from 'react';
+import SalesAgentAddSale from '../pages/SalesAgentAddSale';
 
 const AllRoutes = () => {
     let [isPhoneAgent, setIsPhoneAgent] = useState(false);
@@ -121,6 +122,7 @@ const AllRoutes = () => {
                 {/* fix page, it should stay absolute */}
                 <Route path='/workschedule' element={<SalesAgentSchedules />} />
                 <Route path='/agentreferences' element={<SalesAgentAddReferences />} />
+                <Route path={'/agentaddsale'} element={<SalesAgentAddSale />}/>
             </Routes>}
 
             {isChiefOfOperations && <Routes>

@@ -10,7 +10,7 @@ const SalesAgentMeetings = () => {
         <div className="bg-white">
             <DashboardSideSalesAgent />
         </div>
-            <div className="main-content w-full  h-screen "> {/* Adjusted height to h-screen */}
+            <div className="main-content w-full overflow-y-auto h-screen "> {/* Adjusted height to h-screen */}
                 <div className="flex flex-row pt-4 pr-8 justify-end items-end">
                     <TopIcons />
                 </div>
@@ -18,7 +18,7 @@ const SalesAgentMeetings = () => {
                     Meeting Agenda
                 </p>
                 <div className="flex w-full justify-between mt-20">
-                    <div className="w-3/4 overflow-y-scroll overflow-x-scroll w-[130vh] mr-3">
+                    <div className="w-3/4 overflow-y-scroll overflow-x-scroll w-[130vh] max-h-[100vh] mr-3">
                         <MeetingSchedule showCompact={false}/>
                     </div>
                     <div className="w-1/4 mr-4">
