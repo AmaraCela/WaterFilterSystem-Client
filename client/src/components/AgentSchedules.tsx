@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getLoggedUserId, getLoggedInUser, retrieveScheduleFromServer, saveScheduleToServer } from '../serverUtils/serverUtils';
+import { getLoggedUserId, getLoggedInUser, saveScheduleToServer, retrieveSchedulesFromServer } from '../serverUtils/serverUtils';
 import { UserRole } from '../serverUtils/UserRole';
 
 interface Timeslot {
@@ -99,9 +99,9 @@ const AgentScheduleComponent = () => {
 
     const [selectedDay, setSelectedDay] = useState<number>(todayDay);
     let loggedUser: any | null;
-
+    
     useEffect(() => {
-        retrieveScheduleFromServer().then((schedules: any) => {
+        retrieveSchedulesFromServer(getLoggedUserId() ?? "-1").then((schedules: any) => {
             if (schedules === null) {
                 return;
             }

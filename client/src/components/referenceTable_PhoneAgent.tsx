@@ -18,8 +18,6 @@ function RefTableHead() {
 
 
   const tableRows = [];
-
-  // Random rows
   if (references) for (let i = 0; i < references.length; i++) {
     tableRows.push(
       <div

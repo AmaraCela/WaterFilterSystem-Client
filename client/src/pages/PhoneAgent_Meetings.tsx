@@ -8,7 +8,10 @@ const backgroundLight = require('../assets/backgroundLight.png').default;
 
 
 const PhoneAgent_Meetings = () => {
-    const [showAddMeeting, setShowAddMeeting] = useState(false); // State to manage visibility of AddNewMeeting component
+    const searchParams = new URLSearchParams(window.location.search);
+    const reference = searchParams.get('reference');
+
+    const [showAddMeeting, setShowAddMeeting] = useState(reference !== null); // State to manage visibility of AddNewMeeting component
 
     const handleAddMeetingClick = () => {
         setShowAddMeeting(true); // Set showAddMeeting to true when "Add New Meeting" button is clicked
@@ -36,7 +39,7 @@ const PhoneAgent_Meetings = () => {
                  
                 </div>
             </div>
-            {showAddMeeting && <AddNewMeeting />} {/* Render AddNewMeeting component conditionally */}
+            {showAddMeeting && <AddNewMeeting reference={reference} />} {/* Render AddNewMeeting component conditionally */}
         </div>
     );
 }

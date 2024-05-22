@@ -65,7 +65,7 @@ function MeetingOutcomeForm({ onClose, reference }: MeetingOutcomeFormProps) {
       setTimeout(() => {
         setShowRedListAlert(false);
         setShowMeeting(true);
-        navigate("/viewAllMeetings"); // Redirect to Meeting.tsx
+        navigate("/viewAllMeetings?reference=" + reference?.id); // Redirect to Meeting.tsx
       }, 0);
       onClose();
     }

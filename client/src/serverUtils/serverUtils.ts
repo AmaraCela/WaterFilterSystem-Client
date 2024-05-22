@@ -27,7 +27,7 @@ export function getLoggedInUser() {
     });
 }
 
-export function retrieveALLSalesAgentFromServer() {
+export function retrieveAllSalesAgentFromServer() {
     return fetch(`${apiUrl}/users/salesAgents`, {
         method: "GET",
         credentials: 'include',
@@ -264,10 +264,8 @@ export function removeClientFromRedlist(clientId: number) {
     });
 }
 
-export function retrieveScheduleFromServer() {
-    const user_id = getLoggedUserId();
-
-    return fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
+export function retrieveSchedulesFromServer(agent_id: string) {
+    return fetch(`${apiUrl}/users/salesagents/${agent_id}/schedules`, {
         method: "GET",
         credentials: 'include',
         headers: {
@@ -365,6 +363,110 @@ export function retrieveAllScheduleFromServer() {
     }).catch((error) => {
         console.log("Failed to retrieve schedule", error);
         return null;
+    });
+}
+
+export function retrieveAllReferencesFromServer() {
+    return fetch(`${apiUrl}/clients?type=References`, {
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to retrieve references", data.message);
+                return null;
+            });
+        } else {
+            return response.json().then(data => {
+                console.log("References retrieved successfully", data);
+                return data;
+            });
+        }
+    }).catch((error) => {
+        console.log("Failed to retrieve references, error", error);
+        return null;
+    });
+}
+
+export function retrieveMeetingsOfAgent(agentid: string) {
+    return fetch(`${apiUrl}/meetings?agentid=${agentid}`, {
+        method: "GET",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to retrieve meetings", data.message);
+                return null;
+            });
+        } else {
+            return response.json().then(data => {
+                console.log("Meetings retrieved successfully", data);
+                return data;
+            });
+        }
+    }).catch((error) => {
+        console.log("Failed to retrieve meetings, error", error);
+        return null;
+    });
+}
+
+export function createNewMeeting(meeting: any) {
+    return fetch(`${apiUrl}/meetings`, {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(meeting),
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to create meeting", data.message);
+                return false;
+            });
+        }
+        else {
+            return response.json().then(data => {
+                console.log("Meeting created successfully", data);
+                return true;
+            });
+        }
+    }).catch((error) => {
+        console.log("Failed to create meeting", error);
+        return false;
+    });
+}
+
+export function updateClient(client: any) {
+    return fetch(`${apiUrl}/clients/${client.id}`, {
+        method: "PUT",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(client),
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to update client", data.message);
+                return false;
+            });
+        }
+        else {
+            return response.json().then(data => {
+                console.log("Client updated successfully", data);
+                return true;
+            });
+        }
+    }).catch((error) => {
+        console.log("Failed to update client", error);
+        return false;
     });
 }
 
