@@ -55,29 +55,76 @@ import MySales from '../pages/MySales';
 import Redlist from "../pages/RedList";
 import { getLoggedInUser } from '../serverUtils/serverUtils';
 import { UserRole } from '../serverUtils/UserRole';
+import { useState, useEffect } from 'react';
+
 const AllRoutes = () => {
-    return (
+    let [isPhoneAgent, setIsPhoneAgent] = useState(false);
+    let [isSalesAgent, setIsSalesAgent] = useState(false);
+    let [isMarketingManager, setIsMarketingManager] = useState(false);
+    let [isChiefOfOperations, setIsChiefOfOperations] = useState(false);
+    let [notLoggedIn, setNotLoggedIn] = useState(true);
+    let [retrievedData, setRetrievedData] = useState(false);
+
+    useEffect(() => {
+        getLoggedInUser().then((user: any) => {
+            if (user) {
+                switch (user.role) {
+                    case UserRole[UserRole.PHONE_OPERATOR]:
+                        setIsPhoneAgent(true);
+                        setNotLoggedIn(false);
+                        break;
+                    case UserRole[UserRole.SALES_AGENT]:
+                        setIsSalesAgent(true);
+                        setNotLoggedIn(false);
+                        break;
+                    case UserRole[UserRole.MARKETING_MANAGER]:
+                        setIsMarketingManager(true);
+                        setNotLoggedIn(false);
+                        break;
+                    case UserRole[UserRole.CHIEF_OF_OPERATIONS]:
+                        setIsChiefOfOperations(true);
+                        setNotLoggedIn(false);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            setRetrievedData(true);
+        });
+    }, []);
+
+    // prevent login screen from showing for a split second before data is retrieved
+    return retrievedData ? (
         <Router>
             <Routes>
+                {/* Login */}
+                {notLoggedIn && <Route path='/' element={<LoginPage />} />}
+
+                {/* Home pages */}
+                {isSalesAgent && <Route path='/' element={< SalesAgentMeetings />}/>}
+                {isPhoneAgent && <Route path='/' element={< PhoneAgent_HomePage />}/>}
+                {isChiefOfOperations && <Route path='/' element={<ChiefOperationsDashboard_SalesToApprove />} />}
+            </Routes>
+            
+            {isPhoneAgent && <Routes>
                 {/* Phone Agent */}
                 <Route path='/reservedCalls' element={< PhoneAgent_ReservedCalls />} />
-                <Route path='/home' element={< PhoneAgent_HomePage />} />
                 <Route path='/latestReferencesPhoneAgent' element={<PhoneAgent_Refs />} />
                 <Route path='/viewAllMeetings' element={<PhoneAgent_Meetings />} />
                 <Route path='/redlistPhoneAgent' element={<PhoneAgent_Redlist />} />
-                <Route path='/login' element={<LoginPage />} />
+            </Routes>}
 
+            {isSalesAgent && <Routes>
                 {/* Sales Agent */}
-                <Route path='/agentmeetings' element={< SalesAgentMeetings />} />
                 <Route path='/schedules' element={<SalesAgentSchedules />} />
                 <Route path='/template' element={<SalesAgentTemplate />} />
                 {/* fix page, it should stay absolute */}
                 <Route path='/workschedule' element={<SalesAgentSchedules />} />
                 <Route path='/agentreferences' element={<SalesAgentAddReferences />} />
+            </Routes>}
 
-
+            {isChiefOfOperations && <Routes>
                 {/* Chief of Operations */}
-                <Route path='/approvesales' element={<ChiefOperationsDashboard_SalesToApprove />} />
                 <Route path='/commissions' element={<ChiefOperationsDashboard_AgentCommissions />} />
                 <Route path='/salesdebts' element={<ChiefOperationsDashboard_ListOfSalesAndDebts />} />
                 <Route path='/tasks' element={<ChiefOfOperations_Inventory_ListOfTasks />} />
@@ -85,10 +132,9 @@ const AllRoutes = () => {
                 {/* missing inventory */}
                 <Route path='/collections' element={<Collections />} />
                 <Route path='redlist' element={<Redlist />} />
-
-            </Routes>
+            </Routes>}
         </Router>
-    )
+    ) : null;
 }
 
 export default AllRoutes;
