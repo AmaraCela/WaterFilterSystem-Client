@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getLoggedUserId, getLoggedInUser, retrieveScheduleFromServer, saveScheduleToServer } from '../serverUtils/serverUtils';
 import { UserRole } from '../serverUtils/UserRole';
+import '../styles/dropdownStyling.css'; 
 
 interface Timeslot {
     start: string;
@@ -13,71 +14,84 @@ interface Schedule {
     [day: string]: Timeslot[];
 }
 
+
 const StyledComponent = styled.div`
   color: #333;
-  padding-left: 20px;
+  padding-left: 30px;
 
   h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 28px;
+    margin-bottom: 25px;
   }
 
   h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    margin-right: 10px;
+    font-size: 22px;
+    margin-bottom: 15px;
+    margin-right: 15px;
   }
 
   .day-container {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     display: flex;
     flex-wrap: wrap;
   }
 
   .timeslot-column {
-    margin-right: 40px;
+    margin-right: 50px;
   }
 
   .timeslot {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
 
   select {
-    padding: 5px;
+    padding: 8px;
     border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 14px;
+    border-radius: 5px;
+    font-size: 16px;
   }
 
   .day-picker {
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
 
   .day-picker button:not(.add-slot-button) {
     background-color: transparent;
     color: #333;
     border: 1px solid #ccc;
-    padding: 5px 10px;
+    padding: 8px 12px;
     cursor: pointer;
-    margin-right: 5px;
+    margin-right: 8px;
+    font-size: 16px;
   }
 
   button, .add-slot-button {
     background-color: #007bff;
     color: #fff;
     border: none;
-    border-radius: 3px;
-    padding: 5px 10px;
-    font-size: 14px;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 16px;
     cursor: pointer;
   }
 
   .day-picker button.active {
     background-color: #007bff;
     color: #fff;
+  }
+
+  .remove-slot-button {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
   }
 `;
 
@@ -315,7 +329,7 @@ const AgentScheduleComponent = () => {
 
     const renderTimeslots = () => (
         array1dTo2d(schedule[selectedDay], 5).map((column, columnIndex) => (
-            <div key={columnIndex} className="timeslot-column">
+            <div key={columnIndex} className="timeslot-column ">
             {column.map((timeslot, rowIndex) => (
                 schedule[selectedDay][columnIndex*5+rowIndex] ?
                 (<div key={`${columnIndex}-${rowIndex}`} className="timeslot">
@@ -342,7 +356,7 @@ const AgentScheduleComponent = () => {
                         </option>
                     ))}
                     </select>
-                    { schedule[selectedDay][columnIndex*5+rowIndex] && !schedule[selectedDay][columnIndex*5+rowIndex].readonly ? (<>&nbsp;<button className="remove-slot-button" onClick={() => removeTimeslot(selectedDay, columnIndex*5+rowIndex)}>x</button></>) : null }
+                    { schedule[selectedDay][columnIndex*5+rowIndex] && !schedule[selectedDay][columnIndex*5+rowIndex].readonly ? (<>&nbsp;<button className="remove-slot-button" onClick={() => removeTimeslot(selectedDay, columnIndex*5+rowIndex)}>X</button></>) : null }
                 </div>) : null
             ))}
             </div>
