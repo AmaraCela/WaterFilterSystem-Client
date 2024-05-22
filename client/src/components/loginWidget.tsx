@@ -18,6 +18,7 @@ const LoginWidget = () => {
 
     fetch(`${apiUrl}/session`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

@@ -30,6 +30,7 @@ export function getLoggedInUser() {
 export function retrieveALLSalesAgentFromServer() {
     return fetch(`${apiUrl}/users/salesAgents`, {
         method: "GET",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },
@@ -55,6 +56,7 @@ export function retrievePhoneOperatorFromServer() {
     const user_id = getLoggedUserId();
     return fetch(`${apiUrl}/users/phoneOperators/${user_id}`, {
         method: "GET",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },
@@ -81,6 +83,7 @@ export function retrieveSalesAgentFromServer() {
     const user_id = getLoggedUserId();
     return fetch(`${apiUrl}/users/salesAgents/${user_id}`, {
         method: "GET",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },
@@ -107,6 +110,7 @@ export function retrieveCallsFromServer() {
     const user_id = getLoggedUserId();
     return fetch(`${apiUrl}/users/phoneOperators/${user_id}`, {
         method: "GET",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },
@@ -133,6 +137,7 @@ export function retrieveCallsFromServer() {
 export function retrieveCallInfoFromServer(callId: number) {
     return fetch(`${apiUrl}/calls/${callId}`, {
         method: "GET",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },
@@ -158,6 +163,7 @@ export function retrieveCallInfoFromServer(callId: number) {
 export function retrieveRedListFromServer() {
     return fetch(`${apiUrl}/clients?status=IN_REDLIST`, {
         method: "GET",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },
@@ -183,6 +189,7 @@ export function retrieveRedListFromServer() {
 export function retrieveWaitlistFromServer() {
     return fetch(`${apiUrl}/clients?status=IN_WAITLIST`, {
         method: "GET",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },
@@ -208,6 +215,7 @@ export function retrieveWaitlistFromServer() {
 export function addClientToRedlist(clientId: number) {
     return fetch(`${apiUrl}/clients/${clientId}/redlistaddition`, {
         method: "POST",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },
@@ -233,6 +241,7 @@ export function addClientToRedlist(clientId: number) {
 export function removeClientFromRedlist(clientId: number) {
     return fetch(`${apiUrl}/clients/${clientId}/redlistremoval`, {
         method: "POST",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },
@@ -260,6 +269,7 @@ export function retrieveScheduleFromServer() {
 
     return fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
         method: "GET",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },
@@ -306,6 +316,7 @@ export function saveScheduleToServer(schedule: any, selectedDay: number) {
 
         fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
             method: "POST",
+            credentials: 'include',
             headers: {
                 "Content-Type": "application/json",
             },
@@ -334,6 +345,7 @@ export function retrieveAllScheduleFromServer() {
 
     return fetch(`${apiUrl}/users/salesagents/schedules`, {
         method: "GET",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },
