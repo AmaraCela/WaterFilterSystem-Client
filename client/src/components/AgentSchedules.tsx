@@ -81,16 +81,17 @@ const StyledComponent = styled.div`
   }
 `;
 
-
 const AgentScheduleComponent = () => {
     const [schedule, setSchedule] = useState<Schedule>({
-        1: [],
-        2: [],
-        3: [],
-        4: [],
-        5: [],
+        0: [], // Sunday
+        1: [], // Monday
+        2: [], // Tuesday
+        3: [], // Wednesday
+        4: [], // Thursday
+        5: [], // Friday
+        6: [], // Saturday
     });
-    const [selectedDay, setSelectedDay] = useState<number>(1);
+    const [selectedDay, setSelectedDay] = useState<number>(new Date().getDay());
     let loggedUser: any | null;
 
     useEffect(() => {
@@ -108,7 +109,6 @@ const AgentScheduleComponent = () => {
                 }
                 return 0;
             });
-
             let newSchedule = schedule;
             for (let i = 0; i < schedules.length; i++) {
                 const day = new Date(schedules[i].day);
@@ -124,8 +124,6 @@ const AgentScheduleComponent = () => {
                     ...newSchedule,
                     [dayIdx]: [...newSchedule[dayIdx], timeslot],
                 };
-
-                // console.log("Day: ", dayIdx, "Timeslot: ", timeslot);
             }
 
             setSchedule(newSchedule);
@@ -344,7 +342,6 @@ const AgentScheduleComponent = () => {
                         </option>
                     ))}
                     </select>
-                    {/* { (() => { console.log("AAA ", selectedDay, columnIndex*5+rowIndex, schedule[selectedDay][columnIndex*5+rowIndex]); return null; })() } */}
                     { schedule[selectedDay][columnIndex*5+rowIndex] && !schedule[selectedDay][columnIndex*5+rowIndex].readonly ? (<>&nbsp;<button className="remove-slot-button" onClick={() => removeTimeslot(selectedDay, columnIndex*5+rowIndex)}>x</button></>) : null }
                 </div>) : null
             ))}
@@ -352,41 +349,22 @@ const AgentScheduleComponent = () => {
         ))
     );
 
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const sortedDays = [...daysOfWeek.slice(new Date().getDay()), ...daysOfWeek.slice(0, new Date().getDay())];
+
     return (
         <StyledComponent>
             <h2>My Work Schedule</h2>
             <div className="day-picker">
-                <button
-                    className={selectedDay === 1 ? 'active' : ''}
-                    onClick={() => setSelectedDay(1)}
-                >
-                    Mon
-                </button>
-                <button
-                    className={selectedDay === 2 ? 'active' : ''}
-                    onClick={() => setSelectedDay(2)}
-                >
-                    Tue
-                </button>
-                <button
-                    className={selectedDay === 3 ? 'active' : ''}
-                    onClick={() => setSelectedDay(3)}
-                >
-                    Wed
-                </button>
-                <button
-                    className={selectedDay === 4 ? 'active' : ''}
-                    onClick={() => setSelectedDay(4)}
-                >
-                    Thu
-                </button>
-                <button
-                    className={selectedDay === 5 ? 'active' : ''}
-                    onClick={() => setSelectedDay(5)}
-                >
-                    Fri
-                </button>
-
+                {sortedDays.map((day, index) => (
+                    <button
+                        key={index}
+                        className={selectedDay === (new Date().getDay() + index) % 7 ? 'active' : ''}
+                        onClick={() => setSelectedDay((new Date().getDay() + index) % 7)}
+                    >
+                        {day}
+                    </button>
+                ))}
                 <button className="add-slot-button" disabled={selectedDayReadonly(selectedDay)} onClick={addTimeslot}>+</button>
             </div>
         
