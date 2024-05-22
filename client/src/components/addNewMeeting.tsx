@@ -1,12 +1,23 @@
 import * as React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { retrieveALLSalesAgentFromServer } from'../serverUtils/serverUtils' // Adjust the import path accordingly
 
 function AddNewMeeting() {
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = React.useState<string>("");
+    const [selectedAgent, setSelectedAgent] = React.useState<string>("");
     const [cancelClicked, setCancelClicked] = React.useState<boolean>(false);
     const [saveClicked, setSaveClicked] = React.useState<boolean>(false);
+    const [agents, setAgents] = React.useState<any[]>([]);
+
+    React.useEffect(() => {
+        retrieveALLSalesAgentFromServer().then(data => {
+            if (data) {
+                setAgents(data);
+            }
+        });
+    }, []);
 
     const handleCancelClick = () => {
         setCancelClicked(true);
@@ -55,14 +66,20 @@ function AddNewMeeting() {
                 placeholder="Enter phone number"
             />
 
-            <div className="mt-1 text-xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
+<div className="mt-1 text-xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
                 Sales Agent
             </div>
-            <input
-                type="text"
+            <select
+                value={selectedAgent}
+                onChange={(e) => setSelectedAgent(e.target.value)}
                 className="w-full px-4 py-2 mt-3 border border-black border-solid rounded-xl max-md:max-w-full"
-                placeholder="Enter sales agent"
-            />
+            >
+                <option value="" disabled>Select a sales agent</option>
+                {agents.map((agent, index) => (
+                    <option key={index} value={agent.name}>{agent.name}</option>
+                ))}
+            </select>
+
 
             <div className="mt-1 text-xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
                 Special Notes (optional)

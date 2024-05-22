@@ -27,6 +27,30 @@ export function getLoggedInUser() {
     });
 }
 
+export function retrieveALLSalesAgentFromServer() {
+    return fetch(`${apiUrl}/users/salesAgents`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to retrieve sales agents", data.message);
+                return null;
+            });
+        } else {
+            return response.json().then(data => {
+                console.log("Sales agents retrieved successfully", data);
+                return data;
+            });
+        }
+    }).catch((error) => {
+        console.log("Failed to retrieve sales agents, error", error);
+        return null;
+    });
+}
+
 export function retrievePhoneOperatorFromServer() {
     const user_id = getLoggedUserId();
     return fetch(`${apiUrl}/users/phoneOperators/${user_id}`, {
