@@ -405,30 +405,33 @@ const MeetingSchedulePhoneOp = ({ showCompact }: any) => {
             </thead>
             <tbody className="mt-4">
                 {timeSlots.map((slot) => {
-                    let meetingsSlots = generateTimeslots(dates, meetingsToDisplay, slot.hour, slot.min).filter((m: any) => m !== null);
-                    for (let meeting of meetingsToDisplay) {
-                        const dateTime = new Date(meeting.time);
-                        const meetingHour = dateTime.getHours();
-                        const meetingMin = dateTime.getMinutes();
+                    let meetingsSlots;
+                    if (!showCompact) {
+                        meetingsSlots = generateTimeslots(dates, meetingsToDisplay, slot.hour, slot.min).filter((m: any) => m !== null);
+                        for (let meeting of meetingsToDisplay) {
+                            const dateTime = new Date(meeting.time);
+                            const meetingHour = dateTime.getHours();
+                            const meetingMin = dateTime.getMinutes();
 
-                        meetingsSlots = meetingsSlots.filter((m: any) => {
-                            if (m.date !== dateTime.getDate()) {
+                            meetingsSlots = meetingsSlots.filter((m: any) => {
+                                if (m.date !== dateTime.getDate()) {
+                                    return true;
+                                }
+                                const startMeeting = (meetingHour * 60 + meetingMin);
+                                const endMeeting = startMeeting + 90;
+                                const startSlot = (m.hour * 60 + m.min);
+
+                                if (startSlot > startMeeting && startSlot < endMeeting) {
+                                    return false;
+                                }
+
                                 return true;
-                            }
-                            const startMeeting = (meetingHour * 60 + meetingMin);
-                            const endMeeting = startMeeting + 90;
-                            const startSlot = (m.hour * 60 + m.min);
+                            });
+                        }
 
-                            if (startSlot > startMeeting && startSlot < endMeeting) {
-                                return false;
-                            }
-
-                            return true;
-                        });
+                        meetingsSlots = meetingsSlots.map((m: any) => m.slot);
                     }
-
-                    meetingsSlots = meetingsSlots.map((m: any) => m.slot);
-
+                    
                     return <tr className="h-4" key={`${slot.hour}:${slot.min}`}>
                         <td className=" montserrat font-light text-[#B1B1B1]">
                             <p className="w-full text-center">{slot.label}</p>

@@ -102,7 +102,7 @@ const AllRoutes = () => {
                 {notLoggedIn && <Route path='/' element={<LoginPage />} />}
 
                 {/* Home pages */}
-                {isSalesAgent && <Route path='/' element={< SalesAgentMeetings />}/>}
+                {isSalesAgent && <Route path='/' element={< SalesAgentSchedules />}/>}
                 {isPhoneAgent && <Route path='/' element={< PhoneAgent_HomePage />}/>}
                 {isChiefOfOperations && <Route path='/' element={<ChiefOperationsDashboard_SalesToApprove />} />}
             </Routes>
@@ -118,6 +118,7 @@ const AllRoutes = () => {
             {isSalesAgent && <Routes>
                 {/* Sales Agent */}
                 <Route path='/schedules' element={<SalesAgentSchedules />} />
+                <Route path='/agentmeetings' element={<SalesAgentMeetings />} />
                 <Route path='/template' element={<SalesAgentTemplate />} />
                 {/* fix page, it should stay absolute */}
                 <Route path='/workschedule' element={<SalesAgentSchedules />} />
