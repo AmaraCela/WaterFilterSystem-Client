@@ -55,6 +55,7 @@ import MySales from '../pages/MySales';
 import Redlist from "../pages/RedList";
 import { getLoggedInUser } from '../serverUtils/serverUtils';
 import { UserRole } from '../serverUtils/UserRole';
+import SalesAgentAddSale from '../pages/SalesAgentAddSale';
 const AllRoutes = () => {
     return (
         <Router>
@@ -74,6 +75,7 @@ const AllRoutes = () => {
                 {/* fix page, it should stay absolute */}
                 <Route path='/workschedule' element={<SalesAgentSchedules />} />
                 <Route path='/agentreferences' element={<SalesAgentAddReferences />} />
+                <Route path={'/agentaddsale'} element={<SalesAgentAddSale />}/>
 
 
                 {/* Chief of Operations */}
