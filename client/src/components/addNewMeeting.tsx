@@ -6,45 +6,61 @@ import SearchableDropdown from "./SearchableDropdown";
 
 function AddNewMeeting({reference}: any) {
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(null);
-    const [selectedAgent, setSelectedAgent] = React.useState<string>("");
+    const [selectedAgent, setSelectedAgent] = React.useState<string>("all");
     const [cancelClicked, setCancelClicked] = React.useState<boolean>(false);
     const [saveClicked, setSaveClicked] = React.useState<boolean>(false);
     const [agents, setAgents] = React.useState<any[]>([]);
     const [references, setReferences] = React.useState<any[]>([]);
     const [referenceNames, setReferenceNames] = React.useState<any[]>([]);
     const [referenceIDs, setReferenceIDs] = React.useState<any[]>([]);
-    const [freeSlots, setFreeSlots] = React.useState<any[]>([]);
+    const [freeSlots, setFreeSlots] = React.useState<any>({});
     const [referenceAddress, setReferenceAddress] = React.useState<string>("");
     const [selectedSlot, setSelectedSlot] = React.useState<string>("");
+    const [selectedSlots, setSelectedSlots] = React.useState<Date[]>([]);
     const [addressChanged, setAddressChanged] = React.useState<boolean>(false);
-
     const [selectedReference, setSelectedReference] = React.useState<any | null>(null);
 
-    function selectSalesagent(agent: any) {
-        const agent_id = agents.find((a: any) => a.name + " " + a.surname === agent).id;
-
-        retrieveSchedulesFromServer(agent_id).then((schedules: any) => {
+    function retrieveFreeSlotsOfAgent(agent_id: any) {
+        return retrieveSchedulesFromServer(agent_id).then((schedules: any) => {
             if (schedules == null) {
                 return;
             }
 
-            retrieveMeetingsOfAgent(agent_id).then((meetings: any) => {
+            return retrieveMeetingsOfAgent(agent_id).then((meetings: any) => {
                 if (meetings == null) {
                     return;
                 }
 
-                let freeSlots = getFreeSlotsOfAgent(schedules, meetings);
-                setFreeSlots(freeSlots);
+                let freeSlotsOfAgent = calculateFreeSlots(schedules, meetings);
+                return freeSlotsOfAgent;
             });
         });
-
-        setSelectedAgent(agent);
     }
 
     React.useEffect(() => {
-        retrieveAllSalesAgentFromServer().then(data => {
-            if (data) {
-                setAgents(data);
+        retrieveAllSalesAgentFromServer().then(agents => {
+            if (agents) {
+                setAgents(agents);
+
+                let promises = agents.map((agent: any) => retrieveFreeSlotsOfAgent(agent.id));
+                Promise.all(promises).then((freeSlots) => {
+                    let freeSlotsCopy: any = {all: []};
+                    let i = 0;
+
+                    for (let agent of agents) {
+                        freeSlotsCopy[agent.id] = freeSlots[i];
+                        i++;
+
+                        for (let slot of freeSlotsCopy[agent.id]) {
+                            if (!freeSlotsCopy.all.includes(slot)) {
+                                freeSlotsCopy.all.push(slot);
+                            }
+                            freeSlotsCopy.all.sort();
+                        }
+                    }
+                   
+                    setFreeSlots(freeSlotsCopy);
+                });
             }
         });
 
@@ -82,16 +98,24 @@ function AddNewMeeting({reference}: any) {
         }
     }, [selectedReference]);
 
+    React.useEffect(() => {
+        if (selectedAgent) {
+            if (selectedAgent == "all") {
+                setSelectedSlots(freeSlots.all ?? []);
+            }
+            else {
+                setSelectedSlots(freeSlots[agents.find((agent: any) => agent.name + " " + agent.surname === selectedAgent).id] ?? []);
+            }
+        }
+    }, [selectedAgent, freeSlots]);
+
     const handleCancelClick = () => {
         setCancelClicked(true);
         setSaveClicked(false);
     };
 
     const handleSaveClick = () => {
-        setSaveClicked(true);
-        setCancelClicked(false);
-
-        if (selectedSlot && selectedAgent && selectedReference && referenceAddress) {
+        if (selectedSlot && selectedAgent != "all" && selectedReference && referenceAddress) {
             const meeting = {
                 time: selectedSlot,
                 place: referenceAddress,
@@ -116,6 +140,10 @@ function AddNewMeeting({reference}: any) {
     
                 updateClient(client);
             }
+
+            setSaveClicked(true);
+            setCancelClicked(false);
+
             return null;
         }
     };
@@ -124,7 +152,7 @@ function AddNewMeeting({reference}: any) {
         return null; // Render nothing if either save or cancel is clicked
     }
 
-    function getFreeSlotsOfAgent(schedules: any, meetings: any): Date[] {
+    function calculateFreeSlots(schedules: any, meetings: any): Date[] {
         const freeSlots: Date[] = [];
     
         function parseTime(day: string, time: string): Date {
@@ -195,21 +223,6 @@ function AddNewMeeting({reference}: any) {
                 value={referenceAddress}
                 onChange={(e) => { setReferenceAddress(e.target.value); setAddressChanged(true); }}
             />
-
-            <div className="mt-1 text-xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
-                Sales Agent
-            </div>
-            <select
-                value={selectedAgent}
-                onChange={(e) => selectSalesagent(e.target.value)}
-                className="w-full px-4 py-2 mt-3 border border-black border-solid rounded-xl max-md:max-w-full"
-            >
-                <option value="" disabled>Select a sales agent</option>
-                {agents.map((agent, index) => (
-                    <option key={index} value={agent.name + " " + agent.surname}>{agent.name + " " + agent.surname}</option>
-                ))}
-            </select>
-
             <div className="mt-1 text-xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
                 Date and Time
             </div>
@@ -225,11 +238,31 @@ function AddNewMeeting({reference}: any) {
                     className="w-full px-4 py-2 mt-3 border border-black border-solid rounded-xl max-md:max-w-full"
                 >
                     <option value="" disabled>Select a time slot</option>
-                    {freeSlots.filter((slot) => (slot.getDate() == selectedDate?.getDate() && slot.getMonth() == selectedDate?.getMonth())).map((slot) => (
+                    {selectedSlots.filter((slot) => (slot.getDate() == selectedDate?.getDate() && slot.getMonth() == selectedDate?.getMonth())).map((slot) => (
                         <option value={slot.toISOString()}>{slot.getHours().toString().padStart(2, '0') + ":" + slot.getMinutes().toString().padStart(2, '0')}</option>
                     ))}
                 </select>
             </div>
+            <div className="mt-1 text-xl font-medium tracking-tight leading-9 text-indigo-800 max-md:max-w-full">
+                Sales Agent
+            </div>
+            <select
+                value={selectedAgent}
+                onChange={(e) => setSelectedAgent(e.target.value)}
+                className="w-full px-4 py-2 mt-3 border border-black border-solid rounded-xl max-md:max-w-full"
+            >
+                <option value="all">Select a sales agent</option>
+                {(selectedAgent === "all" && selectedSlot !== "" ? agents.filter((agent: any) => {;
+                    for (let slot of freeSlots[agent.id]) {
+                        if (slot.toISOString() == selectedSlot) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }) : agents).map((agent, index) => (
+                    <option key={index} value={agent.name + " " + agent.surname}>{agent.name + " " + agent.surname}</option>
+                ))}
+            </select>
             <div className="flex gap-3 justify-between self-center mt-10 text-xs font-bold leading-4 text-gray-900 uppercase whitespace-nowrap tracking-[2px] mb-10">
                 <button onClick={handleCancelClick}>
                     <div className={`justify-center px-4 py-2 bg-${cancelClicked ? "blue" : "white"} rounded border-2 border-indigo-800 border-solid max-md:px-5 hover:bg-blue-500`}>

@@ -39,6 +39,7 @@ const PhoneAgent_Meetings = () => {
                  
                 </div>
             </div>
+            {/* BUG: once AddNewMeeting has been closed from the inside (save or cancel clicked) there is now no way to get it to show again without refreshing the page */}
             {showAddMeeting && <AddNewMeeting reference={reference} />} {/* Render AddNewMeeting component conditionally */}
         </div>
     );
