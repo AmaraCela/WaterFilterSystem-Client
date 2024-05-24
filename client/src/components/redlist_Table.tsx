@@ -16,7 +16,7 @@ function RedlistTable() {
     const [tableRows, setTableRows] = useState<any>([]);
 
     // Table head
-    const headRow = (
+    let tempTableRows = [(
         <div
         key="head"
         className={`flex gap-5 self-stretch text-xl  leading-4 border-radius-10 border-b border-solid border-zinc-200 max-w-[400px] max-md:flex-wrap bg-[#B1CCFF]`}
@@ -34,7 +34,7 @@ function RedlistTable() {
             <div>Actions</div>
         </div>
         </div>
-    );
+    )];
 
     useEffect(() => {
         retrieveRedListFromServer().then((clients) => {
@@ -81,19 +81,10 @@ function RedlistTable() {
                 </div>
                 );
 
-                if (i == 0) {
-                    setTableRows([headRow, newRow]);
-                }
-                else {
-                    setTableRows([...tableRows, newRow]);
-                }
-
-                console.log("now", tableRows)
+                tempTableRows.push(newRow);
             }
 
-            if (clients.length === 0) {
-                setTableRows([headRow]);
-            }
+            setTableRows(tempTableRows);
         });
     }, []);
 

@@ -10,6 +10,7 @@ import { editClient, getLatestReferences } from "../store/client/clientThunks";
 import { useSelector } from "react-redux";
 import { resetReferences } from "../store/client/clientSlice";
 import { resetState } from "../store/calls/callsSlice";
+import { getLoggedUserId } from "../serverUtils/serverUtils";
 
 interface ChangeDateOfMeetingProps {
   onClose: () => void;
@@ -30,11 +31,11 @@ const ChangeDateOfMeeting: React.FC<ChangeDateOfMeetingProps> = ({ onClose, refe
   const addCallSuccessful = useSelector((state: RootState) => state.call.addCallSuccessful);
   const editSuccessful = useSelector((state: RootState) => state.client.clientToEdit);
 
-  //------------------------------------------------- to do ---------------------------------------
-  //use logged in operator id
+  const operator_id = parseInt(getLoggedUserId() ?? "-1");
+
   const [inputs, setInputs] = React.useState<CallInputs>({
     clientId: reference?.id ?? -1,
-    phoneOperatorId: 5,
+    phoneOperatorId: operator_id,
     scheduledTime: null,
   })
 
@@ -58,10 +59,10 @@ const ChangeDateOfMeeting: React.FC<ChangeDateOfMeetingProps> = ({ onClose, refe
       date?.setMinutes(parseInt(minutes));
     }
 
-    setInputs({ ...inputs, scheduledTime: date });
+    setInputs({ ...inputs, scheduledTime: date});
   
     if (ref) {
-      setRef(() => ({...ref, nextContactDate: date?.toISOString(), lastCallDate: new Date().toISOString()}))
+      setRef(() => ({...ref, nextContactDate: date?.toISOString(), lastCallDate: new Date().toISOString(), assignedOperator: operator_id}))
     }
   }, [selectedDate, selectedTime]);
 

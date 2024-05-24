@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getLoggedUserId, getLoggedInUser, retrieveScheduleFromServer, saveScheduleToServer } from '../serverUtils/serverUtils';
+import { getLoggedUserId, getLoggedInUser, saveScheduleToServer, retrieveSchedulesFromServer } from '../serverUtils/serverUtils';
 import { UserRole } from '../serverUtils/UserRole';
 import '../styles/dropdownStyling.css'; 
 
@@ -95,21 +95,27 @@ const StyledComponent = styled.div`
   }
 `;
 
+
 const AgentScheduleComponent = () => {
     const [schedule, setSchedule] = useState<Schedule>({
-        0: [], // Sunday
-        1: [], // Monday
-        2: [], // Tuesday
-        3: [], // Wednesday
-        4: [], // Thursday
-        5: [], // Friday
-        6: [], // Saturday
+        1: [],
+        2: [],
+        3: [],
+        4: [],
+        5: [],
+        6: [],
+        0: [],
     });
-    const [selectedDay, setSelectedDay] = useState<number>(new Date().getDay());
-    let loggedUser: any | null;
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayDay = today.getDay();
+
+    const [selectedDay, setSelectedDay] = useState<number>(todayDay);
+    let loggedUser: any | null;
+    
     useEffect(() => {
-        retrieveScheduleFromServer().then((schedules: any) => {
+        retrieveSchedulesFromServer(getLoggedUserId() ?? "-1").then((schedules: any) => {
             if (schedules === null) {
                 return;
             }
@@ -123,6 +129,7 @@ const AgentScheduleComponent = () => {
                 }
                 return 0;
             });
+
             let newSchedule = schedule;
             for (let i = 0; i < schedules.length; i++) {
                 const day = new Date(schedules[i].day);
@@ -149,8 +156,6 @@ const AgentScheduleComponent = () => {
     }, []);
 
     const selectedDayReadonly = (selectedDay: number) => {
-        return false; // temporary for testing
-        
         if (loggedUser && loggedUser.role == UserRole.MARKETING_MANAGER) {
             return false;
         }
@@ -159,22 +164,6 @@ const AgentScheduleComponent = () => {
             if (schedule[selectedDay][i].readonly === true) {
                 return true;
             }
-        }
-
-        const nextOccurrence = new Date();
-        nextOccurrence.setDate(nextOccurrence.getDate() + (selectedDay + 7 - nextOccurrence.getDay()) % 7); 
-        nextOccurrence.setHours(0, 0, 0, 0);
-
-        const nextMonday = new Date();
-        nextMonday.setDate(nextMonday.getDate() + (1 + 7 - nextMonday.getDay()) % 7); 
-        nextMonday.setHours(0, 0, 0, 0);
-        
-        if (nextMonday < new Date()) {
-            nextMonday.setDate(nextMonday.getDate() + 7);
-        }
-        
-        if (nextOccurrence >= nextMonday) {
-            return true;
         }
 
         return false;
@@ -363,22 +352,21 @@ const AgentScheduleComponent = () => {
         ))
     );
 
-    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const sortedDays = [...daysOfWeek.slice(new Date().getDay()), ...daysOfWeek.slice(0, new Date().getDay())];
+    const dayButtons = [];
 
+    for (let i = todayDay; i < todayDay + 7; i++) {
+        dayButtons.push(<button
+            className={selectedDay === i%7 ? 'active' : ''}
+            onClick={() => setSelectedDay(i%7)}
+        >
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][i%7]}
+        </button>);
+    }
     return (
         <StyledComponent>
             <h2>My Work Schedule</h2>
             <div className="day-picker">
-                {sortedDays.map((day, index) => (
-                    <button
-                        key={index}
-                        className={selectedDay === (new Date().getDay() + index) % 7 ? 'active' : ''}
-                        onClick={() => setSelectedDay((new Date().getDay() + index) % 7)}
-                    >
-                        {day}
-                    </button>
-                ))}
+                {dayButtons}
                 <button className="add-slot-button" disabled={selectedDayReadonly(selectedDay)} onClick={addTimeslot}>+</button>
             </div>
         

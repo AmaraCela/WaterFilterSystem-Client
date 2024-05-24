@@ -21,6 +21,7 @@ export const createAPI =
             const apiUrl = process.env.REACT_APP_API_ENDPOINT;
             return fetch(`${apiUrl}/${endpoint}`, {
                 method: options.method ?? 'GET',
+                credentials: 'include',
                 headers,
                 body: body ? JSON.stringify(body) : undefined,
             });

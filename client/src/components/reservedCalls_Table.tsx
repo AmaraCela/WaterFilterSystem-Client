@@ -16,7 +16,7 @@ function ReservedTable() {
     const [tableRows, setTableRows] = useState<any>([]);
     
     // Table head
-    const headRow = (
+    let headRow = (
         <div
         key="head"
         className={`flex gap-5 self-stretch text-xl  leading-4 border-radius-10 border-b border-solid border-zinc-200 max-w-[400px] max-md:flex-wrap bg-[#B1CCFF]`}
@@ -41,63 +41,58 @@ function ReservedTable() {
         </div>
         </div>
     );
+    
+    // setTableRows(tempTableRows);
 
     useEffect(() => {
         retrieveCallsFromServer().then((calls) => {
             if (calls == null) {
                 return;
             }
-
-            for (let i = 0; i < calls.length; i++) {    
-                retrieveCallInfoFromServer(calls[i]).then((callInfo) => {
+    
+            const promises = calls.map((call: any, i: any) => 
+                retrieveCallInfoFromServer(call).then((callInfo) => {
                     if (callInfo == null) {
-                        return;
+                        return null; // Return null if callInfo is null
                     }
-
+    
                     const referenceName = callInfo.clientFullName;
                     const referenceNumber = callInfo.clientNumber;
                     const scheduledTime = callInfo.scheduledTime.substring(0, 10);
-
-                    const newRow = (
-                    <div
-                        key={i}
-                        className={`flex gap-5 bg-white self-stretch text-xs leading-4 border-b border-solid border-zinc-200 max-w-[400px] max-md:flex-wrap ${selectedRow === i ? 'bg-gray-200' : ''} `}
-                        onClick={() => handleRowClick(i)}
-                        style={{ width: '100%', minWidth: '100%' }} // Adjust the width here
-                    >
-                        <div className="flex flex-auto gap-4">
-                        <div className="flex flex-1 gap-2 px-4 py-3 text-zinc-700 max-md:pr-5">
-                            <div>{scheduledTime}</div>
+    
+                    return (
+                        <div
+                            key={i}
+                            className={`flex gap-5 bg-white self-stretch text-xs leading-4 border-b border-solid border-zinc-200 max-w-[400px] max-md:flex-wrap ${selectedRow === i ? 'bg-gray-200' : ''} `}
+                            onClick={() => handleRowClick(i)}
+                            style={{ width: '100%', minWidth: '100%' }} // Adjust the width here
+                        >
+                            <div className="flex flex-auto gap-4">
+                                <div className="flex flex-1 gap-2 px-4 py-3 text-zinc-700 max-md:pr-5">
+                                    <div>{scheduledTime}</div>
+                                </div>
+                            </div>
+                            <div className="flex flex-auto gap-4">
+                                <div className="flex flex-1 gap-2 px-4 py-3 text-zinc-700 max-md:pr-5">
+                                    <div>{referenceName}</div>
+                                </div>
+                            </div>
+                            <div className="flex flex-auto gap-5 justify-between my-auto text-gray-500">
+                                <div>{referenceNumber}</div>
+                            </div>
+                            <div className="flex flex-auto gap-5 justify-between my-auto text-gray-500">
+                                <div style={{ backgroundColor: '#B1CCFF', border: 'none', padding: '8px 16px', borderRadius: '8px' }}>
+                                    assigned by Marketing Manager
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                        <div className="flex flex-auto gap-4">
-                        <div className="flex flex-1 gap-2 px-4 py-3 text-zinc-700 max-md:pr-5">
-                            <div>{referenceName}</div>
-                        </div>
-                        </div>
-                        <div className="flex flex-auto gap-5 justify-between my-auto text-gray-500">
-                        <div>{referenceNumber}</div>
-                        </div>
-                        <div className="flex flex-auto gap-5 justify-between my-auto text-gray-500">
-                        <div style={{ backgroundColor: '#B1CCFF', border: 'none', padding: '8px 16px', borderRadius: '8px' }}>
-                            assigned by Marketing Manager
-                        </div>
-                        </div>
-                    </div>
                     );
-
-                    if (i === 0) {
-                        setTableRows([headRow, newRow]);
-                    }
-                    else {
-                        setTableRows([...tableRows, newRow]);
-                    }
-                });
-            }
-
-            if (calls.length === 0) {
-                setTableRows([headRow]);
-            }
+                })
+            );
+    
+            Promise.all(promises).then((rows: any) => {
+                setTableRows([headRow, ...rows]);
+            });
         });
     }, []);
     

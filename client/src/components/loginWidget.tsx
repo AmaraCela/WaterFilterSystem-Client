@@ -1,26 +1,18 @@
 import React, { createContext, useContext } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import '../styles/waterBtn.scss';
-
-
-const UserContext = createContext(null);
-
 
 const LoginWidget = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ message: "", fields: { email: "", password: "" } });
-  const navigate = useNavigate(); // Use useNavigate hook to get the navigation function
 
   const handleSubmit = () => {
-    console.log("Email:", email);
-    console.log("Password:", password);
-
     const apiUrl = process.env.REACT_APP_API_ENDPOINT;
 
     fetch(`${apiUrl}/session`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -41,42 +33,10 @@ const LoginWidget = () => {
         return response.json().then(data => {
           const token = data.token;
           const id = data.user_id;
-
-              const userData = { id: 1, name: "Sara", surname: "Sara", email: "sara@gm.com", role: "PHONE_OPERATOR" }; // Sample user data
-
-
-          fetch(`${apiUrl}/users/${id}`, {
-            method: "GET",
-            headers: {
-              "Authorization": `Bearer ${token}`
-            }
-          })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error("Failed to fetch role");
-            }
-            return response.json();
-          })
-          .then(roleData => {
-            const role = roleData.role;
-
-            console.log("Logged in ", id);
-            localStorage.setItem("session_user_id", id);
-
-            // Redirect based on role
-            if (role === "PHONE_OPERATOR") {
-              navigate("/home"); 
-            } else if (role === 'SALES_AGENT'){
-              navigate("/agentmeetings"); 
-            } else if (role === 'CHIEF_OF_OPERATIONS') {
-              navigate("/approvesales"); 
-            } else {
-              navigate("/login"); 
-            }
-          })
-          .catch(error => {
-            console.error("Error fetching role:", error);
-          });
+          
+          console.log("Logged in ", id);
+          localStorage.setItem("session_user_id", id);
+          window.location.href = "/"; // Redirect to the home page
         });
       }
     });
