@@ -93,6 +93,8 @@ const AgentScheduleComponent = () => {
         0: [],
     });
 
+    const [modifiedDays, setModifiedDays] = useState<number[]>([]);
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const todayDay = today.getDay();
@@ -142,6 +144,7 @@ const AgentScheduleComponent = () => {
     }, []);
 
     const selectedDayReadonly = (selectedDay: number) => {
+        console.log("checking if day readonly", selectedDay, schedule[selectedDay]);
         if (loggedUser && loggedUser.role == UserRole.MARKETING_MANAGER) {
             return false;
         }
@@ -258,6 +261,10 @@ const AgentScheduleComponent = () => {
             ...schedule,
             [selectedDay]: [...schedule[selectedDay], newSchedule],
         });
+        
+        if (modifiedDays.indexOf(selectedDay) === -1) {
+            setModifiedDays([...modifiedDays, selectedDay]);
+        }
     };
 
     const removeTimeslot = (selectedDay: number, slotIndex: number) => {
@@ -266,6 +273,10 @@ const AgentScheduleComponent = () => {
             ...schedule,
             [selectedDay]: schedule[selectedDay],
         });
+
+        if (modifiedDays.indexOf(selectedDay) === -1) {
+            setModifiedDays([...modifiedDays, selectedDay]);
+        }
     }
 
     const updateTimeslot = (
@@ -292,6 +303,10 @@ const AgentScheduleComponent = () => {
             ...schedule,
             [selectedDay]: newSchedule,
         });
+
+        if (modifiedDays.indexOf(selectedDay) === -1) {
+            setModifiedDays([...modifiedDays, selectedDay]);
+        }
     };
 
     const array1dTo2d = (arr: Timeslot[], chunkSize: number): Timeslot[][] => {
@@ -359,19 +374,35 @@ const AgentScheduleComponent = () => {
             <div className="day-container">
                 {renderTimeslots()}
             </div>
-            { !selectedDayReadonly(selectedDay) ? (<button onClick={() => {
-                saveScheduleToServer(schedule, selectedDay).then(() => {
-                    const timeslots = schedule[selectedDay];
-                    
-                    const newSchedule = timeslots.map((slot) => {
-                        return { ...slot, readonly: true };
-                    });
+            { modifiedDays.length !== 0 ? (<button onClick={() => {
+                let numberOfSetDays = 0;
+                for (let day = 0; day < 7; day++) {
+                    const timeslots = schedule[day];
+                    if (timeslots.length !== 0) {
+                        numberOfSetDays++;
+                    }
+                }
 
-                    setSchedule({
-                        ...schedule,
-                        [selectedDay]: newSchedule,
+                if (numberOfSetDays < 3) {
+                    alert("You must set at least 3 days of availability, you have only set " + numberOfSetDays + " days.");
+                }
+                else {
+                    saveScheduleToServer(schedule, modifiedDays).then(() => {
+                        let updatedSchedule = {...schedule};
+
+                        for (let day of modifiedDays) {
+                            const timeslots = schedule[day];
+                            
+                            const newSchedule = timeslots.map((slot) => {
+                                return { ...slot, readonly: true };
+                            });
+
+                            updatedSchedule[day] = newSchedule;
+                        }
+
+                        setSchedule(updatedSchedule);
                     });
-                });
+                }
             }}>Save</button>) : null }
         </StyledComponent>
     );
