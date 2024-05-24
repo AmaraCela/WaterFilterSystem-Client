@@ -81,7 +81,7 @@ const SalesAgentMeetingOutcome = ({ chosenMeeting, setChosenMeeting, setShowMeet
                 setAlertVisible(false);
             }
             } />}
-            {rescheduleVisible && <RescheduleMeetings onCancel={() => { setRescheduleVisible(false) }} meeting={chosenMeeting} />}
+            {rescheduleVisible && <RescheduleMeetings onCancel={() => { setRescheduleVisible(false) }} onSuccess={() => {setChosenMeeting(null); setRescheduleVisible(false); setShowMeetingOutcomeForm(false)} } meeting={chosenMeeting} />}
 
             {/* {showChangeDateForm && <ChangeDateOfMeeting onClose={handleCloseForm} reference={reference} />}
             {showRedListAlert && <RedlistAlert title="Redlist alert" message="Your call will be moved to the Redlist Section." onClose={handleCloseFormRL} />} Render the RedlistAlert conditionally */}

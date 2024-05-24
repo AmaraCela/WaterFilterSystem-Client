@@ -2,14 +2,24 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { useEffect, useState } from "react";
 import { Meeting } from "../types/types";
-import { useAppDispatch } from "../store/store";
+import { RootState, useAppDispatch } from "../store/store";
 import { updateMeeting } from "../store/meetings/meetingsThunk";
+import { useSelector } from "react-redux";
+import { resetUpdate } from "../store/meetings/meetingsSlice";
 
-const RescheduleMeetings = ({ meeting, onCancel }: { meeting: Meeting, onCancel: any }) => {
+const RescheduleMeetings = ({ meeting, onCancel, onSuccess }: { meeting: Meeting, onCancel: any, onSuccess: any }) => {
     const dispatch = useAppDispatch();
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState("");
     const [buttonClicked, setButtonClicked] = useState(false);
+    const updateSuccessful = useSelector((state: RootState) => state.meeting.updateSuccessful);
+
+    useEffect(() => {
+        if(updateSuccessful) {
+            dispatch(resetUpdate());
+            onSuccess();
+        }
+    }, [updateSuccessful])
 
     return (
         <div className="flex flex-col items-center px-20 py-12 text-xl font-bold text-indigo-800 bg-white rounded-3xl border border-indigo-800 border-solid max-w-[458px]" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
@@ -44,10 +54,10 @@ const RescheduleMeetings = ({ meeting, onCancel }: { meeting: Meeting, onCancel:
                         let minutes = selectedTime.split(":")[1];
                         newDate.setHours(parseInt(hours));
                         newDate.setMinutes(parseInt(minutes));
-                        let newMeeting = {...meeting, time:newDate.toISOString()};
+                        let newMeeting = { ...meeting, time: newDate.toISOString() };
                         dispatch(updateMeeting(newMeeting));
                     }
-                   
+
                 }}>
                     <div className={`justify-center px-4 py-2 rounded border-2 border-indigo-800 border-solid max-md:px-7 hover:bg-blue-500`}>
                         SAVE

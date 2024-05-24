@@ -27,7 +27,14 @@ const MeetingSchedulePhoneOp = ({ showCompact }: any) => {
     const [meetingsToDisplay, setMeetingsToDisplay] = useState<Meeting[]>([]);
     const [dates, setDates] = useState<Date[]>([]);
     const [schedules, setSchedules] = useState<any[]>([]);
-    const [hoveredSlot, setHoveredSlot] = useState<string | null>(null); // State to manage hovered slot
+    const [hoveredSlot, setHoveredSlot] = useState<string | null>(null); // State to manage hovered slot\
+
+    useEffect(() => {
+        const user_id = getLoggedUserId();
+        if (!showCompact) {
+            dispatch(getMeetings(user_id));
+        }
+    }, [chosenMeeting]);
 
     useEffect(() => {
         let newDates = [];
@@ -234,7 +241,7 @@ const MeetingSchedulePhoneOp = ({ showCompact }: any) => {
                     date: date.getDate(), hour: hour, min: min, slot: <td className="w-[14.2%] h-full border-t border-[#a5a5a5] border-blue-900 border-opacity-25" rowSpan={3}>
                         <button onClick={() => {
                             setChosenMeeting(meeting);
-                        }}>{meeting && <ScheduleSlot height={'h-full'} name={meeting.Client.name ?? ''} surname={meeting.Client.surname ?? ''} startHour={meetingHour} startMin={meetingMin}></ScheduleSlot>}</button></td>
+                        }}>{meeting && <ScheduleSlot height={'h-full'} name={meeting.Client?.name ?? ''} surname={meeting.Client?.surname ?? ''} startHour={meetingHour} startMin={meetingMin}></ScheduleSlot>}</button></td>
                 };
             }
             return { date: date.getDate(), hour: hour, min: min, slot: <td className="montserrat p-3 w-[14.2%] h-full border-t border-[#a5a5a5] rounded-lg border-blue-900 border-opacity-25"></td> };
@@ -431,7 +438,7 @@ const MeetingSchedulePhoneOp = ({ showCompact }: any) => {
 
                         meetingsSlots = meetingsSlots.map((m: any) => m.slot);
                     }
-                    
+
                     return <tr className="h-4" key={`${slot.hour}:${slot.min}`}>
                         <td className=" montserrat font-light text-[#B1B1B1]">
                             <p className="w-full text-center">{slot.label}</p>
@@ -444,7 +451,7 @@ const MeetingSchedulePhoneOp = ({ showCompact }: any) => {
                 })}
             </tbody>
         </table>
-            {chosenMeeting && <CompletedMeetingAlert meeting={chosenMeeting} setChosenMeeting = {setChosenMeeting}></CompletedMeetingAlert>}
+            {chosenMeeting && <CompletedMeetingAlert meeting={chosenMeeting} setChosenMeeting={setChosenMeeting}></CompletedMeetingAlert>}
         </>
     );
 }
