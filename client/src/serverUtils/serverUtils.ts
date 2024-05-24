@@ -290,51 +290,79 @@ export function retrieveSchedulesFromServer(agent_id: string) {
     });
 }
 
-export function saveScheduleToServer(schedule: any, selectedDay: number) {
-    const day = new Date();
-    day.setDate(day.getDate() + (selectedDay + 7 - day.getDay()) % 7); 
-    day.setHours(0, 0, 0, 0);
+export function saveScheduleToServer(user_id: string, schedule: any, selectedDays: number[]) {
+    for (let selectedDay of selectedDays) {
+        const day = new Date();
+        day.setDate(day.getDate() + (selectedDay + 7 - day.getDay()) % 7); 
+        day.setHours(0, 0, 0, 0);
 
-    const apiUrl = process.env.REACT_APP_API_ENDPOINT;
-    const user_id = getLoggedUserId();
-    if (user_id === null) {
-        console.log("Not logged in!");
-        return new Promise((resolve, reject) => {
-            reject(false);
-        });
-    }
+        const apiUrl = process.env.REACT_APP_API_ENDPOINT;
+        if (user_id === null) {
+            console.log("Not logged in!");
+            return new Promise((resolve, reject) => {
+                reject(false);
+            });
+        }
 
-    const timeslots = schedule[selectedDay];
-    for (let i = 0; i < timeslots.length; i++) {
-        const timeslot = {
-            day: day,
-            startTime: timeslots[i].start,
-            endTime: timeslots[i].end,
-        };
+        const timeslots = schedule[selectedDay];
+        for (let i = 0; i < timeslots.length; i++) {
+            const timeslot = {
+                day: day,
+                startTime: timeslots[i].start,
+                endTime: timeslots[i].end,
+            };
 
-        fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(timeslot),
-        }).then((response) => {
-            if (!response.ok) {
-                return response.json().then(data => {
-                    console.log("Failed to save schedule", data.message);
-                });
+            let method;
+            if (timeslots[i].id == -1) {
+                method = "POST";
             }
             else {
-                return response.json().then(data => {
-                    console.log("Saved schedule", data);
-                });
+                method = "PUT";
             }
-        });
+            
+            fetch(`${apiUrl}/users/salesagents/${user_id}/schedules` + (method === "PUT" ? `/${timeslots[i].id}` : ""), {
+                method: method,
+                credentials: 'include',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(timeslot),
+            }).then((response) => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        console.log("Failed to save schedule", data.message);
+                    });
+                }
+                else {
+                    return response.json().then(data => {
+                        console.log("Saved schedule", data);
+                    });
+                }
+            });
+        }
     }
 
     return new Promise((resolve, reject) => {
         resolve(true);
+    });
+}
+
+export function deleteSchedule(user_id: number, schedule_id: number) {
+    return fetch(`${apiUrl}/users/salesagents/${user_id}/schedules/${schedule_id}`, {
+        method: "DELETE",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to delete schedule", data.message);
+            });
+        }
+        else {
+            return;
+        }
     });
 }
 
