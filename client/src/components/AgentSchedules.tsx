@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getLoggedUserId, getLoggedInUser, saveScheduleToServer, retrieveSchedulesFromServer } from '../serverUtils/serverUtils';
+import { getLoggedUserId, getLoggedInUser, saveScheduleToServer, retrieveSchedulesFromServer, retrieveAllSalesAgentFromServer, deleteSchedule } from '../serverUtils/serverUtils';
 import { UserRole } from '../serverUtils/UserRole';
 
 interface Timeslot {
     start: string;
     end: string;
     readonly: boolean;
+    id: number;
 }
 
 interface Schedule {
@@ -93,59 +94,123 @@ const AgentScheduleComponent = () => {
         0: [],
     });
 
+    const [agents, setAgents] = React.useState<any[]>([]);
+
     const [modifiedDays, setModifiedDays] = useState<number[]>([]);
+    const [timeslotsToRemove, setTimeslotsToRemove] = useState<number[]>([]);
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const todayDay = today.getDay();
 
     const [selectedDay, setSelectedDay] = useState<number>(todayDay);
-    let loggedUser: any | null;
-    
+    const [loggedUser, setLoggedUser] = useState<any | null>(null);
+    const [selectedAgent, setSelectedAgent] = useState<any | null>(null);
+
     useEffect(() => {
-        retrieveSchedulesFromServer(getLoggedUserId() ?? "-1").then((schedules: any) => {
-            if (schedules === null) {
-                return;
-            }
-
-            schedules.sort((a: any, b: any) => {
-                if (a.startTime < b.startTime) {
-                    return -1;
-                }
-                if (a.startTime > b.startTime) {
-                    return 1;
-                }
-                return 0;
-            });
-
-            let newSchedule = schedule;
-            for (let i = 0; i < schedules.length; i++) {
-                const day = new Date(schedules[i].day);
-                let dayIdx = day.getDay();
-
-                const timeslot = {
-                    start: schedules[i].startTime,
-                    end: schedules[i].endTime,
-                    readonly: true
-                };
-
-                newSchedule = {
-                    ...newSchedule,
-                    [dayIdx]: [...newSchedule[dayIdx], timeslot],
-                };
-            }
-
-            setSchedule(newSchedule);
-        });
-
         getLoggedInUser().then((user) => {
-            loggedUser = user;
+            setLoggedUser(user);
         });
     }, []);
 
+    useEffect(() => {
+        if (loggedUser && loggedUser.role == UserRole[UserRole.MARKETING_MANAGER]) {
+            retrieveSchedulesFromServer(selectedAgent).then((schedules: any) => {
+                if (schedules === null) {
+                    return;
+                }
+
+                schedules.sort((a: any, b: any) => {
+                    if (a.startTime < b.startTime) {
+                        return -1;
+                    }
+                    if (a.startTime > b.startTime) {
+                        return 1;
+                    }
+                    return 0;
+                });
+
+                let newSchedule: Schedule = {
+                    1: [],
+                    2: [],
+                    3: [],
+                    4: [],
+                    5: [],
+                    6: [],
+                    0: [],
+                };
+                
+                for (let i = 0; i < schedules.length; i++) {
+                    const day = new Date(schedules[i].day);
+                    let dayIdx = day.getDay();
+
+                    const timeslot = {
+                        start: schedules[i].startTime,
+                        end: schedules[i].endTime,
+                        readonly: false,
+                        id: schedules[i].id
+                    };
+
+                    newSchedule = {
+                        ...newSchedule,
+                        [dayIdx]: [...newSchedule[dayIdx], timeslot],
+                    };
+                }
+
+                setSchedule(newSchedule);
+            }); 
+        }
+    }, [selectedAgent]);
+
+    useEffect(() => {
+        if (loggedUser && loggedUser.role == UserRole[UserRole.MARKETING_MANAGER]) {
+            retrieveAllSalesAgentFromServer().then(agents => {
+                if (agents) {
+                    setAgents(agents);
+                }
+            });
+        }
+        else if (loggedUser && loggedUser.role == UserRole[UserRole.SALES_AGENT]) {
+            retrieveSchedulesFromServer(getLoggedUserId() ?? "-1").then((schedules: any) => {
+                if (schedules === null) {
+                    return;
+                }
+
+                schedules.sort((a: any, b: any) => {
+                    if (a.startTime < b.startTime) {
+                        return -1;
+                    }
+                    if (a.startTime > b.startTime) {
+                        return 1;
+                    }
+                    return 0;
+                });
+
+                let newSchedule = schedule;
+                for (let i = 0; i < schedules.length; i++) {
+                    const day = new Date(schedules[i].day);
+                    let dayIdx = day.getDay();
+
+                    const timeslot = {
+                        start: schedules[i].startTime,
+                        end: schedules[i].endTime,
+                        readonly: true,
+                        id: schedules[i].id
+                    };
+
+                    newSchedule = {
+                        ...newSchedule,
+                        [dayIdx]: [...newSchedule[dayIdx], timeslot],
+                    };
+                }
+
+                setSchedule(newSchedule);
+            }); 
+        }
+    }, [loggedUser]);
+
     const selectedDayReadonly = (selectedDay: number) => {
-        console.log("checking if day readonly", selectedDay, schedule[selectedDay]);
-        if (loggedUser && loggedUser.role == UserRole.MARKETING_MANAGER) {
+        if (loggedUser && loggedUser.role == UserRole[UserRole.MARKETING_MANAGER]) {
             return false;
         }
 
@@ -234,7 +299,7 @@ const AgentScheduleComponent = () => {
         const previousSchedule = schedule[selectedDay][schedule[selectedDay].length - 1];
 
         if (!previousSchedule) {
-            newSchedule = { start: '08:00', end: '09:30', readonly: false };
+            newSchedule = { start: '08:00', end: '09:30', readonly: false, id: -1 };
         }
         else if (previousSchedule.end !== '21:30' &&
                  previousSchedule.end !== '21:00' &&
@@ -251,7 +316,7 @@ const AgentScheduleComponent = () => {
             }
 
             const newEnd = `${newHour.toString().padStart(2, '0')}:${newMinute.toString().padStart(2, '0')}`;
-            newSchedule = { start: previousSchedule.end, end: newEnd, readonly: false};
+            newSchedule = { start: previousSchedule.end, end: newEnd, readonly: false, id: -1};
         }
         else {
             return;
@@ -268,6 +333,8 @@ const AgentScheduleComponent = () => {
     };
 
     const removeTimeslot = (selectedDay: number, slotIndex: number) => {
+        setTimeslotsToRemove([...timeslotsToRemove, schedule[selectedDay][slotIndex].id]);
+
         schedule[selectedDay].splice(slotIndex, 1);
         setSchedule({
             ...schedule,
@@ -363,12 +430,26 @@ const AgentScheduleComponent = () => {
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][i%7]}
         </button>);
     }
+
     return (
         <StyledComponent>
-            <h2>My Work Schedule</h2>
+            {loggedUser && loggedUser.role == UserRole[UserRole.SALES_AGENT] ? <h2>My Work Schedule</h2> : <h2>Agents Work Schedule</h2>}
+            {loggedUser && loggedUser.role == UserRole[UserRole.MARKETING_MANAGER] ?
+            <div>
+            <h3>Select sales agent</h3>
+            <select name="salesAgent" id="salesAgent" onChange={(e) => {setSelectedAgent(e.target.value)}}>
+            <option key="" disabled selected value="">Select agent</option>
+            {
+                agents.map((agent) => {
+                     return <option value={agent.id}>{agent.name + " " + agent.surname}</option>
+                })
+            }
+            </select>
+            <br/><br/>
+            </div>: null}
             <div className="day-picker">
                 {dayButtons}
-                <button className="add-slot-button" disabled={selectedDayReadonly(selectedDay)} onClick={addTimeslot}>+</button>
+                <button className="add-slot-button" disabled={selectedDayReadonly(selectedDay) || (loggedUser && loggedUser.role == UserRole[UserRole.MARKETING_MANAGER] && (selectedAgent == "" || selectedAgent == null))} onClick={addTimeslot}>+</button>
             </div>
         
             <div className="day-container">
@@ -383,18 +464,19 @@ const AgentScheduleComponent = () => {
                     }
                 }
 
-                if (numberOfSetDays < 3) {
+                if (numberOfSetDays < 3 && loggedUser && loggedUser.role == UserRole[UserRole.SALES_AGENT]) {
                     alert("You must set at least 3 days of availability, you have only set " + numberOfSetDays + " days.");
                 }
                 else {
-                    saveScheduleToServer(schedule, modifiedDays).then(() => {
+                    const user_id = loggedUser && loggedUser.role == UserRole[UserRole.MARKETING_MANAGER] ? selectedAgent : getLoggedUserId();
+                    saveScheduleToServer(user_id, schedule, modifiedDays).then(() => {
                         let updatedSchedule = {...schedule};
 
                         for (let day of modifiedDays) {
                             const timeslots = schedule[day];
                             
                             const newSchedule = timeslots.map((slot) => {
-                                return { ...slot, readonly: true };
+                                return { ...slot, readonly: loggedUser && loggedUser.role == UserRole[UserRole.SALES_AGENT]};
                             });
 
                             updatedSchedule[day] = newSchedule;
@@ -402,6 +484,14 @@ const AgentScheduleComponent = () => {
 
                         setSchedule(updatedSchedule);
                     });
+
+                    if (loggedUser && loggedUser.role == UserRole[UserRole.MARKETING_MANAGER]) {
+                        if (timeslotsToRemove.length !== 0) {
+                            for (let timeslot of timeslotsToRemove) {
+                                deleteSchedule(selectedAgent, timeslot);
+                            }
+                        }
+                    }
                 }
             }}>Save</button>) : null }
         </StyledComponent>

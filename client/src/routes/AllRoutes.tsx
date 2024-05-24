@@ -57,6 +57,8 @@ import { getLoggedInUser } from '../serverUtils/serverUtils';
 import { UserRole } from '../serverUtils/UserRole';
 import { useState, useEffect } from 'react';
 import SalesAgentAddSale from '../pages/SalesAgentAddSale';
+import Statistics from '../pages/Statistics';
+import MarketingManagerSchedules from '../pages/MarketingManagerSchedules';
 
 const AllRoutes = () => {
     let [isPhoneAgent, setIsPhoneAgent] = useState(false);
@@ -105,6 +107,7 @@ const AllRoutes = () => {
                 {isSalesAgent && <Route path='/' element={< SalesAgentSchedules />}/>}
                 {isPhoneAgent && <Route path='/' element={< PhoneAgent_HomePage />}/>}
                 {isChiefOfOperations && <Route path='/' element={<ChiefOperationsDashboard_SalesToApprove />} />}
+                {isMarketingManager && <Route path='/' element={<ChiefMarketingDashboard />} />}
             </Routes>
             
             {isPhoneAgent && <Routes>
@@ -135,6 +138,12 @@ const AllRoutes = () => {
                 {/* missing inventory */}
                 <Route path='/collections' element={<Collections />} />
                 <Route path='redlist' element={<Redlist />} />
+            </Routes>}
+
+            {isMarketingManager && <Routes>
+                {/* Marketing Manager */}
+                <Route path='/schedules' element={<MarketingManagerSchedules />} />
+                <Route path='/statistics' element={<Statistics />} />
             </Routes>}
         </Router>
     ) : null;

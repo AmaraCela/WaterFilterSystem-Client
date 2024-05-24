@@ -290,14 +290,13 @@ export function retrieveSchedulesFromServer(agent_id: string) {
     });
 }
 
-export function saveScheduleToServer(schedule: any, selectedDays: number[]) {
+export function saveScheduleToServer(user_id: string, schedule: any, selectedDays: number[]) {
     for (let selectedDay of selectedDays) {
         const day = new Date();
         day.setDate(day.getDate() + (selectedDay + 7 - day.getDay()) % 7); 
         day.setHours(0, 0, 0, 0);
 
         const apiUrl = process.env.REACT_APP_API_ENDPOINT;
-        const user_id = getLoggedUserId();
         if (user_id === null) {
             console.log("Not logged in!");
             return new Promise((resolve, reject) => {
@@ -313,8 +312,16 @@ export function saveScheduleToServer(schedule: any, selectedDays: number[]) {
                 endTime: timeslots[i].end,
             };
 
-            fetch(`${apiUrl}/users/salesagents/${user_id}/schedules`, {
-                method: "POST",
+            let method;
+            if (timeslots[i].id == -1) {
+                method = "POST";
+            }
+            else {
+                method = "PUT";
+            }
+            
+            fetch(`${apiUrl}/users/salesagents/${user_id}/schedules` + (method === "PUT" ? `/${timeslots[i].id}` : ""), {
+                method: method,
                 credentials: 'include',
                 headers: {
                     "Content-Type": "application/json",
@@ -337,6 +344,25 @@ export function saveScheduleToServer(schedule: any, selectedDays: number[]) {
 
     return new Promise((resolve, reject) => {
         resolve(true);
+    });
+}
+
+export function deleteSchedule(user_id: number, schedule_id: number) {
+    return fetch(`${apiUrl}/users/salesagents/${user_id}/schedules/${schedule_id}`, {
+        method: "DELETE",
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((response) => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                console.log("Failed to delete schedule", data.message);
+            });
+        }
+        else {
+            return;
+        }
     });
 }
 
