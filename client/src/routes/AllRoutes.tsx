@@ -59,6 +59,7 @@ import { useState, useEffect } from 'react';
 import SalesAgentAddSale from '../pages/SalesAgentAddSale';
 import Statistics from '../pages/Statistics';
 import MarketingManagerSchedules from '../pages/MarketingManagerSchedules';
+import BuyersAndReferences from '../pages/BuyersAndReferences';
 
 const AllRoutes = () => {
     let [isPhoneAgent, setIsPhoneAgent] = useState(false);
@@ -135,15 +136,21 @@ const AllRoutes = () => {
                 <Route path='/salesdebts' element={<ChiefOperationsDashboard_ListOfSalesAndDebts />} />
                 <Route path='/tasks' element={<ChiefOfOperations_Inventory_ListOfTasks />} />
                 <Route path='/assignTask' element={<ChiefOfOperations_Inventory_assignNewTask />} />
+                <Route path='/sales-to-approve' element={<ChiefOperationsDashboard_SalesToApprove/>} />
                 {/* missing inventory */}
                 <Route path='/collections' element={<Collections />} />
-                <Route path='redlist' element={<Redlist />} />
+                <Route path='/redlist' element={<Redlist />} />
             </Routes>}
 
             {isMarketingManager && <Routes>
                 {/* Marketing Manager */}
                 <Route path='/schedules' element={<MarketingManagerSchedules />} />
                 <Route path='/statistics' element={<Statistics />} />
+                <Route path='/redlist' element={<Redlist />} />
+                <Route path='/buyersReferences' element={<BuyersAndReferences />} />
+                <Route path='/collections' element={<Collections />} />
+
+
             </Routes>}
         </Router>
     ) : null;
